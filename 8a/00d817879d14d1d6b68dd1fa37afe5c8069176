@@ -1,0 +1,19 @@
+src/main/resources/application.yaml
+  s_c0a13d28b0cb80::t_90005139691c40 4-20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "8a00d817879d14d1d6b68dd1fa37afe5c8069176",
+  "prompts": {},
+  "sessions": {
+    "s_c0a13d28b0cb80": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5a51de6f-ca71-450f-acf3-39bc6b2d7516",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
