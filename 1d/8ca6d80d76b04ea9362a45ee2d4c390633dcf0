@@ -1,0 +1,49 @@
+src/main/java/com/example/it_neocamp_projeto_final_workshop/mapper/ClubeMapper.java
+  s_9e16cd2bc672c0::t_db679d3ef4a4a6 10
+src/main/java/com/example/it_neocamp_projeto_final_workshop/model/Clube.java
+  s_9e16cd2bc672c0::t_b0bf06b29536a5 3-4,20-21
+src/main/java/com/example/it_neocamp_projeto_final_workshop/handler/GlobalExceptionHandler.java
+  s_136ff96dd239ba::t_1e947aa5bdec32 1-16
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/clube/ClubePostRequest.java
+  h_d680948365c6ad 7,19
+  s_9e16cd2bc672c0::t_5d884334a3b1b2 3,21-22
+.gitignore
+  h_d680948365c6ad 3
+src/main/java/com/example/it_neocamp_projeto_final_workshop/enums/EstadoBrasileiro.java
+  h_d680948365c6ad 1-5
+src/main/java/com/example/it_neocamp_projeto_final_workshop/repository/ClubeRepository.java
+  s_136ff96dd239ba::t_ca3a5480ed7782 3,10
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/ClubeService.java
+  s_136ff96dd239ba::t_4f722117671b9c 4,19-21
+src/main/java/com/example/it_neocamp_projeto_final_workshop/exception/ClubeJaExisteException.java
+  s_136ff96dd239ba::t_d23b78742a478d 1-7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "1d8ca6d80d76b04ea9362a45ee2d4c390633dcf0",
+  "prompts": {},
+  "humans": {
+    "h_d680948365c6ad": {
+      "author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  },
+  "sessions": {
+    "s_136ff96dd239ba": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "88361f7d-a8d6-48e0-94da-85ec03f787e5",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    },
+    "s_9e16cd2bc672c0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "508c3041-11db-4923-b161-2fa94b872ec0",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
