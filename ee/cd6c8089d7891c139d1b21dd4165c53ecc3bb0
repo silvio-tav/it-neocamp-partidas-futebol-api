@@ -1,0 +1,14 @@
+src/main/java/com/example/it_neocamp_projeto_final_workshop/config/OpenApiConfig.java
+  h_d680948365c6ad 17-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "eecd6c8089d7891c139d1b21dd4165c53ecc3bb0",
+  "prompts": {},
+  "humans": {
+    "h_d680948365c6ad": {
+      "author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
