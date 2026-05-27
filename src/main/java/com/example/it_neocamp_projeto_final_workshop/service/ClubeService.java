@@ -1,6 +1,7 @@
 package com.example.it_neocamp_projeto_final_workshop.service;
 
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePostRequest;
+import com.example.it_neocamp_projeto_final_workshop.exception.ClubeJaExisteException;
 import com.example.it_neocamp_projeto_final_workshop.mapper.ClubeMapper;
 import com.example.it_neocamp_projeto_final_workshop.model.Clube;
 import com.example.it_neocamp_projeto_final_workshop.repository.ClubeRepository;
@@ -15,6 +16,9 @@ public class ClubeService {
     }
 
     public Clube cadastrarClube(ClubePostRequest clubePostRequest) {
+        if (clubeRepository.existsByNomeIgnoreCaseAndSiglaEstado(clubePostRequest.getNome(), clubePostRequest.getEstado())) {
+            throw new ClubeJaExisteException(clubePostRequest.getNome(), clubePostRequest.getEstado().name());
+        }
         Clube clube = ClubeMapper.toEntity(clubePostRequest);
         return clubeRepository.save(clube);
     }
