@@ -14,9 +14,9 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("API de Clubes de Futebol")
-                        .description("API para gerenciamento de clubes de futebol brasileiros. " +
-                                     "Permite cadastrar e consultar clubes por estado.")
+                        .title("API partidas de Futebol")
+                        .description("API de partidas de futebol," +
+                                " para manusear dados de clubes, de partidas e de estádios")
                         .version("1.0.0")
                         .contact(new Contact()
                                 .name("IT Neocamp")
