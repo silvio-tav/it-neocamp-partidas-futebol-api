@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Builder
 @Schema(description = "Dados do clube cadastrado")
-public class ClubePostResponse {
+public class ClubeResponse {
 
     @Schema(description = "ID do clube cadastrado", example = "1")
     private Long id;

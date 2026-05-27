@@ -1,7 +1,8 @@
 package com.example.it_neocamp_projeto_final_workshop.controller;
 
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePostRequest;
-import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePostResponse;
+import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePutRequest;
+import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubeResponse;
 import com.example.it_neocamp_projeto_final_workshop.mapper.ClubeMapper;
 import com.example.it_neocamp_projeto_final_workshop.model.Clube;
 import com.example.it_neocamp_projeto_final_workshop.service.ClubeService;
@@ -12,10 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/clubes")
@@ -37,10 +35,33 @@ public class ClubeController {
             @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos (validação de campos)"),
             @ApiResponse(responseCode = "409", description = "Já existe um clube com o mesmo nome no estado informado")
     })
-    public ResponseEntity<ClubePostResponse> cadastrarClube(
+    public ResponseEntity<ClubeResponse> cadastrarClube(
             @RequestBody @Valid ClubePostRequest clubePostRequest
     ) {
         Clube clube = clubeService.cadastrarClube(clubePostRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(ClubeMapper.toResponse(clube));
+    }
+
+    @PutMapping("/{clubeId}")
+    public ResponseEntity<ClubeResponse> atualizarClube(
+            @PathVariable Long clubeId,
+            @RequestBody ClubePutRequest clubePutRequest
+            ){
+        Clube clube = clubeService.atualizarClube(clubePutRequest, clubeId);
+        return ResponseEntity.status(HttpStatus.OK).body(ClubeMapper.toResponse(clube));
+    }
+
+    @DeleteMapping("/{clubeId}")
+    @Operation(
+            summary = "Inativar clube",
+            description = "Realiza a inativação (soft delete) de um clube pelo seu ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Clube inativado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Clube não encontrado")
+    })
+    public ResponseEntity<Void> inativarClube(@PathVariable Long clubeId) {
+        clubeService.inativarClube(clubeId);
+        return ResponseEntity.noContent().build();
     }
 }

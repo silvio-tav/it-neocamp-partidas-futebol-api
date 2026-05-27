@@ -1,11 +1,14 @@
 package com.example.it_neocamp_projeto_final_workshop.service;
 
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePostRequest;
+import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePutRequest;
 import com.example.it_neocamp_projeto_final_workshop.exception.ClubeJaExisteException;
+import com.example.it_neocamp_projeto_final_workshop.exception.ClubeNaoEncontradoException;
 import com.example.it_neocamp_projeto_final_workshop.mapper.ClubeMapper;
 import com.example.it_neocamp_projeto_final_workshop.model.Clube;
 import com.example.it_neocamp_projeto_final_workshop.repository.ClubeRepository;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class ClubeService {
@@ -21,5 +24,30 @@ public class ClubeService {
         }
         Clube clube = ClubeMapper.toEntity(clubePostRequest);
         return clubeRepository.save(clube);
+    }
+
+    public Clube atualizarClube(ClubePutRequest clubePutRequest, Long clubeId){
+        Clube clube = clubeRepository.findById(clubeId)
+                .orElseThrow(() -> new ClubeNaoEncontradoException(clubeId));
+
+        if (clubePutRequest.getNome() != null) {
+            clube.setNome(clubePutRequest.getNome());
+        }
+        if (clubePutRequest.getEstado() != null) {
+            clube.setSiglaEstado(clubePutRequest.getEstado());
+        }
+        if (clubePutRequest.getDataCriacao() != null) {
+            clube.setDataCriacao(clubePutRequest.getDataCriacao());
+        }
+
+        return clubeRepository.save(clube);
+    }
+
+    public void inativarClube(Long clubeId) {
+        Clube clube = clubeRepository.findById(clubeId)
+                .orElseThrow(() -> new ClubeNaoEncontradoException(clubeId));
+
+        clube.setAtivo(false);
+        clubeRepository.save(clube);
     }
 }
