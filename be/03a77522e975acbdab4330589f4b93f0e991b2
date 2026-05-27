@@ -1,0 +1,25 @@
+src/main/java/com/example/it_neocamp_projeto_final_workshop/controller/ClubeController.java
+  s_a0f9def9a67a33::t_e85677cca620ec 10
+  s_a0f9def9a67a33::t_267975069b2b1c 47-55,57
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "be03a77522e975acbdab4330589f4b93f0e991b2",
+  "prompts": {},
+  "humans": {
+    "h_d680948365c6ad": {
+      "author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  },
+  "sessions": {
+    "s_a0f9def9a67a33": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3c07bd27-a493-444d-ad1e-fb7e6e288aaf",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
