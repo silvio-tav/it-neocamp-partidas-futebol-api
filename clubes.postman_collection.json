@@ -1,0 +1,246 @@
+{
+  "info": {
+    "name": "Clubes API",
+    "description": "Collection para os endpoints de gerenciamento de clubes de futebol brasileiros.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Clubes",
+      "item": [
+        {
+          "name": "Cadastrar clube",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/clubes",
+              "host": ["{{baseUrl}}"],
+              "path": ["clubes"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Flamengo\",\n  \"estado\": \"RJ\",\n  \"dataCriacao\": \"1895-11-15\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Cadastra um novo clube de futebol. Retorna 409 se já existir um clube com o mesmo nome no mesmo estado.\n\n**Respostas esperadas:**\n- `201 Created` — clube cadastrado com sucesso\n- `400 Bad Request` — dados de entrada inválidos\n- `409 Conflict` — já existe um clube com o mesmo nome no estado informado"
+          },
+          "response": [
+            {
+              "name": "201 - Clube cadastrado com sucesso",
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"Flamengo\",\n  \"siglaEstado\": \"RJ\",\n  \"dataCriacao\": \"1895-11-15\",\n  \"ativo\": true\n}"
+            },
+            {
+              "name": "409 - Clube já existe no estado",
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 409,\n  \"message\": \"Já existe um clube com o nome 'Flamengo' no estado RJ\"\n}"
+            },
+            {
+              "name": "400 - Dados inválidos",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Dados de entrada inválidos\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar clube",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/clubes/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["clubes", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Clube de Regatas do Flamengo\",\n  \"estado\": \"RJ\",\n  \"dataCriacao\": \"1895-11-15\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Atualiza parcialmente os dados de um clube existente. Apenas os campos enviados no body serão atualizados.\n\n**Respostas esperadas:**\n- `200 OK` — clube atualizado com sucesso\n- `400 Bad Request` — dados de entrada inválidos\n- `404 Not Found` — clube não encontrado"
+          },
+          "response": [
+            {
+              "name": "200 - Clube atualizado com sucesso",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"Clube de Regatas do Flamengo\",\n  \"siglaEstado\": \"RJ\",\n  \"dataCriacao\": \"1895-11-15\",\n  \"ativo\": true\n}"
+            },
+            {
+              "name": "404 - Clube não encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 404,\n  \"message\": \"Clube com id 1 não encontrado\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Listar clubes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clubes?nome=&estado=&ativo=&page=0&size=10&sort=nome,asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["clubes"],
+              "query": [
+                {
+                  "key": "nome",
+                  "value": "",
+                  "description": "Filtrar por trecho do nome do clube (ex: Fla)",
+                  "disabled": true
+                },
+                {
+                  "key": "estado",
+                  "value": "",
+                  "description": "Filtrar por sigla do estado (ex: RJ, SP, MG)",
+                  "disabled": true
+                },
+                {
+                  "key": "ativo",
+                  "value": "",
+                  "description": "Filtrar por situação: true = ativos, false = inativos",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "0",
+                  "description": "Número da página (começa em 0)"
+                },
+                {
+                  "key": "size",
+                  "value": "10",
+                  "description": "Quantidade de registros por página"
+                },
+                {
+                  "key": "sort",
+                  "value": "nome,asc",
+                  "description": "Ordenação: campo,direção (ex: nome,asc | siglaEstado,desc | ativo,asc)"
+                }
+              ]
+            },
+            "description": "Lista clubes com filtros opcionais por nome, estado e situação. Os filtros podem ser combinados livremente.\n\nHabilite os query params desejados para filtrar os resultados.\n\n**Ordenação disponível:** `nome`, `siglaEstado`, `ativo`, `dataCriacao` — use `,asc` ou `,desc`\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)"
+          },
+          "response": [
+            {
+              "name": "200 - Lista com resultados",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": 1,\n      \"nome\": \"Flamengo\",\n      \"siglaEstado\": \"RJ\",\n      \"dataCriacao\": \"1895-11-15\",\n      \"ativo\": true\n    },\n    {\n      \"id\": 2,\n      \"nome\": \"Fluminense\",\n      \"siglaEstado\": \"RJ\",\n      \"dataCriacao\": \"1902-07-21\",\n      \"ativo\": true\n    }\n  ],\n  \"pageable\": {\n    \"pageNumber\": 0,\n    \"pageSize\": 10,\n    \"sort\": {\n      \"sorted\": true,\n      \"unsorted\": false\n    }\n  },\n  \"totalElements\": 2,\n  \"totalPages\": 1,\n  \"last\": true,\n  \"first\": true,\n  \"numberOfElements\": 2,\n  \"empty\": false\n}"
+            },
+            {
+              "name": "200 - Lista vazia",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"content\": [],\n  \"pageable\": {\n    \"pageNumber\": 0,\n    \"pageSize\": 10,\n    \"sort\": {\n      \"sorted\": false,\n      \"unsorted\": true\n    }\n  },\n  \"totalElements\": 0,\n  \"totalPages\": 0,\n  \"last\": true,\n  \"first\": true,\n  \"numberOfElements\": 0,\n  \"empty\": true\n}"
+            }
+          ]
+        },
+        {
+          "name": "Inativar clube",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clubes/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["clubes", "1"]
+            },
+            "description": "Realiza a inativação (soft delete) de um clube pelo seu ID. O registro permanece no banco com o campo `ativo` setado para `false`.\n\n**Respostas esperadas:**\n- `204 No Content` — clube inativado com sucesso\n- `404 Not Found` — clube não encontrado"
+          },
+          "response": [
+            {
+              "name": "204 - Clube inativado com sucesso",
+              "status": "No Content",
+              "code": 204,
+              "body": ""
+            },
+            {
+              "name": "404 - Clube não encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 404,\n  \"message\": \"Clube com id 1 não encontrado\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -2,11 +2,16 @@ package com.example.it_neocamp_projeto_final_workshop.service;
 
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePostRequest;
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePutRequest;
+import com.example.it_neocamp_projeto_final_workshop.enums.EstadoBrasileiro;
 import com.example.it_neocamp_projeto_final_workshop.exception.ClubeJaExisteException;
 import com.example.it_neocamp_projeto_final_workshop.exception.ClubeNaoEncontradoException;
 import com.example.it_neocamp_projeto_final_workshop.mapper.ClubeMapper;
 import com.example.it_neocamp_projeto_final_workshop.model.Clube;
 import com.example.it_neocamp_projeto_final_workshop.repository.ClubeRepository;
+import com.example.it_neocamp_projeto_final_workshop.specification.ClubeSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 
@@ -49,5 +54,21 @@ public class ClubeService {
 
         clube.setAtivo(false);
         clubeRepository.save(clube);
+    }
+
+    public Page<Clube> listarClubes(String nomeClube, EstadoBrasileiro siglaEstado, Boolean ativo, Pageable pageable) {
+        Specification<Clube> spec = Specification.where((Specification<Clube>) null);
+
+        if (nomeClube != null && !nomeClube.isBlank()) {
+            spec = spec.and(ClubeSpecification.nomeContains(nomeClube));
+        }
+        if (siglaEstado != null) {
+            spec = spec.and(ClubeSpecification.estadoEquals(siglaEstado));
+        }
+        if (ativo != null) {
+            spec = spec.and(ClubeSpecification.ativoEquals(ativo));
+        }
+
+        return clubeRepository.findAll(spec, pageable);
     }
 }

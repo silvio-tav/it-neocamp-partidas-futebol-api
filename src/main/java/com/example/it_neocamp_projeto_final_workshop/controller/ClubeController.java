@@ -3,6 +3,7 @@ package com.example.it_neocamp_projeto_final_workshop.controller;
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePostRequest;
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePutRequest;
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubeResponse;
+import com.example.it_neocamp_projeto_final_workshop.enums.EstadoBrasileiro;
 import com.example.it_neocamp_projeto_final_workshop.mapper.ClubeMapper;
 import com.example.it_neocamp_projeto_final_workshop.model.Clube;
 import com.example.it_neocamp_projeto_final_workshop.service.ClubeService;
@@ -12,6 +13,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -74,5 +78,27 @@ public class ClubeController {
     public ResponseEntity<Void> inativarClube(@PathVariable Long clubeId) {
         clubeService.inativarClube(clubeId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    @Operation(
+            summary = "Listar clubes",
+            description = "Lista clubes com filtros opcionais por nome, estado e situação. Os filtros podem ser combinados livremente."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+    })
+    public ResponseEntity<Page<ClubeResponse>> listarClubes(
+            @Parameter(description = "Filtrar por trecho do nome do clube", example = "Fla")
+            @RequestParam(required = false) String nome,
+            @Parameter(description = "Filtrar por estado", example = "RJ")
+            @RequestParam(required = false) EstadoBrasileiro estado,
+            @Parameter(description = "Filtrar por situação: true = ativos, false = inativos", example = "true")
+            @RequestParam(required = false) Boolean ativo,
+            @PageableDefault(size = 10) Pageable pageable
+    ) {
+        Page<ClubeResponse> page = clubeService.listarClubes(nome, estado, ativo, pageable)
+                .map(ClubeMapper::toResponse);
+        return ResponseEntity.ok(page);
     }
 }
