@@ -7,6 +7,7 @@ import com.example.it_neocamp_projeto_final_workshop.mapper.ClubeMapper;
 import com.example.it_neocamp_projeto_final_workshop.model.Clube;
 import com.example.it_neocamp_projeto_final_workshop.service.ClubeService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,7 +44,17 @@ public class ClubeController {
     }
 
     @PutMapping("/{clubeId}")
+    @Operation(
+            summary = "Atualizar clube",
+            description = "Atualiza parcialmente os dados de um clube existente. Apenas os campos enviados no body serão atualizados."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Clube atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos (validação de campos)"),
+            @ApiResponse(responseCode = "404", description = "Clube não encontrado")
+    })
     public ResponseEntity<ClubeResponse> atualizarClube(
+            @Parameter(description = "ID do clube a ser atualizado", example = "1")
             @PathVariable Long clubeId,
             @RequestBody ClubePutRequest clubePutRequest
             ){
