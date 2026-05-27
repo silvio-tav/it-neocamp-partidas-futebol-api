@@ -1,6 +1,9 @@
 package com.example.it_neocamp_projeto_final_workshop.controller;
 
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePostRequest;
+import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePostResponse;
+import com.example.it_neocamp_projeto_final_workshop.mapper.ClubeMapper;
+import com.example.it_neocamp_projeto_final_workshop.model.Clube;
 import com.example.it_neocamp_projeto_final_workshop.service.ClubeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,10 +37,10 @@ public class ClubeController {
             @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos (validação de campos)"),
             @ApiResponse(responseCode = "409", description = "Já existe um clube com o mesmo nome no estado informado")
     })
-    public ResponseEntity<Void> cadastrarClube(
+    public ResponseEntity<ClubePostResponse> cadastrarClube(
             @RequestBody @Valid ClubePostRequest clubePostRequest
     ) {
-        clubeService.cadastrarClube(clubePostRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        Clube clube = clubeService.cadastrarClube(clubePostRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ClubeMapper.toResponse(clube));
     }
 }
