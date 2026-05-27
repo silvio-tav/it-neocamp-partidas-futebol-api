@@ -1,0 +1,31 @@
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/clube/ClubePostRequest.java
+  s_136ff96dd239ba::t_66325d3b24c6e1 4,18,20,23,25,27,29,31,33,35
+src/main/java/com/example/it_neocamp_projeto_final_workshop/config/OpenApiConfig.java
+  s_136ff96dd239ba::t_6867b4c55989ea 1-22,24-25
+  h_d680948365c6ad 23
+src/main/java/com/example/it_neocamp_projeto_final_workshop/controller/ClubeController.java
+  s_136ff96dd239ba::t_4bfd2bcfdacdb5 5-8,19,28-36,39
+src/main/resources/application.yaml
+  s_136ff96dd239ba::t_85ea034b9bd783 5-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "6b7e99c8c8370ca1182acfbf231290c33a99be77",
+  "prompts": {},
+  "humans": {
+    "h_d680948365c6ad": {
+      "author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  },
+  "sessions": {
+    "s_136ff96dd239ba": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "88361f7d-a8d6-48e0-94da-85ec03f787e5",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
