@@ -1,4 +1,4 @@
 # IDE - IntelliJ / PyCharm / WebStorm
 .idea/
-.target/
+target/
 .claude/
