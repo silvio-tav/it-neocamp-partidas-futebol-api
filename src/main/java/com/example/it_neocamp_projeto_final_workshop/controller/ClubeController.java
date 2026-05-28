@@ -111,7 +111,7 @@ public class ClubeController {
             @RequestParam(required = false) EstadoBrasileiro estado,
             @Parameter(description = "Filtrar por situação: true = ativos, false = inativos", example = "true")
             @RequestParam(required = false) Boolean ativo,
-            @PageableDefault(size = 10) Pageable pageable
+            @PageableDefault Pageable pageable
     ) {
         Page<ClubeResponse> page = clubeService.listarClubes(nome, estado, ativo, pageable)
                 .map(ClubeMapper::toResponse);
