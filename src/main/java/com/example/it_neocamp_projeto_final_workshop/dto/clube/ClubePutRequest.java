@@ -4,15 +4,15 @@ import com.example.it_neocamp_projeto_final_workshop.enums.EstadoBrasileiro;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@Schema(description = "Dados para atualização parcial de um clube de futebol")
 public class ClubePutRequest {
     @Size(min = 2, message = "nome do clube deve ter pelo menos 2 caracteres")
     @Schema(description = "Nome do clube", example = "Flamengo", minLength = 2)

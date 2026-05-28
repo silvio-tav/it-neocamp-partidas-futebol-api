@@ -80,6 +80,22 @@ public class ClubeController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{clubeId}")
+    @Operation(
+            summary = "Buscar clube por ID",
+            description = "Retorna os dados de um clube específico pelo seu ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Clube encontrado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Clube não encontrado")
+    })
+    public ResponseEntity<ClubeResponse> buscarPorId(
+            @Parameter(description = "ID do clube a ser consultado", example = "1")
+            @PathVariable Long clubeId
+    ){
+        return ResponseEntity.ok(ClubeMapper.toResponse(clubeService.listarClubePorId(clubeId)));
+    }
+
     @GetMapping
     @Operation(
             summary = "Listar clubes",

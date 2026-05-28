@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 public class ClubeService {
@@ -56,8 +58,13 @@ public class ClubeService {
         clubeRepository.save(clube);
     }
 
+    public Clube listarClubePorId(Long clubeId){
+        return clubeRepository.findById(clubeId)
+                .orElseThrow(() -> new ClubeNaoEncontradoException(clubeId));
+    }
+
     public Page<Clube> listarClubes(String nomeClube, EstadoBrasileiro siglaEstado, Boolean ativo, Pageable pageable) {
-        Specification<Clube> spec = Specification.where((Specification<Clube>) null);
+        Specification<Clube> spec = (root, query, cb) -> cb.conjunction();
 
         if (nomeClube != null && !nomeClube.isBlank()) {
             spec = spec.and(ClubeSpecification.nomeContains(nomeClube));
