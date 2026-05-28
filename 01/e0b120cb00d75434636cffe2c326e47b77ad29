@@ -1,0 +1,33 @@
+src/main/java/com/example/it_neocamp_projeto_final_workshop/controller/ClubeController.java
+  h_d680948365c6ad 83,92,94-98
+  s_091d28d3d94eea::t_54cb1a4ac33496 84-91,93
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/clube/ClubePostRequest.java
+  h_d680948365c6ad 9,16
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/clube/ClubePutRequest.java
+  h_d680948365c6ad 7,14
+  s_091d28d3d94eea::t_16c28e5743f53f 15
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/ClubeService.java
+  s_091d28d3d94eea::t_7beb24c48fa8f5 67
+  h_d680948365c6ad 17,61-63
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "01e0b120cb00d75434636cffe2c326e47b77ad29",
+  "prompts": {},
+  "humans": {
+    "h_d680948365c6ad": {
+      "author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  },
+  "sessions": {
+    "s_091d28d3d94eea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d0afaafa-cb1e-4676-b10f-d878b9d96700",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
