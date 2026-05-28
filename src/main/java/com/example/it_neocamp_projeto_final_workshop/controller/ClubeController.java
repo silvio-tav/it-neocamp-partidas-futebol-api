@@ -6,7 +6,7 @@ import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubeResponse;
 import com.example.it_neocamp_projeto_final_workshop.enums.EstadoBrasileiro;
 import com.example.it_neocamp_projeto_final_workshop.mapper.ClubeMapper;
 import com.example.it_neocamp_projeto_final_workshop.model.Clube;
-import com.example.it_neocamp_projeto_final_workshop.service.ClubeService;
+import com.example.it_neocamp_projeto_final_workshop.service.clube.ClubeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

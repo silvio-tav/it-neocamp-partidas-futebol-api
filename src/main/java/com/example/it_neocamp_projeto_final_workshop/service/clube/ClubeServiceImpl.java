@@ -1,4 +1,4 @@
-package com.example.it_neocamp_projeto_final_workshop.service;
+package com.example.it_neocamp_projeto_final_workshop.service.clube;
 
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePostRequest;
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePutRequest;
@@ -14,17 +14,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
-
 @Service
-public class ClubeService {
+public class ClubeServiceImpl implements ClubeService {
+
     private final ClubeRepository clubeRepository;
 
-    public ClubeService(ClubeRepository clubeRepository) {
+    public ClubeServiceImpl(ClubeRepository clubeRepository) {
         this.clubeRepository = clubeRepository;
     }
 
+    @Override
     public Clube cadastrarClube(ClubePostRequest clubePostRequest) {
         if (clubeRepository.existsByNomeIgnoreCaseAndSiglaEstado(clubePostRequest.getNome(), clubePostRequest.getEstado())) {
             throw new ClubeJaExisteException(clubePostRequest.getNome(), clubePostRequest.getEstado().name());
@@ -33,7 +32,8 @@ public class ClubeService {
         return clubeRepository.save(clube);
     }
 
-    public Clube atualizarClube(ClubePutRequest clubePutRequest, Long clubeId){
+    @Override
+    public Clube atualizarClube(ClubePutRequest clubePutRequest, Long clubeId) {
         Clube clube = clubeRepository.findById(clubeId)
                 .orElseThrow(() -> new ClubeNaoEncontradoException(clubeId));
 
@@ -50,6 +50,7 @@ public class ClubeService {
         return clubeRepository.save(clube);
     }
 
+    @Override
     public void inativarClube(Long clubeId) {
         Clube clube = clubeRepository.findById(clubeId)
                 .orElseThrow(() -> new ClubeNaoEncontradoException(clubeId));
@@ -58,11 +59,13 @@ public class ClubeService {
         clubeRepository.save(clube);
     }
 
-    public Clube listarClubePorId(Long clubeId){
+    @Override
+    public Clube listarClubePorId(Long clubeId) {
         return clubeRepository.findById(clubeId)
                 .orElseThrow(() -> new ClubeNaoEncontradoException(clubeId));
     }
 
+    @Override
     public Page<Clube> listarClubes(String nomeClube, EstadoBrasileiro siglaEstado, Boolean ativo, Pageable pageable) {
         Specification<Clube> spec = (root, query, cb) -> cb.conjunction();
 
