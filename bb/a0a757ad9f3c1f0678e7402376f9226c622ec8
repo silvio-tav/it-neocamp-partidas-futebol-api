@@ -1,0 +1,57 @@
+src/main/java/com/example/it_neocamp_projeto_final_workshop/exception/EstadioNaoEncontradoException.java
+  s_d87c9f61b15ea0::t_6932a4d3786bbb 3-4,6-7
+src/main/java/com/example/it_neocamp_projeto_final_workshop/model/Partida.java
+  s_d87c9f61b15ea0::t_de9487c0b9ee1b 8,18-19
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/clube/ClubeServiceImpl.java
+  s_d87c9f61b15ea0::t_c0246b3c125840 17-18
+  s_d87c9f61b15ea0::t_09fbd35191a5bd 38,56,65
+src/main/java/com/example/it_neocamp_projeto_final_workshop/repository/EstadioRepository.java
+  s_d87c9f61b15ea0::t_ccdd45be56c674 8-9,11
+src/main/java/com/example/it_neocamp_projeto_final_workshop/model/Estadio.java
+  s_d87c9f61b15ea0::t_ff60025a139e0a 9-10,19-20
+src/main/java/com/example/it_neocamp_projeto_final_workshop/exception/ClubeNaoEncontradoException.java
+  s_d87c9f61b15ea0::t_b4c0c8ffa446fb 3-4,6-7
+src/main/java/com/example/it_neocamp_projeto_final_workshop/controller/EstadioController.java
+  s_d87c9f61b15ea0::t_e177ac1085a119 40,62,70
+  s_d87c9f61b15ea0::t_c3a2ad72b2c8a5 15-16
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/estadio/EstadioResponse.java
+  s_d87c9f61b15ea0::t_65fbd9051c8cab 6-7,11
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/clube/ClubeResponse.java
+  s_d87c9f61b15ea0::t_61dd93763aee48 9,16-17
+src/main/java/com/example/it_neocamp_projeto_final_workshop/repository/ClubeRepository.java
+  s_d87c9f61b15ea0::t_256bb53f64e134 9-10,12
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/estadio/EstadioService.java
+  s_d87c9f61b15ea0::t_83d808d06348f9 8-9,13,15,19
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/estadio/EstadioServiceImpl.java
+  s_d87c9f61b15ea0::t_0d8180de03ab5d 34,42,58
+  s_d87c9f61b15ea0::t_ac7567ed803466 15-16
+src/main/java/com/example/it_neocamp_projeto_final_workshop/model/Clube.java
+  s_d87c9f61b15ea0::t_9e83b29caf021b 8,18-19
+src/main/java/com/example/it_neocamp_projeto_final_workshop/controller/ClubeController.java
+  s_d87c9f61b15ea0::t_1828c4a287b25c 64,80,96
+  s_d87c9f61b15ea0::t_5580cefabe6ea5 23-24
+  s_d87c9f61b15ea0::t_988b9125c657a7 63,95
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/clube/ClubeService.java
+  s_d87c9f61b15ea0::t_e5b509807dd384 10-11,16,18,20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "bba0a757ad9f3c1f0678e7402376f9226c622ec8",
+  "prompts": {},
+  "humans": {
+    "h_d680948365c6ad": {
+      "author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  },
+  "sessions": {
+    "s_d87c9f61b15ea0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a813acfe-18df-4ce9-8a0c-33bc2c355106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
