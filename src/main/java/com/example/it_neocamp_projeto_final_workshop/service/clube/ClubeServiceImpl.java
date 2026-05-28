@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class ClubeServiceImpl implements ClubeService {
 
@@ -33,7 +35,7 @@ public class ClubeServiceImpl implements ClubeService {
     }
 
     @Override
-    public Clube atualizarClube(ClubePutRequest clubePutRequest, Long clubeId) {
+    public Clube atualizarClube(ClubePutRequest clubePutRequest, UUID clubeId) {
         Clube clube = clubeRepository.findById(clubeId)
                 .orElseThrow(() -> new ClubeNaoEncontradoException(clubeId));
 
@@ -51,7 +53,7 @@ public class ClubeServiceImpl implements ClubeService {
     }
 
     @Override
-    public void inativarClube(Long clubeId) {
+    public void inativarClube(UUID clubeId) {
         Clube clube = clubeRepository.findById(clubeId)
                 .orElseThrow(() -> new ClubeNaoEncontradoException(clubeId));
 
@@ -60,7 +62,7 @@ public class ClubeServiceImpl implements ClubeService {
     }
 
     @Override
-    public Clube listarClubePorId(Long clubeId) {
+    public Clube listarClubePorId(UUID clubeId) {
         return clubeRepository.findById(clubeId)
                 .orElseThrow(() -> new ClubeNaoEncontradoException(clubeId));
     }

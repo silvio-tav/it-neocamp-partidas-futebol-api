@@ -20,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/clubes")
 @Tag(name = "Clubes", description = "Endpoints para gerenciamento de clubes de futebol brasileiros")
@@ -58,8 +60,8 @@ public class ClubeController {
             @ApiResponse(responseCode = "404", description = "Clube não encontrado")
     })
     public ResponseEntity<ClubeResponse> atualizarClube(
-            @Parameter(description = "ID do clube a ser atualizado", example = "1")
-            @PathVariable Long clubeId,
+            @Parameter(description = "ID do clube a ser atualizado", example = "550e8400-e29b-41d4-a716-446655440000")
+            @PathVariable UUID clubeId,
             @RequestBody ClubePutRequest clubePutRequest
             ){
         Clube clube = clubeService.atualizarClube(clubePutRequest, clubeId);
@@ -75,7 +77,7 @@ public class ClubeController {
             @ApiResponse(responseCode = "204", description = "Clube inativado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Clube não encontrado")
     })
-    public ResponseEntity<Void> inativarClube(@PathVariable Long clubeId) {
+    public ResponseEntity<Void> inativarClube(@PathVariable UUID clubeId) {
         clubeService.inativarClube(clubeId);
         return ResponseEntity.noContent().build();
     }
@@ -90,8 +92,8 @@ public class ClubeController {
             @ApiResponse(responseCode = "404", description = "Clube não encontrado")
     })
     public ResponseEntity<ClubeResponse> buscarPorId(
-            @Parameter(description = "ID do clube a ser consultado", example = "1")
-            @PathVariable Long clubeId
+            @Parameter(description = "ID do clube a ser consultado", example = "550e8400-e29b-41d4-a716-446655440000")
+            @PathVariable UUID clubeId
     ){
         return ResponseEntity.ok(ClubeMapper.toResponse(clubeService.listarClubePorId(clubeId)));
     }

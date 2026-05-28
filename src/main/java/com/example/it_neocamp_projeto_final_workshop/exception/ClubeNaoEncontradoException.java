@@ -1,7 +1,9 @@
 package com.example.it_neocamp_projeto_final_workshop.exception;
 
+import java.util.UUID;
+
 public class ClubeNaoEncontradoException extends RuntimeException {
-    public ClubeNaoEncontradoException(Long id) {
-        super("Clube com o id "+id.toString()+" não encontrado");
+    public ClubeNaoEncontradoException(UUID id) {
+        super("Clube com o id " + id + " não encontrado");
     }
 }

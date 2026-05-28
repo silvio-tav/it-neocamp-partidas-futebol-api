@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class EstadioServiceImpl implements EstadioService{
     private final EstadioRepository estadioRepository;
@@ -29,7 +31,7 @@ public class EstadioServiceImpl implements EstadioService{
     }
 
     @Override
-    public Estadio atualizarEstadio(Long estadioId, EstadioRequest estadioRequest) {
+    public Estadio atualizarEstadio(UUID estadioId, EstadioRequest estadioRequest) {
         if (estadioRepository.findById(estadioId).isEmpty()) {
             throw new EstadioNaoEncontradoException(estadioId);
         }
@@ -37,7 +39,7 @@ public class EstadioServiceImpl implements EstadioService{
     }
 
     @Override
-    public Estadio listarEstadioPorId(Long estadioId) {
+    public Estadio listarEstadioPorId(UUID estadioId) {
         return estadioRepository.findById(estadioId).orElseThrow(
                 () -> new EstadioNaoEncontradoException(estadioId)
         );
@@ -53,7 +55,7 @@ public class EstadioServiceImpl implements EstadioService{
     }
 
     @Override
-    public void deletarEstadio(Long estadioId) {
+    public void deletarEstadio(UUID estadioId) {
         if (!estadioRepository.existsById(estadioId)) {
             throw new EstadioNaoEncontradoException(estadioId);
         }

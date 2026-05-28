@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/estadios")
 public class EstadioController {
@@ -35,7 +37,7 @@ public class EstadioController {
     @PutMapping("/{estadioId}")
     public ResponseEntity<EstadioResponse> atualizarEstadio(
             @PathVariable
-            Long estadioId,
+            UUID estadioId,
             @RequestBody
             EstadioRequest estadioRequest
     ){
@@ -57,7 +59,7 @@ public class EstadioController {
     @GetMapping("/{estadioId}")
     public ResponseEntity<EstadioResponse> listarPorId(
             @PathVariable
-            Long estadioId
+            UUID estadioId
     ){
         return ResponseEntity.ok(EstadioMapper.toResponse(estadioService.listarEstadioPorId(estadioId)));
     }
@@ -65,7 +67,7 @@ public class EstadioController {
     @DeleteMapping("/{estadioId}")
     public ResponseEntity<Void> deetarEstadio(
             @PathVariable
-            Long estadioId
+            UUID estadioId
     ){
         estadioService.deletarEstadio(estadioId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

@@ -7,15 +7,17 @@ import com.example.it_neocamp_projeto_final_workshop.model.Clube;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.UUID;
+
 public interface ClubeService {
 
     Clube cadastrarClube(ClubePostRequest clubePostRequest);
 
-    Clube atualizarClube(ClubePutRequest clubePutRequest, Long clubeId);
+    Clube atualizarClube(ClubePutRequest clubePutRequest, UUID clubeId);
 
-    void inativarClube(Long clubeId);
+    void inativarClube(UUID clubeId);
 
-    Clube listarClubePorId(Long clubeId);
+    Clube listarClubePorId(UUID clubeId);
 
     Page<Clube> listarClubes(String nomeClube, EstadoBrasileiro siglaEstado, Boolean ativo, Pageable pageable);
 }
