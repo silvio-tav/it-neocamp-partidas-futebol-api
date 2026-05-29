@@ -1,7 +1,7 @@
 package com.example.it_neocamp_projeto_final_workshop.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -17,11 +17,13 @@ public class Partida {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @NotNull
     @ManyToOne
     private Clube clubeCasa;
     @ManyToOne
-    @NotNull
     private Clube clubeVisitante;
+    @ManyToOne
+    private Estadio estadio;
     private LocalDateTime dataHoraPartida;
+    private Integer golsCasa;
+    private Integer golsVisitante;
 }
