@@ -1,0 +1,27 @@
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/partida/PartidaServiceImpl.java
+  s_272f008e5dc84c::t_eaef03b581b873 50
+  h_d680948365c6ad 49
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/partida/PartidaPostRequest.java
+  h_d680948365c6ad 35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "ae3e8519952480dc90f33623d06328d0a62635fc",
+  "prompts": {},
+  "humans": {
+    "h_d680948365c6ad": {
+      "author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  },
+  "sessions": {
+    "s_272f008e5dc84c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "06800641-f488-4863-9880-cd2e5167bfc1",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
