@@ -1,0 +1,19 @@
+clubes.postman_collection.json
+  s_272f008e5dc84c::t_891d5133addee1 3-4,49-50,56-57,63-64,79,81,99-100,106-136,181,185,192-193,199-200,210,212,227-606,608-615,617-662
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "874f2d4bd83ab8c5e559f2ae31f8f00c29588a24",
+  "prompts": {},
+  "sessions": {
+    "s_272f008e5dc84c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "06800641-f488-4863-9880-cd2e5167bfc1",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
