@@ -9,8 +9,10 @@ import com.example.it_neocamp_projeto_final_workshop.model.Partida;
 import com.example.it_neocamp_projeto_final_workshop.repository.ClubeRepository;
 import com.example.it_neocamp_projeto_final_workshop.repository.EstadioRepository;
 import com.example.it_neocamp_projeto_final_workshop.repository.PartidaRepository;
+import com.example.it_neocamp_projeto_final_workshop.specification.PartidaSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 
@@ -48,23 +50,66 @@ public class PartidaServiceImpl implements PartidaService{
     }
 
     @Override
-    public Partida atualizarPartida(PartidaPutRequest partidaPutRequest) {
-        return null;
+    public Partida atualizarPartida(UUID partidaId, PartidaPutRequest partidaPutRequest) {
+        Partida partida = partidaRepository.findById(partidaId).orElseThrow(
+                () -> new PartidaNaoEncontradaException(partidaId)
+        );
+
+        UUID clubeCasaId = partidaPutRequest.getClubeCasaId() != null
+                ? partidaPutRequest.getClubeCasaId()
+                : partida.getClubeCasa().getId();
+        UUID clubeVisitanteId = partidaPutRequest.getClubeVisitanteId() != null
+                ? partidaPutRequest.getClubeVisitanteId()
+                : partida.getClubeVisitante().getId();
+        UUID estadioId = partidaPutRequest.getEstadioId() != null
+                ? partidaPutRequest.getEstadioId()
+                : partida.getEstadio().getId();
+        LocalDateTime dataHora = partidaPutRequest.getDataHoraPartida() != null
+                ? partidaPutRequest.getDataHoraPartida()
+                : partida.getDataHoraPartida();
+
+        ClubesValidados clubes = validarClubes(clubeCasaId, clubeVisitanteId);
+        Estadio estadio = validarEstadio(estadioId);
+        validarConflitoDeHorario(clubes.clubeCasa().getId(), clubes.clubeVisitante().getId(), dataHora);
+        validarEstadioNoDia(estadio.getId(), dataHora);
+
+        partida.setClubeCasa(clubes.clubeCasa());
+        partida.setClubeVisitante(clubes.clubeVisitante());
+        partida.setEstadio(estadio);
+        partida.setDataHoraPartida(dataHora);
+        if (partidaPutRequest.getGolsCasa() != null) partida.setGolsCasa(partidaPutRequest.getGolsCasa());
+        if (partidaPutRequest.getGolsVisitante() != null) partida.setGolsVisitante(partidaPutRequest.getGolsVisitante());
+
+        return partidaRepository.save(partida);
     }
 
     @Override
     public void deletarPartida(UUID partidaId) {
-
+        if (!partidaRepository.existsById(partidaId)) {
+            throw new PartidaNaoEncontradaException(partidaId);
+        }
+        partidaRepository.deleteById(partidaId);
     }
 
     @Override
     public Partida listarPorId(UUID partidaId) {
-        return null;
+        return partidaRepository.findById(partidaId).orElseThrow(
+                () -> new PartidaNaoEncontradaException(partidaId)
+        );
     }
 
     @Override
     public Page<Partida> listarPartidas(String nomeClube, String nomeEstadio, Pageable pageable) {
-        return null;
+        Specification<Partida> spec = (root, query, cb) -> (cb.conjunction());
+
+        if (nomeClube != null && !nomeClube.isBlank()) {
+            spec = spec.and(PartidaSpecification.nomeClubeContains(nomeClube));
+        }
+        if (nomeEstadio != null && !nomeEstadio.isBlank()) {
+            spec = spec.and(PartidaSpecification.nomeEstadioContains(nomeEstadio));
+        }
+
+        return partidaRepository.findAll(spec, pageable);
     }
 
     private record ClubesValidados(Clube clubeCasa, Clube clubeVisitante) {}

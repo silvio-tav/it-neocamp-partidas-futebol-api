@@ -53,4 +53,9 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleEstadioOcupado(EstadioOcupadoException ex){
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
     }
+
+    @ExceptionHandler(PartidaNaoEncontradaException.class)
+    public ProblemDetail handlePartidaNaoEncontrada(PartidaNaoEncontradaException ex){
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
 }

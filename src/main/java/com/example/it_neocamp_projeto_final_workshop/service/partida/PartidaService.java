@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import java.util.UUID;
 
 public interface PartidaService {
-    Partida cadastrarPartida(PartidaPostRequest partidaPostRequest) throws BadRequestException;
-    Partida atualizarPartida(PartidaPutRequest partidaPutRequest);
+    Partida cadastrarPartida(PartidaPostRequest partidaPostRequest);
+    Partida atualizarPartida(UUID partidaId, PartidaPutRequest partidaPutRequest);
     void deletarPartida(UUID partidaId);
     Partida listarPorId(UUID partidaId);
     Page<Partida> listarPartidas(String nomeClube, String nomeEstadio, Pageable pageable);

@@ -1,5 +1,6 @@
 package com.example.it_neocamp_projeto_final_workshop.dto.partida;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
@@ -14,14 +15,27 @@ import java.util.UUID;
 @Setter
 @Builder
 @AllArgsConstructor
+@Schema(description = "Dados para atualização parcial de uma partida. Apenas os campos enviados serão atualizados.")
 public class PartidaPutRequest {
+
+    @Schema(description = "ID do clube mandante", example = "550e8400-e29b-41d4-a716-446655440000")
     private UUID clubeCasaId;
+
+    @Schema(description = "ID do clube visitante", example = "660e8400-e29b-41d4-a716-446655440001")
     private UUID clubeVisitanteId;
+
+    @Schema(description = "ID do estádio onde a partida ocorre", example = "770e8400-e29b-41d4-a716-446655440002")
     private UUID estadioId;
+
     @PastOrPresent
+    @Schema(description = "Data e hora da partida (hoje ou data passada)", example = "2024-06-01T16:00:00")
     private LocalDateTime dataHoraPartida;
+
     @Min(0)
+    @Schema(description = "Quantidade de gols do clube mandante", example = "2", minimum = "0")
     private Integer golsCasa;
+
     @Min(0)
+    @Schema(description = "Quantidade de gols do clube visitante", example = "1", minimum = "0")
     private Integer golsVisitante;
 }

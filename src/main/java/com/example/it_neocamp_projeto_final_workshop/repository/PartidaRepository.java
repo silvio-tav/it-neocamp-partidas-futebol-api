@@ -2,6 +2,7 @@ package com.example.it_neocamp_projeto_final_workshop.repository;
 
 import com.example.it_neocamp_projeto_final_workshop.model.Partida;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Repository
-public interface PartidaRepository extends JpaRepository<Partida, UUID> {
+public interface PartidaRepository extends JpaRepository<Partida, UUID>, JpaSpecificationExecutor<Partida> {
 
     @Query("""
             SELECT COUNT(p) > 0 FROM Partida p

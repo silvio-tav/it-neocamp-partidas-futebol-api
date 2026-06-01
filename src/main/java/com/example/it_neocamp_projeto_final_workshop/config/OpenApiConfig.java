@@ -14,12 +14,16 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("API partidas de Futebol")
-                        .description("API de partidas de futebol," +
-                                " para manusear dados de clubes, de partidas e de estádios")
+                        .title("API de Partidas de Futebol")
+                        .description("API REST para gerenciamento de partidas de futebol brasileiro. " +
+                                "Permite cadastrar e consultar clubes, estádios e partidas, " +
+                                "com validações de conflito de horário, disponibilidade de estádio e situação dos clubes.")
                         .version("1.0.0")
                         .contact(new Contact()
                                 .name("IT Neocamp")
-                                .email("silvio.tavares@mercadolivre.com")));
+                                .email("silvio.tavares@mercadolivre.com"))
+                        .license(new License()
+                                .name("MIT License")
+                                .url("https://opensource.org/licenses/MIT")));
     }
 }
