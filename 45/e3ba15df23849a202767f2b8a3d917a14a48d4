@@ -1,0 +1,27 @@
+src/main/resources/data.sql
+  s_272f008e5dc84c::t_cd20d72afde5bc 1-49
+src/main/resources/application.yaml
+  s_272f008e5dc84c::t_8e3bc89415cb9d 26-33
+  s_272f008e5dc84c::t_8d0b9fa1dcb256 21-25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "45e3ba15df23849a202767f2b8a3d917a14a48d4",
+  "prompts": {},
+  "humans": {
+    "h_d680948365c6ad": {
+      "author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  },
+  "sessions": {
+    "s_272f008e5dc84c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "06800641-f488-4863-9880-cd2e5167bfc1",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
