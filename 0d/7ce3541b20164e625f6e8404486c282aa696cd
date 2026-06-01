@@ -1,0 +1,59 @@
+src/main/java/com/example/it_neocamp_projeto_final_workshop/repository/PartidaRepository.java
+  h_d680948365c6ad 5,14
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/partida/PartidaResponse.java
+  s_272f008e5dc84c::t_ae53ac52a7fa80 1-37
+src/main/java/com/example/it_neocamp_projeto_final_workshop/mapper/PartidaMapper.java
+  s_272f008e5dc84c::t_c51c5b90b5e116 1-19
+src/main/java/com/example/it_neocamp_projeto_final_workshop/controller/EstadioController.java
+  s_272f008e5dc84c::t_1e5dd4f495159c 33-38
+  s_272f008e5dc84c::t_cc03b937af2cdb 68-71,73-74
+  s_272f008e5dc84c::t_7a6b75be994dbf 82-86,88-89
+  s_272f008e5dc84c::t_26508523941905 95-102
+  s_272f008e5dc84c::t_8d409276b885d3 50-56,58-60
+  s_272f008e5dc84c::t_b9540dfc7411e5 7-11,24
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/estadio/EstadioRequest.java
+  s_272f008e5dc84c::t_4ba889755bcbd4 3,15,17,20
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/estadio/EstadioResponse.java
+  s_272f008e5dc84c::t_deaea521972bac 3,11,13-14,16-17
+src/main/java/com/example/it_neocamp_projeto_final_workshop/exception/PartidaNaoEncontradaException.java
+  s_272f008e5dc84c::t_64f61f4cddc853 1-9
+src/main/java/com/example/it_neocamp_projeto_final_workshop/handler/GlobalExceptionHandler.java
+  s_272f008e5dc84c::t_d3b3e9ca3a4214 56-60
+src/main/java/com/example/it_neocamp_projeto_final_workshop/specification/PartidaSpecification.java
+  h_d680948365c6ad 1-24
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/partida/PartidaPutRequest.java
+  s_272f008e5dc84c::t_de5be1f2c935ca 3,18,20-21,23-24,26-27,29,31,33,35,37,39
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/partida/PartidaService.java
+  h_d680948365c6ad 13-14
+src/main/java/com/example/it_neocamp_projeto_final_workshop/config/OpenApiConfig.java
+  s_272f008e5dc84c::t_645210c531200a 17-20,24-27
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/partida/PartidaServiceImpl.java
+  s_272f008e5dc84c::t_f3421bb574c47a 58-81
+  h_d680948365c6ad 12,15,53-57,88-91,96-98,103-112
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/partida/PartidaPostRequest.java
+  s_272f008e5dc84c::t_71b996261ed327 3-4,19,21,23,25,27,29,31,33,36,38-39,41,43-44,46
+src/main/java/com/example/it_neocamp_projeto_final_workshop/controller/PartidaController.java
+  s_272f008e5dc84c::t_88250dc0dbe7fd 1-48,50-126
+  h_d680948365c6ad 49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "0d7ce3541b20164e625f6e8404486c282aa696cd",
+  "prompts": {},
+  "humans": {
+    "h_d680948365c6ad": {
+      "author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  },
+  "sessions": {
+    "s_272f008e5dc84c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "06800641-f488-4863-9880-cd2e5167bfc1",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
