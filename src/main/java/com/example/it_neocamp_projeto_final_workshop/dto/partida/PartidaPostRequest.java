@@ -32,7 +32,7 @@ public class PartidaPostRequest {
     private UUID estadioId;
 
     @NotNull
-    @PastOrPresent
+    @PastOrPresent(message = "deve ser uma data no passado ou no presente")
     @Schema(description = "Data e hora da partida (hoje ou data passada)", example = "2024-06-01T16:00:00")
     private LocalDateTime dataHoraPartida;
 

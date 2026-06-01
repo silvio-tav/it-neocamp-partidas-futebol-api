@@ -46,6 +46,8 @@ public class PartidaServiceImpl implements PartidaService{
         partida.setClubeVisitante(clubes.clubeVisitante());
         partida.setEstadio(estadio);
         partida.setDataHoraPartida(partidaPostRequest.getDataHoraPartida());
+        partida.setGolsCasa(partidaPostRequest.getGolsCasa());
+        partida.setGolsVisitante(partidaPostRequest.getGolsVisitante());
         return partidaRepository.save(partida);
     }
 
