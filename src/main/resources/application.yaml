@@ -2,14 +2,6 @@ spring:
   application:
     name: it-neocamp-projeto-final-workshop
 
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html        # URL da interface visual
-    tags-sorter: alpha             # ordena tags em ordem alfabética
-    operations-sorter: alpha       # ordena operações em ordem alfabética
-  api-docs:
-    path: /v3/api-docs             # URL do JSON gerado pelo OpenAPI
-
   datasource:
     url: jdbc:h2:mem:futeboldb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
@@ -26,3 +18,16 @@ springdoc:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html        # URL da interface visual
+    tags-sorter: alpha             # ordena tags em ordem alfabética
+    operations-sorter: alpha       # ordena operações em ordem alfabética
+  api-docs:
+    path: /v3/api-docs             # URL do JSON gerado pelo OpenAPI
