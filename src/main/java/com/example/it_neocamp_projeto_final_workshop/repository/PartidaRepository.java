@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -30,4 +31,10 @@ public interface PartidaRepository extends JpaRepository<Partida, UUID>, JpaSpec
     boolean existePartidaNoEstadioNoDia(@Param("estadioId") UUID estadioId,
                                         @Param("inicioDia") LocalDateTime inicioDia,
                                         @Param("fimDia") LocalDateTime fimDia);
+
+    @Query("""
+    SELECT p FROM Partida p
+    WHERE p.clubeCasa.id = :clubeId OR p.clubeVisitante.id = :clubeId
+    """)
+    List<Partida> findAllByClube(@Param("clubeId") UUID clubeId);
 }

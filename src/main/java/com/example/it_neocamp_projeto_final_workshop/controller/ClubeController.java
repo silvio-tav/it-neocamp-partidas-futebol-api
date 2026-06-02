@@ -3,6 +3,7 @@ package com.example.it_neocamp_projeto_final_workshop.controller;
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePostRequest;
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePutRequest;
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubeResponse;
+import com.example.it_neocamp_projeto_final_workshop.dto.clube.RetrospectoResponse;
 import com.example.it_neocamp_projeto_final_workshop.enums.EstadoBrasileiro;
 import com.example.it_neocamp_projeto_final_workshop.mapper.ClubeMapper;
 import com.example.it_neocamp_projeto_final_workshop.model.Clube;
@@ -118,5 +119,21 @@ public class ClubeController {
         Page<ClubeResponse> page = clubeService.listarClubes(nome, estado, ativo, pageable)
                 .map(ClubeMapper::toResponse);
         return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/{clubeId}/retrospecto")
+    @Operation(
+            summary = "Retrospecto geral do clube",
+            description = "Retorna o retrospecto geral de um clube: total de jogos, vitórias, empates, derrotas, gols feitos e gols sofridos em todas as partidas registradas. Caso o clube não possua nenhuma partida, todos os campos são retornados com valor zero."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Retrospecto retornado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Clube não encontrado")
+    })
+    public ResponseEntity<RetrospectoResponse> retrospectoPorClube(
+            @Parameter(description = "ID do clube cujo retrospecto será consultado", example = "b1b2c3d4-0001-0000-0000-000000000001")
+            @PathVariable UUID clubeId
+    ){
+        return ResponseEntity.ok(clubeService.retrospectoClube(clubeId));
     }
 }
