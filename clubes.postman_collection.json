@@ -228,6 +228,42 @@
               "body": "{\n  \"status\": 404,\n  \"detail\": \"Clube com o id 550e8400-e29b-41d4-a716-446655440000 não encontrado\"\n}"
             }
           ]
+        },
+        {
+          "name": "Retrospecto geral do clube",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clubes/550e8400-e29b-41d4-a716-446655440000/retrospecto",
+              "host": ["{{baseUrl}}"],
+              "path": ["clubes", "550e8400-e29b-41d4-a716-446655440000", "retrospecto"]
+            },
+            "description": "Retorna o retrospecto geral de um clube: total de jogos, vitórias, empates, derrotas, gols feitos e gols sofridos em todas as partidas registradas.\n\n**Respostas esperadas:**\n- `200 OK` — retrospecto retornado com sucesso (todos os campos zerados se o clube não tiver partidas)\n- `404 Not Found` — clube não encontrado"
+          },
+          "response": [
+            {
+              "name": "200 - Retrospecto com partidas",
+              "status": "OK",
+              "code": 200,
+              "header": [{"key": "Content-Type", "value": "application/json"}],
+              "body": "{\n  \"totalJogos\": 3,\n  \"vitorias\": 2,\n  \"empates\": 0,\n  \"derrotas\": 1,\n  \"golsFeitos\": 7,\n  \"golsSofridos\": 4\n}"
+            },
+            {
+              "name": "200 - Retrospecto zerado (sem partidas)",
+              "status": "OK",
+              "code": 200,
+              "header": [{"key": "Content-Type", "value": "application/json"}],
+              "body": "{\n  \"totalJogos\": 0,\n  \"vitorias\": 0,\n  \"empates\": 0,\n  \"derrotas\": 0,\n  \"golsFeitos\": 0,\n  \"golsSofridos\": 0\n}"
+            },
+            {
+              "name": "404 - Clube não encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{"key": "Content-Type", "value": "application/json"}],
+              "body": "{\n  \"status\": 404,\n  \"detail\": \"Clube com o id 550e8400-e29b-41d4-a716-446655440000 não encontrado\"\n}"
+            }
+          ]
         }
       ]
     },
