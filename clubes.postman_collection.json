@@ -230,6 +230,42 @@
           ]
         },
         {
+          "name": "Retrospecto do clube contra adversários",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto/adversarios",
+              "host": ["{{baseUrl}}"],
+              "path": ["clubes", "b1b2c3d4-0001-0000-0000-000000000001", "retrospecto", "adversarios"]
+            },
+            "description": "Retorna o retrospecto do clube separado por adversário: total de jogos, vitórias, empates, derrotas, gols feitos e gols sofridos contra cada time. Retorna lista vazia se o clube não tiver partidas registradas.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)\n- `404 Not Found` — clube não encontrado"
+          },
+          "response": [
+            {
+              "name": "200 - Retrospecto por adversário",
+              "status": "OK",
+              "code": 200,
+              "header": [{"key": "Content-Type", "value": "application/json"}],
+              "body": "[\n  {\n    \"adversario\": {\n      \"id\": \"b1b2c3d4-0002-0000-0000-000000000002\",\n      \"nome\": \"Fluminense\",\n      \"siglaEstado\": \"RJ\",\n      \"dataCriacao\": \"1902-07-21\",\n      \"ativo\": true\n    },\n    \"totalJogos\": 1,\n    \"vitorias\": 1,\n    \"empates\": 0,\n    \"derrotas\": 0,\n    \"golsFeitos\": 2,\n    \"golsSofridos\": 1\n  },\n  {\n    \"adversario\": {\n      \"id\": \"b1b2c3d4-0005-0000-0000-000000000005\",\n      \"nome\": \"Atlético Mineiro\",\n      \"siglaEstado\": \"MG\",\n      \"dataCriacao\": \"1908-03-25\",\n      \"ativo\": true\n    },\n    \"totalJogos\": 1,\n    \"vitorias\": 1,\n    \"empates\": 0,\n    \"derrotas\": 0,\n    \"golsFeitos\": 3,\n    \"golsSofridos\": 0\n  }\n]"
+            },
+            {
+              "name": "200 - Lista vazia (sem partidas)",
+              "status": "OK",
+              "code": 200,
+              "header": [{"key": "Content-Type", "value": "application/json"}],
+              "body": "[]"
+            },
+            {
+              "name": "404 - Clube não encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{"key": "Content-Type", "value": "application/json"}],
+              "body": "{\n  \"status\": 404,\n  \"detail\": \"Clube com o id b1b2c3d4-0001-0000-0000-000000000001 não encontrado\"\n}"
+            }
+          ]
+        },
+        {
           "name": "Retrospecto geral do clube",
           "request": {
             "method": "GET",
