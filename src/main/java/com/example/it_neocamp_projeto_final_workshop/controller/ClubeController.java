@@ -1,9 +1,6 @@
 package com.example.it_neocamp_projeto_final_workshop.controller;
 
-import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePostRequest;
-import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePutRequest;
-import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubeResponse;
-import com.example.it_neocamp_projeto_final_workshop.dto.clube.RetrospectoResponse;
+import com.example.it_neocamp_projeto_final_workshop.dto.clube.*;
 import com.example.it_neocamp_projeto_final_workshop.enums.EstadoBrasileiro;
 import com.example.it_neocamp_projeto_final_workshop.mapper.ClubeMapper;
 import com.example.it_neocamp_projeto_final_workshop.model.Clube;
@@ -21,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -135,5 +133,12 @@ public class ClubeController {
             @PathVariable UUID clubeId
     ){
         return ResponseEntity.ok(clubeService.retrospectoClube(clubeId));
+    }
+
+    @GetMapping("/clubes/{clubeId}/retrospecto/adversarios")
+    public ResponseEntity<List<RetrospectoAdversarioProjection>> retrospectoAdversarios(
+            @PathVariable UUID clubeId
+    ){
+        return ResponseEntity.ok(clubeService.retrospectoAdversarios(clubeId));
     }
 }

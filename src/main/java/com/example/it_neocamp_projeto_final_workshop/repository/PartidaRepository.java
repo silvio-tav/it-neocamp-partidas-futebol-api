@@ -33,7 +33,8 @@ public interface PartidaRepository extends JpaRepository<Partida, UUID>, JpaSpec
                                         @Param("fimDia") LocalDateTime fimDia);
 
     @Query("""
-    SELECT p FROM Partida p
+
+            SELECT p FROM Partida p
     WHERE p.clubeCasa.id = :clubeId OR p.clubeVisitante.id = :clubeId
     """)
     List<Partida> findAllByClube(@Param("clubeId") UUID clubeId);

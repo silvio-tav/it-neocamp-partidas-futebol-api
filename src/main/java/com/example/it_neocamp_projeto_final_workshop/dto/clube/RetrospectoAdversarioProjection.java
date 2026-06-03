@@ -7,7 +7,8 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class RetrospectoResponse {
+public class RetrospectoAdversarioProjection {
+    private ClubeResponse adversario;
     private int totalJogos;
     private int vitorias;
     private int empates;

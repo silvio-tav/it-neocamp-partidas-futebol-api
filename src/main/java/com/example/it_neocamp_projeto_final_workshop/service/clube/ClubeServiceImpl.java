@@ -2,6 +2,7 @@ package com.example.it_neocamp_projeto_final_workshop.service.clube;
 
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePostRequest;
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePutRequest;
+import com.example.it_neocamp_projeto_final_workshop.dto.clube.RetrospectoAdversarioProjection;
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.RetrospectoResponse;
 import com.example.it_neocamp_projeto_final_workshop.enums.EstadoBrasileiro;
 import com.example.it_neocamp_projeto_final_workshop.exception.ClubeJaExisteException;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -106,11 +108,11 @@ public class ClubeServiceImpl implements ClubeService {
         for (Partida partida : partidas) {
             boolean ehCasa = partida.getClubeCasa().getId().equals(clubeId);
 
-            int golsDoClube      = ehCasa ? partida.getGolsCasa()      : partida.getGolsVisitante();
+            int golsDoClube = ehCasa ? partida.getGolsCasa() : partida.getGolsVisitante();
             int golsDoAdversario = ehCasa ? partida.getGolsVisitante() : partida.getGolsCasa();
 
-            golsFeitos    += golsDoClube;
-            golsSofridos  += golsDoAdversario;
+            golsFeitos += golsDoClube;
+            golsSofridos += golsDoAdversario;
 
             if (golsDoClube > golsDoAdversario) {
                 vitorias++;
@@ -129,5 +131,66 @@ public class ClubeServiceImpl implements ClubeService {
                 .golsFeitos(golsFeitos)
                 .golsSofridos(golsSofridos)
                 .build();
+    }
+
+    @Override
+    public List<RetrospectoAdversarioProjection> retrospectoAdversarios(UUID clubeId) {
+        if (!clubeRepository.existsById(clubeId)) {
+            throw new ClubeNaoEncontradoException(clubeId);
+        }
+        List<Partida> partidas = partidaRepository.findAllByClube(clubeId);
+
+        List<RetrospectoAdversarioProjection> retrospectoAdversarioProjections = new ArrayList<>();
+        if (partidas.isEmpty()) {
+            return retrospectoAdversarioProjections;
+        }
+
+        for (Partida partida : partidas) {
+            boolean ehClubeCasa = partida.getClubeCasa().getId().equals(clubeId);
+            Clube clubeAdversario = ehClubeCasa ? partida.getClubeVisitante() : partida.getClubeCasa();
+            boolean jaAdicionado = false;
+
+            for (RetrospectoAdversarioProjection retrospectoAdversarioProjection: retrospectoAdversarioProjections) {
+                if (retrospectoAdversarioProjection.getAdversario().getId().equals(clubeAdversario.getId())) {
+                    jaAdicionado = true;
+                    break;
+                }
+            }
+
+            if (!jaAdicionado) {
+                int totalJogos = 0, vitorias = 0, empates = 0, derrotas = 0, golsFeitos = 0, golsSofridos = 0;
+                for (Partida partidasDosClubes : partidas) {
+                    if (
+                            partidasDosClubes.getClubeCasa().getId().equals(clubeAdversario.getId()) ||
+                                    partidasDosClubes.getClubeVisitante().getId().equals(clubeAdversario.getId())
+                    ) {
+                        boolean ehCasaNaPartidaInterna = partidasDosClubes.getClubeCasa().getId().equals(clubeId);
+                        int golsDoClube      = ehCasaNaPartidaInterna ? partidasDosClubes.getGolsCasa()      : partidasDosClubes.getGolsVisitante();
+                        int golsDoAdversario = ehCasaNaPartidaInterna ? partidasDosClubes.getGolsVisitante() : partidasDosClubes.getGolsCasa();
+
+                        golsFeitos += golsDoClube;
+                        golsSofridos += golsDoAdversario;
+                        totalJogos++;
+                        if (golsDoClube > golsDoAdversario) {
+                            vitorias++;
+                        } else if (golsDoClube == golsDoAdversario) {
+                            empates++;
+                        } else {
+                            derrotas++;
+                        }
+                    }
+                }
+                retrospectoAdversarioProjections.add(RetrospectoAdversarioProjection.builder()
+                                .adversario(ClubeMapper.toResponse(clubeAdversario))
+                                .empates(empates)
+                                .vitorias(vitorias)
+                                .derrotas(derrotas)
+                                .golsFeitos(golsFeitos)
+                                .totalJogos(totalJogos)
+                                .golsSofridos(golsSofridos)
+                        .build());
+            }
+        }
+        return retrospectoAdversarioProjections;
     }
 }
