@@ -136,7 +136,16 @@ public class ClubeController {
     }
 
     @GetMapping("/{clubeId}/retrospecto/adversarios")
+    @Operation(
+            summary = "Retrospecto do clube contra adversários",
+            description = "Retorna o retrospecto do clube separado por adversário: total de jogos, vitórias, empates, derrotas, gols feitos e gols sofridos contra cada time específico. Retorna lista vazia caso o clube não possua nenhuma partida registrada."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Retrospecto por adversário retornado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Clube não encontrado")
+    })
     public ResponseEntity<List<RetrospectoAdversarioProjection>> retrospectoAdversarios(
+            @Parameter(description = "ID do clube cujo retrospecto contra adversários será consultado", example = "b1b2c3d4-0001-0000-0000-000000000001")
             @PathVariable UUID clubeId
     ){
         return ResponseEntity.ok(clubeService.retrospectoAdversarios(clubeId));
