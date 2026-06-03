@@ -135,7 +135,7 @@ public class ClubeController {
         return ResponseEntity.ok(clubeService.retrospectoClube(clubeId));
     }
 
-    @GetMapping("/clubes/{clubeId}/retrospecto/adversarios")
+    @GetMapping("/{clubeId}/retrospecto/adversarios")
     public ResponseEntity<List<RetrospectoAdversarioProjection>> retrospectoAdversarios(
             @PathVariable UUID clubeId
     ){
