@@ -157,17 +157,35 @@ public class ClubeController {
     }
 
     @GetMapping("/{clubeId}/retrospecto/adversarios/{adversarioId}")
+    @Operation(
+            summary = "Confrontos diretos entre dois clubes",
+            description = "Retorna todas as partidas disputadas entre dois clubes e o retrospecto do clube informado neste confronto: total de vitórias, empates, derrotas, gols feitos e gols sofridos. Caso não existam confrontos, retorna lista de partidas vazia com retrospecto zerado."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Confrontos retornados com sucesso (pode ter lista de partidas vazia)"),
+            @ApiResponse(responseCode = "404", description = "Um dos clubes não encontrado")
+    })
     public ResponseEntity<AdversarioPartidasRetrospecto> adversarioPartidasRetrospecto(
+            @Parameter(description = "ID do clube principal", example = "b1b2c3d4-0001-0000-0000-000000000001")
             @PathVariable UUID clubeId,
+            @Parameter(description = "ID do clube adversário", example = "b1b2c3d4-0002-0000-0000-000000000002")
             @PathVariable UUID adversarioId
     ){
         return ResponseEntity.ok(clubeService.retrospectoPartidasAdversario(clubeId, adversarioId));
     }
 
     @GetMapping("/ranking")
+    @Operation(
+            summary = "Ranking de clubes",
+            description = "Retorna a lista de clubes ordenada pelo critério informado: PONTOS (vitória=3, empate=1), GOLS (total de gols feitos), VITORIAS ou JOGOS. Clubes sem pontuação no critério escolhido são excluídos do resultado."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Ranking retornado com sucesso (pode ser vazio)")
+    })
     public ResponseEntity<List<RankingClubes>> rankingClubes(
+            @Parameter(description = "Critério de ordenação do ranking", example = "PONTOS")
             @RequestParam RankingTipo tipo
-            ){
+    ){
         return ResponseEntity.ok(clubeService.ranking(tipo));
     }
 }
