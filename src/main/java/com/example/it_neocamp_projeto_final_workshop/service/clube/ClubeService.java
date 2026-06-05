@@ -2,9 +2,12 @@ package com.example.it_neocamp_projeto_final_workshop.service.clube;
 
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePostRequest;
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePutRequest;
-import com.example.it_neocamp_projeto_final_workshop.dto.clube.RetrospectoAdversarioProjection;
-import com.example.it_neocamp_projeto_final_workshop.dto.clube.RetrospectoResponse;
+import com.example.it_neocamp_projeto_final_workshop.dto.ranking.RankingClubes;
+import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.AdversarioPartidasRetrospecto;
+import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.AdversarioRetrospecto;
+import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.RetrospectoResponse;
 import com.example.it_neocamp_projeto_final_workshop.enums.EstadoBrasileiro;
+import com.example.it_neocamp_projeto_final_workshop.enums.RankingTipo;
 import com.example.it_neocamp_projeto_final_workshop.model.Clube;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,5 +28,9 @@ public interface ClubeService {
 
     RetrospectoResponse retrospectoClube(UUID clubeId);
 
-    List<RetrospectoAdversarioProjection> retrospectoAdversarios(UUID clubeId);
+    List<AdversarioRetrospecto> retrospectoAdversarios(UUID clubeId);
+
+    AdversarioPartidasRetrospecto retrospectoPartidasAdversario(UUID clubeId, UUID adversarioId);
+
+    List<RankingClubes> ranking(RankingTipo rankingTipo);
 }

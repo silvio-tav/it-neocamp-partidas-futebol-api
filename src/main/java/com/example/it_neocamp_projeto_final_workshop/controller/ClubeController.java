@@ -1,7 +1,12 @@
 package com.example.it_neocamp_projeto_final_workshop.controller;
 
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.*;
+import com.example.it_neocamp_projeto_final_workshop.dto.ranking.RankingClubes;
+import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.AdversarioPartidasRetrospecto;
+import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.AdversarioRetrospecto;
+import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.RetrospectoResponse;
 import com.example.it_neocamp_projeto_final_workshop.enums.EstadoBrasileiro;
+import com.example.it_neocamp_projeto_final_workshop.enums.RankingTipo;
 import com.example.it_neocamp_projeto_final_workshop.mapper.ClubeMapper;
 import com.example.it_neocamp_projeto_final_workshop.model.Clube;
 import com.example.it_neocamp_projeto_final_workshop.service.clube.ClubeService;
@@ -144,10 +149,25 @@ public class ClubeController {
             @ApiResponse(responseCode = "200", description = "Retrospecto por adversário retornado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Clube não encontrado")
     })
-    public ResponseEntity<List<RetrospectoAdversarioProjection>> retrospectoAdversarios(
+    public ResponseEntity<List<AdversarioRetrospecto>> retrospectoAdversarios(
             @Parameter(description = "ID do clube cujo retrospecto contra adversários será consultado", example = "b1b2c3d4-0001-0000-0000-000000000001")
             @PathVariable UUID clubeId
     ){
         return ResponseEntity.ok(clubeService.retrospectoAdversarios(clubeId));
+    }
+
+    @GetMapping("/{clubeId}/retrospecto/adversarios/{adversarioId}")
+    public ResponseEntity<AdversarioPartidasRetrospecto> adversarioPartidasRetrospecto(
+            @PathVariable UUID clubeId,
+            @PathVariable UUID adversarioId
+    ){
+        return ResponseEntity.ok(clubeService.retrospectoPartidasAdversario(clubeId, adversarioId));
+    }
+
+    @GetMapping("/ranking")
+    public ResponseEntity<List<RankingClubes>> rankingClubes(
+            @RequestParam RankingTipo tipo
+            ){
+        return ResponseEntity.ok(clubeService.ranking(tipo));
     }
 }

@@ -1,5 +1,6 @@
 package com.example.it_neocamp_projeto_final_workshop.repository;
 
+import com.example.it_neocamp_projeto_final_workshop.dto.ranking.RankingClubes;
 import com.example.it_neocamp_projeto_final_workshop.model.Partida;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -33,9 +34,58 @@ public interface PartidaRepository extends JpaRepository<Partida, UUID>, JpaSpec
                                         @Param("fimDia") LocalDateTime fimDia);
 
     @Query("""
-
             SELECT p FROM Partida p
-    WHERE p.clubeCasa.id = :clubeId OR p.clubeVisitante.id = :clubeId
+            WHERE p.clubeCasa.id = :clubeId OR p.clubeVisitante.id = :clubeId
     """)
     List<Partida> findAllByClube(@Param("clubeId") UUID clubeId);
+
+    @Query("""
+   SELECT p
+   FROM Partida p
+   WHERE (p.clubeCasa.id = :clubeId1 AND p.clubeVisitante.id = :clubeId2)
+      OR (p.clubeCasa.id = :clubeId2 AND p.clubeVisitante.id = :clubeId1)
+""")
+    List<Partida> findPartidasEntreClubes(@Param("clubeId1") UUID clubeId1,
+                                          @Param("clubeId2") UUID clubeId2);
+
+    @Query("""
+        select new com.example.it_neocamp_projeto_final_workshop.dto.ranking.RankingClubes(
+            c.id,
+            c.nome,
+            (
+              coalesce(sum(case
+                when p.clubeCasa = c and p.golsCasa > p.golsVisitante then 3
+                when p.clubeVisitante = c and p.golsVisitante > p.golsCasa then 3
+                when (p.clubeCasa = c or p.clubeVisitante = c) and p.golsCasa = p.golsVisitante then 1
+                else 0
+              end), 0)
+            ),
+            (
+              coalesce(sum(case
+                when p.clubeCasa = c then p.golsCasa
+                when p.clubeVisitante = c then p.golsVisitante
+                else 0
+              end), 0)
+            ),
+            (
+              coalesce(sum(case
+                when p.clubeCasa = c and p.golsCasa > p.golsVisitante then 1
+                when p.clubeVisitante = c and p.golsVisitante > p.golsCasa then 1
+                else 0
+              end), 0)
+            ),
+            (
+              coalesce(sum(case
+                when (p.clubeCasa = c or p.clubeVisitante = c) then 1
+                else 0
+              end), 0)
+            )
+        )
+        from Clube c
+        left join Partida p
+          on p.clubeCasa = c or p.clubeVisitante = c
+        where c.ativo = true
+        group by c.id, c.nome
+    """)
+    List<RankingClubes> calcularRankingBruto();
 }
