@@ -1,0 +1,42 @@
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/restrospecto/AdversarioPartidasRetrospecto.java
+  h_d680948365c6ad 1-21
+src/main/java/com/example/it_neocamp_projeto_final_workshop/controller/ClubeController.java
+  h_d680948365c6ad 4-7,9,152,158,160-172
+  s_db1bb5185c1c8d::t_66bf802af0538b 159
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/restrospecto/AdversarioRetrospecto.java
+  h_d680948365c6ad 1-19
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/restrospecto/RetrospectoResponse.java
+  h_d680948365c6ad 1-17
+src/main/java/com/example/it_neocamp_projeto_final_workshop/enums/RankingTipo.java
+  h_d680948365c6ad 1-5
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/clube/ClubeService.java
+  h_d680948365c6ad 5-8,10,31-35
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/clube/ClubeServiceImpl.java
+  h_d680948365c6ad 5-8,10,14,26,142,148,150,158-159,188,199-209,211-288
+  s_db1bb5185c1c8d::t_eef6617c17e62c 210
+src/main/java/com/example/it_neocamp_projeto_final_workshop/repository/PartidaRepository.java
+  h_d680948365c6ad 3,41-90
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/ranking/RankingClubes.java
+  h_d680948365c6ad 1-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "4d63753764c4bdcca643465edf047e5797523e95",
+  "prompts": {},
+  "humans": {
+    "h_d680948365c6ad": {
+      "author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  },
+  "sessions": {
+    "s_db1bb5185c1c8d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "be4a5640-b428-41ec-847d-20022ea61d93",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
