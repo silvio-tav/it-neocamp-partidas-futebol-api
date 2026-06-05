@@ -16,7 +16,7 @@ import java.util.UUID;
 public class Clube {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID clubeId;
     private String nome;
     @Enumerated(EnumType.STRING)
     private EstadoBrasileiro siglaEstado;

@@ -15,7 +15,7 @@ import java.util.UUID;
 public class PartidaResponse {
 
     @Schema(description = "ID da partida", example = "550e8400-e29b-41d4-a716-446655440000")
-    private UUID id;
+    private UUID partidaId;
 
     @Schema(description = "Clube mandante")
     private ClubeResponse clubeCasa;

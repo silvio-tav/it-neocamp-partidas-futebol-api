@@ -111,7 +111,7 @@ public class ClubeServiceImpl implements ClubeService {
         int vitorias = 0, empates = 0, derrotas = 0, golsFeitos = 0, golsSofridos = 0;
 
         for (Partida partida : partidas) {
-            boolean ehCasa = partida.getClubeCasa().getId().equals(clubeId);
+            boolean ehCasa = partida.getClubeCasa().getClubeId().equals(clubeId);
 
             int golsDoClube = ehCasa ? partida.getGolsCasa() : partida.getGolsVisitante();
             int golsDoAdversario = ehCasa ? partida.getGolsVisitante() : partida.getGolsCasa();
@@ -151,12 +151,12 @@ public class ClubeServiceImpl implements ClubeService {
         }
 
         for (Partida partida : partidas) {
-            boolean ehClubeCasa = partida.getClubeCasa().getId().equals(clubeId);
+            boolean ehClubeCasa = partida.getClubeCasa().getClubeId().equals(clubeId);
             Clube clubeAdversario = ehClubeCasa ? partida.getClubeVisitante() : partida.getClubeCasa();
             boolean jaAdicionado = false;
 
             for (AdversarioRetrospecto adversarioRetrospecto : adversarioRetrospectos) {
-                if (adversarioRetrospecto.getAdversario().getId().equals(clubeAdversario.getId())) {
+                if (adversarioRetrospecto.getAdversario().getClubeId().equals(clubeAdversario.getClubeId())) {
                     jaAdicionado = true;
                     break;
                 }
@@ -166,10 +166,10 @@ public class ClubeServiceImpl implements ClubeService {
                 int totalJogos = 0, vitorias = 0, empates = 0, derrotas = 0, golsFeitos = 0, golsSofridos = 0;
                 for (Partida partidasDosClubes : partidas) {
                     if (
-                            partidasDosClubes.getClubeCasa().getId().equals(clubeAdversario.getId()) ||
-                                    partidasDosClubes.getClubeVisitante().getId().equals(clubeAdversario.getId())
+                            partidasDosClubes.getClubeCasa().getClubeId().equals(clubeAdversario.getClubeId()) ||
+                                    partidasDosClubes.getClubeVisitante().getClubeId().equals(clubeAdversario.getClubeId())
                     ) {
-                        boolean ehCasaNaPartidaInterna = partidasDosClubes.getClubeCasa().getId().equals(clubeId);
+                        boolean ehCasaNaPartidaInterna = partidasDosClubes.getClubeCasa().getClubeId().equals(clubeId);
                         int golsDoClube      = ehCasaNaPartidaInterna ? partidasDosClubes.getGolsCasa()      : partidasDosClubes.getGolsVisitante();
                         int golsDoAdversario = ehCasaNaPartidaInterna ? partidasDosClubes.getGolsVisitante() : partidasDosClubes.getGolsCasa();
 
@@ -224,7 +224,7 @@ public class ClubeServiceImpl implements ClubeService {
         }
 
         for (Partida partida: partidasEntreClubes) {
-            boolean ehCasa = partida.getClubeCasa().getId().equals(clubeId);
+            boolean ehCasa = partida.getClubeCasa().getClubeId().equals(clubeId);
             int golsDoClube = ehCasa ? partida.getGolsCasa() : partida.getGolsVisitante();
             int golsDoAdversario = ehCasa ? partida.getGolsVisitante() : partida.getGolsCasa();
 

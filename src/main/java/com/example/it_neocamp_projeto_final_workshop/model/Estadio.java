@@ -17,6 +17,6 @@ import java.util.UUID;
 public class Estadio {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID estadioId;
     private String nome;
 }

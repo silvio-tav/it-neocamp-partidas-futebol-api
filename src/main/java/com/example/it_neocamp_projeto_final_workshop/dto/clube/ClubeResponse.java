@@ -14,7 +14,7 @@ import java.util.UUID;
 public class ClubeResponse {
 
     @Schema(description = "ID do clube cadastrado", example = "550e8400-e29b-41d4-a716-446655440000")
-    private UUID id;
+    private UUID clubeId;
 
     @Schema(description = "Nome do clube", example = "Flamengo")
     private String nome;

@@ -16,7 +16,7 @@ public class ClubeMapper {
 
     public static ClubeResponse toResponse(Clube clube) {
         return ClubeResponse.builder()
-                .id(clube.getId())
+                .clubeId(clube.getClubeId())
                 .nome(clube.getNome())
                 .siglaEstado(clube.getSiglaEstado())
                 .dataCriacao(clube.getDataCriacao())

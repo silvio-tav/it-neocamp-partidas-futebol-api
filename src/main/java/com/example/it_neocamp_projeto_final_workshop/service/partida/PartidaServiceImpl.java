@@ -37,9 +37,9 @@ public class PartidaServiceImpl implements PartidaService{
         ClubesValidados clubes = validarClubes(partidaPostRequest.getClubeCasaId(), partidaPostRequest.getClubeVisitanteId());
         Estadio estadio = validarEstadio(partidaPostRequest.getEstadioId());
         
-        validarConflitoDeHorario(clubes.clubeCasa().getId(), clubes.clubeVisitante().getId(),
+        validarConflitoDeHorario(clubes.clubeCasa().getClubeId(), clubes.clubeVisitante().getClubeId(),
                 partidaPostRequest.getDataHoraPartida());
-        validarEstadioNoDia(estadio.getId(), partidaPostRequest.getDataHoraPartida());
+        validarEstadioNoDia(estadio.getEstadioId(), partidaPostRequest.getDataHoraPartida());
 
         Partida partida = new Partida();
         partida.setClubeCasa(clubes.clubeCasa());
@@ -59,21 +59,21 @@ public class PartidaServiceImpl implements PartidaService{
 
         UUID clubeCasaId = partidaPutRequest.getClubeCasaId() != null
                 ? partidaPutRequest.getClubeCasaId()
-                : partida.getClubeCasa().getId();
+                : partida.getClubeCasa().getClubeId();
         UUID clubeVisitanteId = partidaPutRequest.getClubeVisitanteId() != null
                 ? partidaPutRequest.getClubeVisitanteId()
-                : partida.getClubeVisitante().getId();
+                : partida.getClubeVisitante().getClubeId();
         UUID estadioId = partidaPutRequest.getEstadioId() != null
                 ? partidaPutRequest.getEstadioId()
-                : partida.getEstadio().getId();
+                : partida.getEstadio().getEstadioId();
         LocalDateTime dataHora = partidaPutRequest.getDataHoraPartida() != null
                 ? partidaPutRequest.getDataHoraPartida()
                 : partida.getDataHoraPartida();
 
         ClubesValidados clubes = validarClubes(clubeCasaId, clubeVisitanteId);
         Estadio estadio = validarEstadio(estadioId);
-        validarConflitoDeHorario(clubes.clubeCasa().getId(), clubes.clubeVisitante().getId(), dataHora);
-        validarEstadioNoDia(estadio.getId(), dataHora);
+        validarConflitoDeHorario(clubes.clubeCasa().getClubeId(), clubes.clubeVisitante().getClubeId(), dataHora);
+        validarEstadioNoDia(estadio.getEstadioId(), dataHora);
 
         partida.setClubeCasa(clubes.clubeCasa());
         partida.setClubeVisitante(clubes.clubeVisitante());

@@ -7,7 +7,7 @@ public class PartidaMapper {
 
     public static PartidaResponse toResponse(Partida partida) {
         return PartidaResponse.builder()
-                .id(partida.getId())
+                .partidaId(partida.getPartidaId())
                 .clubeCasa(ClubeMapper.toResponse(partida.getClubeCasa()))
                 .clubeVisitante(ClubeMapper.toResponse(partida.getClubeVisitante()))
                 .estadio(EstadioMapper.toResponse(partida.getEstadio()))

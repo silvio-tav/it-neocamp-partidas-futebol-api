@@ -13,7 +13,7 @@ public class EstadioMapper {
 
     public static EstadioResponse toResponse(Estadio estadio){
         return EstadioResponse.builder()
-                .id(estadio.getId())
+                .estadioId(estadio.getEstadioId())
                 .nome(estadio.getNome())
                 .build();
     }

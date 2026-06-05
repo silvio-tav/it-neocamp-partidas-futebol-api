@@ -17,7 +17,7 @@ public interface PartidaRepository extends JpaRepository<Partida, UUID>, JpaSpec
 
     @Query("""
             SELECT COUNT(p) > 0 FROM Partida p
-            WHERE (p.clubeCasa.id = :clubeId OR p.clubeVisitante.id = :clubeId)
+            WHERE (p.clubeCasa.clubeId = :clubeId OR p.clubeVisitante.clubeId = :clubeId)
             AND p.dataHoraPartida BETWEEN :inicio AND :fim
             """)
     boolean existeConflitoDeHorario(@Param("clubeId") UUID clubeId,
@@ -26,7 +26,7 @@ public interface PartidaRepository extends JpaRepository<Partida, UUID>, JpaSpec
 
     @Query("""
             SELECT COUNT(p) > 0 FROM Partida p
-            WHERE p.estadio.id = :estadioId
+            WHERE p.estadio.estadioId = :estadioId
             AND p.dataHoraPartida BETWEEN :inicioDia AND :fimDia
             """)
     boolean existePartidaNoEstadioNoDia(@Param("estadioId") UUID estadioId,
@@ -35,22 +35,22 @@ public interface PartidaRepository extends JpaRepository<Partida, UUID>, JpaSpec
 
     @Query("""
             SELECT p FROM Partida p
-            WHERE p.clubeCasa.id = :clubeId OR p.clubeVisitante.id = :clubeId
+            WHERE p.clubeCasa.clubeId = :clubeId OR p.clubeVisitante.clubeId = :clubeId
     """)
     List<Partida> findAllByClube(@Param("clubeId") UUID clubeId);
 
     @Query("""
    SELECT p
    FROM Partida p
-   WHERE (p.clubeCasa.id = :clubeId1 AND p.clubeVisitante.id = :clubeId2)
-      OR (p.clubeCasa.id = :clubeId2 AND p.clubeVisitante.id = :clubeId1)
+   WHERE (p.clubeCasa.clubeId = :clubeId1 AND p.clubeVisitante.clubeId = :clubeId2)
+      OR (p.clubeCasa.clubeId = :clubeId2 AND p.clubeVisitante.clubeId = :clubeId1)
 """)
     List<Partida> findPartidasEntreClubes(@Param("clubeId1") UUID clubeId1,
                                           @Param("clubeId2") UUID clubeId2);
 
     @Query("""
         select new com.example.it_neocamp_projeto_final_workshop.dto.ranking.RankingClubes(
-            c.id,
+            c.clubeId,
             c.nome,
             (
               coalesce(sum(case
@@ -85,7 +85,7 @@ public interface PartidaRepository extends JpaRepository<Partida, UUID>, JpaSpec
         left join Partida p
           on p.clubeCasa = c or p.clubeVisitante = c
         where c.ativo = true
-        group by c.id, c.nome
+        group by c.clubeId, c.nome
     """)
     List<RankingClubes> calcularRankingBruto();
 }

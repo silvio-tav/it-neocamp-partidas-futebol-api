@@ -16,12 +16,15 @@ import java.util.UUID;
 public class Partida {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID partidaId;
     @ManyToOne
+    @JoinColumn(name = "clube_casa_id")
     private Clube clubeCasa;
     @ManyToOne
+    @JoinColumn(name = "clube_visitante_id")
     private Clube clubeVisitante;
     @ManyToOne
+    @JoinColumn(name = "estadio_id")
     private Estadio estadio;
     private LocalDateTime dataHoraPartida;
     private Integer golsCasa;

@@ -1,7 +1,7 @@
 -- =============================================
 -- ESTÁDIOS
 -- =============================================
-INSERT INTO estadio (id, nome) VALUES
+INSERT INTO estadio (estadio_id, nome) VALUES
     ('a1b2c3d4-0001-0000-0000-000000000001', 'Maracanã'),
     ('a1b2c3d4-0002-0000-0000-000000000002', 'Allianz Parque'),
     ('a1b2c3d4-0003-0000-0000-000000000003', 'Arena Corinthians'),
@@ -11,7 +11,7 @@ INSERT INTO estadio (id, nome) VALUES
 -- =============================================
 -- CLUBES
 -- =============================================
-INSERT INTO clube (id, nome, sigla_estado, data_criacao, ativo) VALUES
+INSERT INTO clube (clube_id, nome, sigla_estado, data_criacao, ativo) VALUES
     ('b1b2c3d4-0001-0000-0000-000000000001', 'Flamengo',          'RJ', '1895-11-15', true),
     ('b1b2c3d4-0002-0000-0000-000000000002', 'Fluminense',         'RJ', '1902-07-21', true),
     ('b1b2c3d4-0003-0000-0000-000000000003', 'Palmeiras',          'SP', '1914-08-26', true),
@@ -23,7 +23,7 @@ INSERT INTO clube (id, nome, sigla_estado, data_criacao, ativo) VALUES
 -- =============================================
 -- PARTIDAS
 -- =============================================
-INSERT INTO partida (id, clube_casa_id, clube_visitante_id, estadio_id, data_hora_partida, gols_casa, gols_visitante) VALUES
+INSERT INTO partida (partida_id, clube_casa_id, clube_visitante_id, estadio_id, data_hora_partida, gols_casa, gols_visitante) VALUES
     ('c1b2c3d4-0001-0000-0000-000000000001',
         'b1b2c3d4-0001-0000-0000-000000000001',
         'b1b2c3d4-0002-0000-0000-000000000002',

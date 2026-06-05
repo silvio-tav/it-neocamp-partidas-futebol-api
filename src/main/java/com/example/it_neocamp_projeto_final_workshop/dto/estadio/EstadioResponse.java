@@ -12,7 +12,7 @@ import java.util.UUID;
 public class EstadioResponse {
 
     @Schema(description = "ID do estádio", example = "550e8400-e29b-41d4-a716-446655440000")
-    private UUID id;
+    private UUID estadioId;
 
     @Schema(description = "Nome do estádio", example = "Maracanã")
     private String nome;
