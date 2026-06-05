@@ -1,0 +1,56 @@
+src/main/java/com/example/it_neocamp_projeto_final_workshop/mapper/EstadioMapper.java
+  s_db1bb5185c1c8d::t_e3c7e5dd6fe4dc 16
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/clube/ClubeResponse.java
+  s_db1bb5185c1c8d::t_73644da605d1f7 17
+src/main/java/com/example/it_neocamp_projeto_final_workshop/repository/PartidaRepository.java
+  s_db1bb5185c1c8d::t_23cdd6dc0c9147 53
+  s_db1bb5185c1c8d::t_c916b1a42f46d4 20,38,45-46
+  s_db1bb5185c1c8d::t_2c141259750fdf 88
+  s_db1bb5185c1c8d::t_37278ceea4c80d 29
+src/main/java/com/example/it_neocamp_projeto_final_workshop/mapper/ClubeMapper.java
+  s_db1bb5185c1c8d::t_a1d0649064d5da 19
+src/main/java/com/example/it_neocamp_projeto_final_workshop/model/Estadio.java
+  s_db1bb5185c1c8d::t_453e957332b827 20
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/partida/PartidaResponse.java
+  s_db1bb5185c1c8d::t_027a1963fa4fde 18
+src/main/java/com/example/it_neocamp_projeto_final_workshop/model/Partida.java
+  s_db1bb5185c1c8d::t_f41ab6f17def17 19
+  s_db1bb5185c1c8d::t_1aa2e10b11fed6 21,24,27
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/clube/ClubeServiceImpl.java
+  s_db1bb5185c1c8d::t_d79fa5f67ec71b 114,154,159,169-170,172,227
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/estadio/EstadioResponse.java
+  s_db1bb5185c1c8d::t_09e9c0b0cf07ef 15
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/partida/PartidaServiceImpl.java
+  s_db1bb5185c1c8d::t_0c5dc45d4b4ac9 40,75
+  s_db1bb5185c1c8d::t_46fd062a25ac6c 42,76
+  s_db1bb5185c1c8d::t_4354e85677a2fa 62,65,68
+src/main/java/com/example/it_neocamp_projeto_final_workshop/model/Clube.java
+  s_db1bb5185c1c8d::t_80f30bfa8cffe0 19
+src/main/resources/data.sql
+  s_db1bb5185c1c8d::t_644ae059b12121 4
+  s_db1bb5185c1c8d::t_84a55ab027c31c 14
+  s_db1bb5185c1c8d::t_42c7b3d0126789 26
+src/main/java/com/example/it_neocamp_projeto_final_workshop/mapper/PartidaMapper.java
+  s_db1bb5185c1c8d::t_0c4ea922ecc8b2 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "a70e45fa68c78d188d3b87bb53edb24a0f8bc39c",
+  "prompts": {},
+  "humans": {
+    "h_d680948365c6ad": {
+      "author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  },
+  "sessions": {
+    "s_db1bb5185c1c8d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "be4a5640-b428-41ec-847d-20022ea61d93",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
