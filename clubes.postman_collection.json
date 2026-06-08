@@ -619,18 +619,19 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/partidas?nomeClube=&nomeEstadio=&page=0&size=10&sort=dataHoraPartida,asc",
+              "raw": "{{baseUrl}}/partidas?nomeClube=&nomeEstadio=&goleada=&page=0&size=10&sort=dataHoraPartida,asc",
               "host": ["{{baseUrl}}"],
               "path": ["partidas"],
               "query": [
                 { "key": "nomeClube", "value": "", "description": "Filtrar por trecho do nome do clube (casa ou visitante)", "disabled": true },
                 { "key": "nomeEstadio", "value": "", "description": "Filtrar por trecho do nome do estádio", "disabled": true },
+                { "key": "goleada", "value": "true", "description": "Filtrar apenas goleadas (diferença >= 3 gols): true | false", "disabled": true },
                 { "key": "page", "value": "0", "description": "Número da página (começa em 0)" },
                 { "key": "size", "value": "10", "description": "Quantidade de registros por página" },
                 { "key": "sort", "value": "dataHoraPartida,asc", "description": "Ordenação: campo,direção" }
               ]
             },
-            "description": "Lista partidas com filtros opcionais por nome do clube e nome do estádio.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)"
+            "description": "Lista partidas com filtros opcionais por nome do clube, nome do estádio e goleadas.\n\nUse `goleada=true` para retornar apenas partidas com diferença de gols igual ou superior a 3.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)"
           },
           "response": [
             {
