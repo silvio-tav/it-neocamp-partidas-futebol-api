@@ -4,6 +4,7 @@ import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePostRequest;
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePutRequest;
 import com.example.it_neocamp_projeto_final_workshop.dto.ranking.RankingClubes;
 import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.*;
+import com.example.it_neocamp_projeto_final_workshop.enums.Atuacao;
 import com.example.it_neocamp_projeto_final_workshop.enums.EstadoBrasileiro;
 import com.example.it_neocamp_projeto_final_workshop.enums.RankingTipo;
 import com.example.it_neocamp_projeto_final_workshop.exception.ClubeJaExisteException;
@@ -96,11 +97,19 @@ public class ClubeServiceImpl implements ClubeService {
     }
 
     @Override
-    public RetrospectoResponse retrospectoClube(UUID clubeId) {
+    public RetrospectoResponse retrospectoClube(UUID clubeId, Atuacao atuacao) {
         if (!clubeRepository.existsById(clubeId)) {
             throw new ClubeNaoEncontradoException(clubeId);
         }
-        RetrospectoView r = partidaRepository.retrospecto(clubeId);
+
+        RetrospectoView r;
+        if (atuacao == Atuacao.MANDANTE) {
+            r = partidaRepository.retrospectoMandante(clubeId);
+        } else if (atuacao == Atuacao.VISITANTE) {
+            r = partidaRepository.retrospectoVisitante(clubeId);
+        } else {
+            r = partidaRepository.retrospecto(clubeId);
+        }
 
         if (r.getTotalJogos() == 0) {
             return RetrospectoResponse.builder().build();
@@ -117,12 +126,16 @@ public class ClubeServiceImpl implements ClubeService {
     }
 
     @Override
-    public List<AdversarioRetrospecto> retrospectoAdversarios(UUID clubeId) {
+    public List<AdversarioRetrospecto> retrospectoAdversarios(UUID clubeId, Atuacao atuacao) {
         if (!clubeRepository.existsById(clubeId)) {
             throw new ClubeNaoEncontradoException(clubeId);
         }
 
-        var rows = partidaRepository.retrospectoPorAdversarioId(clubeId);
+        var rows = atuacao == Atuacao.MANDANTE
+                ? partidaRepository.retrospectoPorAdversarioIdMandante(clubeId)
+                : atuacao == Atuacao.VISITANTE
+                    ? partidaRepository.retrospectoPorAdversarioIdVisitante(clubeId)
+                    : partidaRepository.retrospectoPorAdversarioId(clubeId);
         if (rows.isEmpty()) return List.of();
 
         var ids = rows.stream().map(RetrospectoAdversarioIdView::getAdversarioId).toList();
@@ -148,14 +161,19 @@ public class ClubeServiceImpl implements ClubeService {
     }
 
     @Override
-    public AdversarioPartidasRetrospecto retrospectoPartidasAdversario(UUID clubeId, UUID adversarioId) {
+    public AdversarioPartidasRetrospecto retrospectoPartidasAdversario(UUID clubeId, UUID adversarioId, Atuacao atuacao) {
         if (!clubeRepository.existsById(clubeId)) {
             throw new ClubeNaoEncontradoException(clubeId);
         }
         if (!clubeRepository.existsById(adversarioId)) {
             throw new ClubeNaoEncontradoException(adversarioId);
         }
-        List<Partida> partidasEntreClubes = partidaRepository.findPartidasEntreClubes(clubeId, adversarioId);
+
+        List<Partida> partidasEntreClubes = atuacao == Atuacao.MANDANTE
+                ? partidaRepository.findPartidasEntreClubesMandante(clubeId, adversarioId)
+                : atuacao == Atuacao.VISITANTE
+                    ? partidaRepository.findPartidasEntreClubesVisitante(clubeId, adversarioId)
+                    : partidaRepository.findPartidasEntreClubes(clubeId, adversarioId);
 
         int totalJogos = 0, vitorias = 0, empates = 0, derrotas = 0, golsFeitos = 0, golsSofridos = 0;
 

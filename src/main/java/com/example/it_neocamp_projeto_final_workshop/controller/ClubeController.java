@@ -5,6 +5,7 @@ import com.example.it_neocamp_projeto_final_workshop.dto.ranking.RankingClubes;
 import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.AdversarioPartidasRetrospecto;
 import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.AdversarioRetrospecto;
 import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.RetrospectoResponse;
+import com.example.it_neocamp_projeto_final_workshop.enums.Atuacao;
 import com.example.it_neocamp_projeto_final_workshop.enums.EstadoBrasileiro;
 import com.example.it_neocamp_projeto_final_workshop.enums.RankingTipo;
 import com.example.it_neocamp_projeto_final_workshop.mapper.ClubeMapper;
@@ -135,9 +136,11 @@ public class ClubeController {
     })
     public ResponseEntity<RetrospectoResponse> retrospectoPorClube(
             @Parameter(description = "ID do clube cujo retrospecto será consultado", example = "b1b2c3d4-0001-0000-0000-000000000001")
-            @PathVariable UUID clubeId
+            @PathVariable UUID clubeId,
+            @Parameter(description = "Filtrar por atuação: MANDANTE ou VISITANTE (omitir para ambos)", example = "MANDANTE")
+            @RequestParam(required = false) Atuacao atuacao
     ){
-        return ResponseEntity.ok(clubeService.retrospectoClube(clubeId));
+        return ResponseEntity.ok(clubeService.retrospectoClube(clubeId, atuacao));
     }
 
     @GetMapping("/{clubeId}/retrospecto/adversarios")
@@ -151,9 +154,11 @@ public class ClubeController {
     })
     public ResponseEntity<List<AdversarioRetrospecto>> retrospectoAdversarios(
             @Parameter(description = "ID do clube cujo retrospecto contra adversários será consultado", example = "b1b2c3d4-0001-0000-0000-000000000001")
-            @PathVariable UUID clubeId
+            @PathVariable UUID clubeId,
+            @Parameter(description = "Filtrar por atuação: MANDANTE ou VISITANTE (omitir para ambos)", example = "MANDANTE")
+            @RequestParam(required = false) Atuacao atuacao
     ){
-        return ResponseEntity.ok(clubeService.retrospectoAdversarios(clubeId));
+        return ResponseEntity.ok(clubeService.retrospectoAdversarios(clubeId, atuacao));
     }
 
     @GetMapping("/{clubeId}/retrospecto/adversarios/{adversarioId}")
@@ -169,9 +174,11 @@ public class ClubeController {
             @Parameter(description = "ID do clube principal", example = "b1b2c3d4-0001-0000-0000-000000000001")
             @PathVariable UUID clubeId,
             @Parameter(description = "ID do clube adversário", example = "b1b2c3d4-0002-0000-0000-000000000002")
-            @PathVariable UUID adversarioId
+            @PathVariable UUID adversarioId,
+            @Parameter(description = "Filtrar por atuação: MANDANTE ou VISITANTE (omitir para ambos)", example = "MANDANTE")
+            @RequestParam(required = false) Atuacao atuacao
     ){
-        return ResponseEntity.ok(clubeService.retrospectoPartidasAdversario(clubeId, adversarioId));
+        return ResponseEntity.ok(clubeService.retrospectoPartidasAdversario(clubeId, adversarioId, atuacao));
     }
 
     @GetMapping("/ranking")
