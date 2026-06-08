@@ -1,0 +1,37 @@
+src/main/resources/db/migration/V3__insert_test_data.sql
+  s_5ece7826eae5aa::t_da579f4a3244c4 1-85
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/clube/ClubeService.java
+  s_5ece7826eae5aa::t_a2e92dfb47de3a 30,32,34
+  s_5ece7826eae5aa::t_3a4a8075d288b7 9
+src/main/java/com/example/it_neocamp_projeto_final_workshop/controller/ClubeController.java
+  s_5ece7826eae5aa::t_816b601e0d8c7b 139-141,143
+  s_5ece7826eae5aa::t_2ebe5d994e5135 8
+  s_5ece7826eae5aa::t_197235bccd04bb 157-159,161
+  s_5ece7826eae5aa::t_51b4dc53f4a168 177-179,181
+src/main/java/com/example/it_neocamp_projeto_final_workshop/enums/Atuacao.java
+  s_5ece7826eae5aa::t_f0801844aab389 1-6
+src/main/java/com/example/it_neocamp_projeto_final_workshop/repository/PartidaRepository.java
+  s_5ece7826eae5aa::t_cd65ef5020e880 114-178
+  s_5ece7826eae5aa::t_293fd064c6545e 70
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/clube/ClubeServiceImpl.java
+  s_5ece7826eae5aa::t_d26e1cafb2fa9e 7
+  s_5ece7826eae5aa::t_4cd060c397d998 164,171-176
+  s_5ece7826eae5aa::t_751cb4dea1d114 129,134-138
+  s_5ece7826eae5aa::t_ccf354bbb71df9 100,104-112
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "76d8eb39fb246d476808c15f9cc8bc796983d073",
+  "prompts": {},
+  "sessions": {
+    "s_5ece7826eae5aa": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "694c0180-37c2-4585-b8ce-d2ddffc22d98",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
