@@ -117,9 +117,11 @@ public class PartidaController {
             @RequestParam(required = false) String nomeClube,
             @Parameter(description = "Filtrar por trecho do nome do estádio", example = "Maracanã")
             @RequestParam(required = false) String nomeEstadio,
+            @Parameter(description = "Filtrar apenas goleadas (diferença >= 3 gols)", example = "true")
+            @RequestParam(required = false) Boolean goleada,
             @PageableDefault Pageable pageable
     ) {
-        Page<PartidaResponse> page = partidaService.listarPartidas(nomeClube, nomeEstadio, pageable)
+        Page<PartidaResponse> page = partidaService.listarPartidas(nomeClube, nomeEstadio, goleada, pageable)
                 .map(PartidaMapper::toResponse);
         return ResponseEntity.ok(page);
     }

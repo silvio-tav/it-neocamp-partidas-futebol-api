@@ -21,4 +21,12 @@ public class PartidaSpecification {
             return cb.like(cb.lower(root.join("estadio").get("nome")), pattern);
         };
     }
+
+    public static Specification<Partida> apenasGoleadas() {
+        return (root, query, cb) -> {
+            jakarta.persistence.criteria.Expression<Integer> diff =
+                cb.abs(cb.diff(root.get("golsCasa"), root.get("golsVisitante")));
+            return cb.greaterThanOrEqualTo(diff, 3);
+        };
+    }
 }

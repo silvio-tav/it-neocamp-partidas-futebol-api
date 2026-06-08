@@ -14,5 +14,5 @@ public interface PartidaService {
     Partida atualizarPartida(UUID partidaId, PartidaPutRequest partidaPutRequest);
     void deletarPartida(UUID partidaId);
     Partida listarPorId(UUID partidaId);
-    Page<Partida> listarPartidas(String nomeClube, String nomeEstadio, Pageable pageable);
+    Page<Partida> listarPartidas(String nomeClube, String nomeEstadio, Boolean goleada, Pageable pageable);
 }
