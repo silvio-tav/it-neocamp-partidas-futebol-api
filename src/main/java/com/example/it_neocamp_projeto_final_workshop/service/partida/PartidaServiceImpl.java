@@ -101,7 +101,7 @@ public class PartidaServiceImpl implements PartidaService{
     }
 
     @Override
-    public Page<Partida> listarPartidas(String nomeClube, String nomeEstadio, Pageable pageable) {
+    public Page<Partida> listarPartidas(String nomeClube, String nomeEstadio, Boolean goleada, Pageable pageable) {
         Specification<Partida> spec = (root, query, cb) -> (cb.conjunction());
 
         if (nomeClube != null && !nomeClube.isBlank()) {
@@ -109,6 +109,9 @@ public class PartidaServiceImpl implements PartidaService{
         }
         if (nomeEstadio != null && !nomeEstadio.isBlank()) {
             spec = spec.and(PartidaSpecification.nomeEstadioContains(nomeEstadio));
+        }
+        if (Boolean.TRUE.equals(goleada)) {
+            spec = spec.and(PartidaSpecification.apenasGoleadas());
         }
 
         return partidaRepository.findAll(spec, pageable);

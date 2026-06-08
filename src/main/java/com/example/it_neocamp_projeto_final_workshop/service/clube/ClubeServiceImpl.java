@@ -3,9 +3,7 @@ package com.example.it_neocamp_projeto_final_workshop.service.clube;
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePostRequest;
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.ClubePutRequest;
 import com.example.it_neocamp_projeto_final_workshop.dto.ranking.RankingClubes;
-import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.AdversarioPartidasRetrospecto;
-import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.AdversarioRetrospecto;
-import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.RetrospectoResponse;
+import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.*;
 import com.example.it_neocamp_projeto_final_workshop.enums.EstadoBrasileiro;
 import com.example.it_neocamp_projeto_final_workshop.enums.RankingTipo;
 import com.example.it_neocamp_projeto_final_workshop.exception.ClubeJaExisteException;
@@ -102,39 +100,19 @@ public class ClubeServiceImpl implements ClubeService {
         if (!clubeRepository.existsById(clubeId)) {
             throw new ClubeNaoEncontradoException(clubeId);
         }
+        RetrospectoView r = partidaRepository.retrospecto(clubeId);
 
-        List<Partida> partidas = partidaRepository.findAllByClube(clubeId);
-        if (partidas.isEmpty()) {
+        if (r.getTotalJogos() == 0) {
             return RetrospectoResponse.builder().build();
         }
 
-        int vitorias = 0, empates = 0, derrotas = 0, golsFeitos = 0, golsSofridos = 0;
-
-        for (Partida partida : partidas) {
-            boolean ehCasa = partida.getClubeCasa().getClubeId().equals(clubeId);
-
-            int golsDoClube = ehCasa ? partida.getGolsCasa() : partida.getGolsVisitante();
-            int golsDoAdversario = ehCasa ? partida.getGolsVisitante() : partida.getGolsCasa();
-
-            golsFeitos += golsDoClube;
-            golsSofridos += golsDoAdversario;
-
-            if (golsDoClube > golsDoAdversario) {
-                vitorias++;
-            } else if (golsDoClube == golsDoAdversario) {
-                empates++;
-            } else {
-                derrotas++;
-            }
-        }
-
         return RetrospectoResponse.builder()
-                .totalJogos(partidas.size())
-                .vitorias(vitorias)
-                .empates(empates)
-                .derrotas(derrotas)
-                .golsFeitos(golsFeitos)
-                .golsSofridos(golsSofridos)
+                .totalJogos(Math.toIntExact(r.getTotalJogos()))
+                .vitorias(Math.toIntExact(r.getVitorias()))
+                .empates(Math.toIntExact(r.getEmpates()))
+                .derrotas(Math.toIntExact(r.getDerrotas()))
+                .golsFeitos(Math.toIntExact(r.getGolsFeitos()))
+                .golsSofridos(Math.toIntExact(r.getGolsSofridos()))
                 .build();
     }
 
@@ -143,60 +121,30 @@ public class ClubeServiceImpl implements ClubeService {
         if (!clubeRepository.existsById(clubeId)) {
             throw new ClubeNaoEncontradoException(clubeId);
         }
-        List<Partida> partidas = partidaRepository.findAllByClube(clubeId);
 
-        List<AdversarioRetrospecto> adversarioRetrospectos = new ArrayList<>();
-        if (partidas.isEmpty()) {
-            return adversarioRetrospectos;
-        }
+        var rows = partidaRepository.retrospectoPorAdversarioId(clubeId);
+        if (rows.isEmpty()) return List.of();
 
-        for (Partida partida : partidas) {
-            boolean ehClubeCasa = partida.getClubeCasa().getClubeId().equals(clubeId);
-            Clube clubeAdversario = ehClubeCasa ? partida.getClubeVisitante() : partida.getClubeCasa();
-            boolean jaAdicionado = false;
+        var ids = rows.stream().map(RetrospectoAdversarioIdView::getAdversarioId).toList();
 
-            for (AdversarioRetrospecto adversarioRetrospecto : adversarioRetrospectos) {
-                if (adversarioRetrospecto.getAdversario().getClubeId().equals(clubeAdversario.getClubeId())) {
-                    jaAdicionado = true;
-                    break;
-                }
-            }
+        var clubes = clubeRepository.findAllById(ids);
+        var clubePorId = clubes.stream()
+                .collect(java.util.stream.Collectors.toMap(Clube::getClubeId, c -> c));
 
-            if (!jaAdicionado) {
-                int totalJogos = 0, vitorias = 0, empates = 0, derrotas = 0, golsFeitos = 0, golsSofridos = 0;
-                for (Partida partidasDosClubes : partidas) {
-                    if (
-                            partidasDosClubes.getClubeCasa().getClubeId().equals(clubeAdversario.getClubeId()) ||
-                                    partidasDosClubes.getClubeVisitante().getClubeId().equals(clubeAdversario.getClubeId())
-                    ) {
-                        boolean ehCasaNaPartidaInterna = partidasDosClubes.getClubeCasa().getClubeId().equals(clubeId);
-                        int golsDoClube      = ehCasaNaPartidaInterna ? partidasDosClubes.getGolsCasa()      : partidasDosClubes.getGolsVisitante();
-                        int golsDoAdversario = ehCasaNaPartidaInterna ? partidasDosClubes.getGolsVisitante() : partidasDosClubes.getGolsCasa();
-
-                        golsFeitos += golsDoClube;
-                        golsSofridos += golsDoAdversario;
-                        totalJogos++;
-                        if (golsDoClube > golsDoAdversario) {
-                            vitorias++;
-                        } else if (golsDoClube == golsDoAdversario) {
-                            empates++;
-                        } else {
-                            derrotas++;
-                        }
-                    }
-                }
-                adversarioRetrospectos.add(AdversarioRetrospecto.builder()
-                                .adversario(ClubeMapper.toResponse(clubeAdversario))
-                                .empates(empates)
-                                .vitorias(vitorias)
-                                .derrotas(derrotas)
-                                .golsFeitos(golsFeitos)
-                                .totalJogos(totalJogos)
-                                .golsSofridos(golsSofridos)
-                        .build());
-            }
-        }
-        return adversarioRetrospectos;
+        return rows.stream()
+                .map(r -> {
+                    Clube adversario = clubePorId.get(r.getAdversarioId());
+                    return AdversarioRetrospecto.builder()
+                            .adversario(ClubeMapper.toResponse(adversario))
+                            .totalJogos(Math.toIntExact(r.getTotalJogos()))
+                            .vitorias(Math.toIntExact(r.getVitorias()))
+                            .empates(Math.toIntExact(r.getEmpates()))
+                            .derrotas(Math.toIntExact(r.getDerrotas()))
+                            .golsFeitos(Math.toIntExact(r.getGolsFeitos()))
+                            .golsSofridos(Math.toIntExact(r.getGolsSofridos()))
+                            .build();
+                })
+                .toList();
     }
 
     @Override

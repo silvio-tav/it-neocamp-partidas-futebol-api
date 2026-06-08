@@ -1,6 +1,8 @@
 package com.example.it_neocamp_projeto_final_workshop.repository;
 
 import com.example.it_neocamp_projeto_final_workshop.dto.ranking.RankingClubes;
+import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.RetrospectoAdversarioIdView;
+import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.RetrospectoView;
 import com.example.it_neocamp_projeto_final_workshop.model.Partida;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -34,10 +36,69 @@ public interface PartidaRepository extends JpaRepository<Partida, UUID>, JpaSpec
                                         @Param("fimDia") LocalDateTime fimDia);
 
     @Query("""
-            SELECT p FROM Partida p
-            WHERE p.clubeCasa.clubeId = :clubeId OR p.clubeVisitante.clubeId = :clubeId
-    """)
-    List<Partida> findAllByClube(@Param("clubeId") UUID clubeId);
+  SELECT
+    CASE
+      WHEN p.clubeCasa.clubeId = :clubeId THEN p.clubeVisitante.clubeId
+      ELSE p.clubeCasa.clubeId
+    END as adversarioId,
+
+    COUNT(p) as totalJogos,
+
+    COALESCE(SUM(CASE
+      WHEN (p.clubeCasa.clubeId = :clubeId AND p.golsCasa > p.golsVisitante)
+        OR (p.clubeVisitante.clubeId = :clubeId AND p.golsVisitante > p.golsCasa)
+      THEN 1 ELSE 0 END), 0) as vitorias,
+
+    COALESCE(SUM(CASE WHEN p.golsCasa = p.golsVisitante THEN 1 ELSE 0 END), 0) as empates,
+
+    COALESCE(SUM(CASE
+      WHEN (p.clubeCasa.clubeId = :clubeId AND p.golsCasa < p.golsVisitante)
+        OR (p.clubeVisitante.clubeId = :clubeId AND p.golsVisitante < p.golsCasa)
+      THEN 1 ELSE 0 END), 0) as derrotas,
+
+    COALESCE(SUM(CASE
+      WHEN p.clubeCasa.clubeId = :clubeId THEN p.golsCasa
+      ELSE p.golsVisitante END), 0) as golsFeitos,
+
+    COALESCE(SUM(CASE
+      WHEN p.clubeCasa.clubeId = :clubeId THEN p.golsVisitante
+      ELSE p.golsCasa END), 0) as golsSofridos
+
+  FROM Partida p
+  WHERE p.clubeCasa.clubeId = :clubeId OR p.clubeVisitante.clubeId = :clubeId
+  GROUP BY
+    CASE WHEN p.clubeCasa.clubeId = :clubeId THEN p.clubeVisitante.clubeId ELSE p.clubeCasa.clubeId END
+""")
+    List<RetrospectoAdversarioIdView> retrospectoPorAdversarioId(@Param("clubeId") UUID clubeId);
+
+    @Query("""
+  SELECT
+    COUNT(p) as totalJogos,
+
+    COALESCE(SUM(CASE
+      WHEN (p.clubeCasa.clubeId = :clubeId AND p.golsCasa > p.golsVisitante)
+        OR (p.clubeVisitante.clubeId = :clubeId AND p.golsVisitante > p.golsCasa)
+      THEN 1 ELSE 0 END), 0) as vitorias,
+
+    COALESCE(SUM(CASE WHEN p.golsCasa = p.golsVisitante THEN 1 ELSE 0 END), 0) as empates,
+
+    COALESCE(SUM(CASE
+      WHEN (p.clubeCasa.clubeId = :clubeId AND p.golsCasa < p.golsVisitante)
+        OR (p.clubeVisitante.clubeId = :clubeId AND p.golsVisitante < p.golsCasa)
+      THEN 1 ELSE 0 END), 0) as derrotas,
+
+    COALESCE(SUM(CASE
+      WHEN p.clubeCasa.clubeId = :clubeId THEN p.golsCasa
+      ELSE p.golsVisitante END), 0) as golsFeitos,
+
+    COALESCE(SUM(CASE
+      WHEN p.clubeCasa.clubeId = :clubeId THEN p.golsVisitante
+      ELSE p.golsCasa END), 0) as golsSofridos
+
+  FROM Partida p
+  WHERE p.clubeCasa.clubeId = :clubeId OR p.clubeVisitante.clubeId = :clubeId
+""")
+    RetrospectoView retrospecto(@Param("clubeId") UUID clubeId);
 
     @Query("""
    SELECT p
