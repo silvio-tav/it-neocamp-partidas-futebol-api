@@ -1,0 +1,19 @@
+clubes.postman_collection.json
+  s_5ece7826eae5aa::t_d69b0a756e5a18 622,628,634
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "a1bfdaa6615b8a7366d66cd3781f2e1fee9709d9",
+  "prompts": {},
+  "sessions": {
+    "s_5ece7826eae5aa": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "694c0180-37c2-4585-b8ce-d2ddffc22d98",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
