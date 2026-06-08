@@ -185,11 +185,14 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto",
+              "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto?atuacao=",
               "host": ["{{baseUrl}}"],
-              "path": ["clubes", "b1b2c3d4-0001-0000-0000-000000000001", "retrospecto"]
+              "path": ["clubes", "b1b2c3d4-0001-0000-0000-000000000001", "retrospecto"],
+              "query": [
+                { "key": "atuacao", "value": "MANDANTE", "description": "Filtrar por atuação: MANDANTE | VISITANTE (omitir para ambos)", "disabled": true }
+              ]
             },
-            "description": "Retorna o retrospecto geral de um clube: total de jogos, vitórias, empates, derrotas, gols feitos e gols sofridos.\n\n**Respostas esperadas:**\n- `200 OK` — retrospecto retornado (todos os campos zerados se não houver partidas)\n- `404 Not Found` — clube não encontrado"
+            "description": "Retorna o retrospecto geral de um clube. Use `atuacao=MANDANTE` para jogos em casa, `atuacao=VISITANTE` para jogos fora, ou omita para todos.\n\n**Respostas esperadas:**\n- `200 OK` — retrospecto retornado (todos os campos zerados se não houver partidas)\n- `404 Not Found` — clube não encontrado"
           },
           "response": [
             {
@@ -221,11 +224,14 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto/adversarios",
+              "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto/adversarios?atuacao=",
               "host": ["{{baseUrl}}"],
-              "path": ["clubes", "b1b2c3d4-0001-0000-0000-000000000001", "retrospecto", "adversarios"]
+              "path": ["clubes", "b1b2c3d4-0001-0000-0000-000000000001", "retrospecto", "adversarios"],
+              "query": [
+                { "key": "atuacao", "value": "MANDANTE", "description": "Filtrar por atuação: MANDANTE | VISITANTE (omitir para ambos)", "disabled": true }
+              ]
             },
-            "description": "Retorna o retrospecto do clube separado por adversário.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)\n- `404 Not Found` — clube não encontrado"
+            "description": "Retorna o retrospecto do clube separado por adversário. Use `atuacao=MANDANTE` para jogos em casa, `atuacao=VISITANTE` para jogos fora, ou omita para todos.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)\n- `404 Not Found` — clube não encontrado"
           },
           "response": [
             {
@@ -257,11 +263,14 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto/adversarios/b1b2c3d4-0002-0000-0000-000000000002",
+              "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto/adversarios/b1b2c3d4-0002-0000-0000-000000000002?atuacao=",
               "host": ["{{baseUrl}}"],
-              "path": ["clubes", "b1b2c3d4-0001-0000-0000-000000000001", "retrospecto", "adversarios", "b1b2c3d4-0002-0000-0000-000000000002"]
+              "path": ["clubes", "b1b2c3d4-0001-0000-0000-000000000001", "retrospecto", "adversarios", "b1b2c3d4-0002-0000-0000-000000000002"],
+              "query": [
+                { "key": "atuacao", "value": "MANDANTE", "description": "Filtrar por atuação: MANDANTE | VISITANTE (omitir para ambos)", "disabled": true }
+              ]
             },
-            "description": "Retorna todas as partidas entre dois clubes e o retrospecto do clube principal neste confronto: vitórias, empates, derrotas, gols feitos e gols sofridos. Caso não haja confrontos, retorna lista vazia com retrospecto zerado.\n\n**Respostas esperadas:**\n- `200 OK` — confrontos retornados com sucesso (lista pode ser vazia)\n- `404 Not Found` — um dos clubes não encontrado"
+            "description": "Retorna todas as partidas entre dois clubes e o retrospecto do clube principal. Use `atuacao=MANDANTE` para ver apenas os confrontos em que o clube principal jogou em casa, `atuacao=VISITANTE` para jogos fora, ou omita para todos.\n\n**Respostas esperadas:**\n- `200 OK` — confrontos retornados com sucesso (lista pode ser vazia)\n- `404 Not Found` — um dos clubes não encontrado"
           },
           "response": [
             {
