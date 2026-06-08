@@ -1,0 +1,34 @@
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/restrospecto/RetrospectoView.java
+  h_d680948365c6ad 1-10
+src/main/java/com/example/it_neocamp_projeto_final_workshop/repository/PartidaRepository.java
+  h_d680948365c6ad 4-5,40-66,68-72,74-101
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/restrospecto/RetrospectoEntreClubesView.java
+  h_d680948365c6ad 1-10
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/clube/ClubeServiceImpl.java
+  h_d680948365c6ad 6,103,105,110-115,125-147
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/restrospecto/RetrospectoAdversarioIdView.java
+  h_d680948365c6ad 1-13
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/partida/PartidaServiceImpl.java
+  s_5ece7826eae5aa::t_1e13a5395aa27d 104,113-114
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "8d637aa0cee00cb4276b1f68127084fd6e456af7",
+  "prompts": {},
+  "humans": {
+    "h_d680948365c6ad": {
+      "author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  },
+  "sessions": {
+    "s_5ece7826eae5aa": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "694c0180-37c2-4585-b8ce-d2ddffc22d98",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
