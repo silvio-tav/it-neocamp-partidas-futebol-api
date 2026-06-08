@@ -1,5 +1,6 @@
 package com.example.it_neocamp_projeto_final_workshop.controller;
 
+import org.springframework.http.ProblemDetail;
 import com.example.it_neocamp_projeto_final_workshop.dto.clube.*;
 import com.example.it_neocamp_projeto_final_workshop.dto.ranking.RankingClubes;
 import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.AdversarioPartidasRetrospecto;
@@ -13,6 +14,8 @@ import com.example.it_neocamp_projeto_final_workshop.model.Clube;
 import com.example.it_neocamp_projeto_final_workshop.service.clube.ClubeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,8 +47,10 @@ public class ClubeController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Clube cadastrado com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos (validação de campos)"),
-            @ApiResponse(responseCode = "409", description = "Já existe um clube com o mesmo nome no estado informado")
+            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos (validação de campos)",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "409", description = "Já existe um clube com o mesmo nome no estado informado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<ClubeResponse> cadastrarClube(
             @RequestBody @Valid ClubePostRequest clubePostRequest
@@ -61,8 +66,10 @@ public class ClubeController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Clube atualizado com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos (validação de campos)"),
-            @ApiResponse(responseCode = "404", description = "Clube não encontrado")
+            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos (validação de campos)",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "404", description = "Clube não encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<ClubeResponse> atualizarClube(
             @Parameter(description = "ID do clube a ser atualizado", example = "550e8400-e29b-41d4-a716-446655440000")
@@ -80,9 +87,12 @@ public class ClubeController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Clube inativado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Clube não encontrado")
+            @ApiResponse(responseCode = "404", description = "Clube não encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
-    public ResponseEntity<Void> inativarClube(@PathVariable UUID clubeId) {
+    public ResponseEntity<Void> inativarClube(
+            @Parameter(description = "ID do clube a ser inativado", example = "550e8400-e29b-41d4-a716-446655440000")
+            @PathVariable UUID clubeId) {
         clubeService.inativarClube(clubeId);
         return ResponseEntity.noContent().build();
     }
@@ -94,7 +104,8 @@ public class ClubeController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Clube encontrado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Clube não encontrado")
+            @ApiResponse(responseCode = "404", description = "Clube não encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<ClubeResponse> buscarPorId(
             @Parameter(description = "ID do clube a ser consultado", example = "550e8400-e29b-41d4-a716-446655440000")
@@ -132,7 +143,8 @@ public class ClubeController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Retrospecto retornado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Clube não encontrado")
+            @ApiResponse(responseCode = "404", description = "Clube não encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<RetrospectoResponse> retrospectoPorClube(
             @Parameter(description = "ID do clube cujo retrospecto será consultado", example = "b1b2c3d4-0001-0000-0000-000000000001")
@@ -150,7 +162,8 @@ public class ClubeController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Retrospecto por adversário retornado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Clube não encontrado")
+            @ApiResponse(responseCode = "404", description = "Clube não encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<List<AdversarioRetrospecto>> retrospectoAdversarios(
             @Parameter(description = "ID do clube cujo retrospecto contra adversários será consultado", example = "b1b2c3d4-0001-0000-0000-000000000001")
@@ -168,7 +181,8 @@ public class ClubeController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Confrontos retornados com sucesso (pode ter lista de partidas vazia)"),
-            @ApiResponse(responseCode = "404", description = "Um dos clubes não encontrado")
+            @ApiResponse(responseCode = "404", description = "Um dos clubes não encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<AdversarioPartidasRetrospecto> adversarioPartidasRetrospecto(
             @Parameter(description = "ID do clube principal", example = "b1b2c3d4-0001-0000-0000-000000000001")

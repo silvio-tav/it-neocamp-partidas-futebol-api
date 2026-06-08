@@ -1,5 +1,6 @@
 package com.example.it_neocamp_projeto_final_workshop.controller;
 
+import org.springframework.http.ProblemDetail;
 import com.example.it_neocamp_projeto_final_workshop.dto.partida.PartidaPostRequest;
 import com.example.it_neocamp_projeto_final_workshop.dto.partida.PartidaPutRequest;
 import com.example.it_neocamp_projeto_final_workshop.dto.partida.PartidaResponse;
@@ -8,11 +9,12 @@ import com.example.it_neocamp_projeto_final_workshop.model.Partida;
 import com.example.it_neocamp_projeto_final_workshop.service.partida.PartidaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -40,9 +42,12 @@ public class PartidaController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Partida cadastrada com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos ou clubes iguais"),
-            @ApiResponse(responseCode = "404", description = "Clube ou estádio não encontrado"),
-            @ApiResponse(responseCode = "409", description = "Conflito de horário ou estádio já ocupado no dia")
+            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos ou clubes iguais",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "404", description = "Clube ou estádio não encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "409", description = "Conflito de horário ou estádio já ocupado no dia",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<PartidaResponse> cadastrarPartida(
             @RequestBody @Valid PartidaPostRequest partidaPostRequest
@@ -58,9 +63,12 @@ public class PartidaController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Partida atualizada com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos ou clubes iguais"),
-            @ApiResponse(responseCode = "404", description = "Partida, clube ou estádio não encontrado"),
-            @ApiResponse(responseCode = "409", description = "Conflito de horário ou estádio já ocupado no dia")
+            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos ou clubes iguais",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "404", description = "Partida, clube ou estádio não encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "409", description = "Conflito de horário ou estádio já ocupado no dia",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<PartidaResponse> atualizarPartida(
             @Parameter(description = "ID da partida a ser atualizada", example = "550e8400-e29b-41d4-a716-446655440000")
@@ -78,7 +86,8 @@ public class PartidaController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Partida removida com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Partida não encontrada")
+            @ApiResponse(responseCode = "404", description = "Partida não encontrada",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<Void> deletarPartida(
             @Parameter(description = "ID da partida a ser removida", example = "550e8400-e29b-41d4-a716-446655440000")
@@ -95,7 +104,8 @@ public class PartidaController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Partida encontrada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Partida não encontrada")
+            @ApiResponse(responseCode = "404", description = "Partida não encontrada",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<PartidaResponse> buscarPorId(
             @Parameter(description = "ID da partida a ser consultada", example = "550e8400-e29b-41d4-a716-446655440000")
@@ -107,7 +117,7 @@ public class PartidaController {
     @GetMapping
     @Operation(
             summary = "Listar partidas",
-            description = "Lista partidas com filtros opcionais por nome do clube (casa ou visitante) e nome do estádio."
+            description = "Lista partidas com filtros opcionais por nome do clube (casa ou visitante), nome do estádio e goleadas. Use `goleada=true` para retornar apenas partidas com diferença de gols ≥ 3."
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
