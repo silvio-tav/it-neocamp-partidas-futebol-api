@@ -227,8 +227,8 @@ public class ClubeServiceImpl implements ClubeService {
                     .sorted(
                             Comparator
                                     .comparingLong(RankingClubes::pontos).reversed()
-                                    .thenComparingLong(RankingClubes::vitorias).reversed()
-                                    .thenComparingLong(RankingClubes::gols).reversed()
+                                    .thenComparing(Comparator.comparingLong(RankingClubes::vitorias).reversed())
+                                    .thenComparing(Comparator.comparingLong(RankingClubes::gols).reversed())
                                     .thenComparing(RankingClubes::nome)
                     ).toList();
 

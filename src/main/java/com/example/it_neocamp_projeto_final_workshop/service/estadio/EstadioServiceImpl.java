@@ -32,10 +32,11 @@ public class EstadioServiceImpl implements EstadioService{
 
     @Override
     public Estadio atualizarEstadio(UUID estadioId, EstadioRequest estadioRequest) {
-        if (estadioRepository.findById(estadioId).isEmpty()) {
-            throw new EstadioNaoEncontradoException(estadioId);
-        }
-        return estadioRepository.save(EstadioMapper.toEntity(estadioRequest));
+        Estadio estadio = estadioRepository.findById(estadioId)
+                .orElseThrow(() -> new EstadioNaoEncontradoException(estadioId));
+
+        estadio.setNome(estadioRequest.getNome());
+        return estadioRepository.save(estadio);
     }
 
     @Override

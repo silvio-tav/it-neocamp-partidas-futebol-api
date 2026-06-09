@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Schema(description = "Dados para atualização parcial de um clube de futebol")
 public class ClubePutRequest {
     @Size(min = 2, message = "nome do clube deve ter pelo menos 2 caracteres")

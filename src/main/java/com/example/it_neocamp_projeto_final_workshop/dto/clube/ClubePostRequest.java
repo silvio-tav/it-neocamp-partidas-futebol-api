@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Schema(description = "Dados para cadastro de um clube de futebol")
 public class ClubePostRequest {
 
