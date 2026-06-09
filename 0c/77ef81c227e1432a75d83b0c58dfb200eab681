@@ -1,0 +1,14 @@
+README.md
+  h_d680948365c6ad 504
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "0c77ef81c227e1432a75d83b0c58dfb200eab681",
+  "prompts": {},
+  "humans": {
+    "h_d680948365c6ad": {
+      "author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
