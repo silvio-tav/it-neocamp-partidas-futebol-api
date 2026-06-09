@@ -1,0 +1,60 @@
+src/test/java/com/example/it_neocamp_projeto_final_workshop/controller/EstadioControllerTest.java
+  s_ddfda15e1ffca2::t_fd06d588f774b2 1-15,17-48,50-120
+  s_ddfda15e1ffca2::t_c079f648d8e819 16,49
+src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker
+  s_ddfda15e1ffca2::t_0dce91379f5995 1
+src/test/java/com/example/it_neocamp_projeto_final_workshop/handler/GlobalExceptionHandlerTest.java
+  s_ddfda15e1ffca2::t_fd06d588f774b2 1-114
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/estadio/EstadioRequest.java
+  s_ddfda15e1ffca2::t_44fb403a4bc3e3 9,16
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/estadio/EstadioServiceImpl.java
+  s_ddfda15e1ffca2::t_44fb403a4bc3e3 35-39
+src/test/java/com/example/it_neocamp_projeto_final_workshop/service/clube/ClubeServiceImplTest.java
+  s_ddfda15e1ffca2::t_92ed78cacc60d0 1-164,167-170,172-342
+  s_ddfda15e1ffca2::t_408fe506a8ffff 165-166,171
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/partida/PartidaPostRequest.java
+  s_ddfda15e1ffca2::t_44fb403a4bc3e3 10,20
+src/test/java/com/example/it_neocamp_projeto_final_workshop/service/partida/PartidaServiceImplTest.java
+  s_ddfda15e1ffca2::t_92ed78cacc60d0 1-279,282-285,287-311
+  s_ddfda15e1ffca2::t_408fe506a8ffff 280-281,286
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/partida/PartidaPutRequest.java
+  s_ddfda15e1ffca2::t_44fb403a4bc3e3 9,19
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/clube/ClubeServiceImpl.java
+  s_ddfda15e1ffca2::t_44fb403a4bc3e3 230-231,256
+src/test/java/com/example/it_neocamp_projeto_final_workshop/controller/PartidaControllerTest.java
+  s_ddfda15e1ffca2::t_fd06d588f774b2 1-18,20-58,60-159
+  s_ddfda15e1ffca2::t_c079f648d8e819 19,59
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/clube/ClubePutRequest.java
+  s_ddfda15e1ffca2::t_44fb403a4bc3e3 15
+src/test/java/com/example/it_neocamp_projeto_final_workshop/service/estadio/EstadioServiceImplTest.java
+  s_ddfda15e1ffca2::t_92ed78cacc60d0 1-100,103-106,108-134
+  s_ddfda15e1ffca2::t_408fe506a8ffff 101-102,107
+src/test/java/com/example/it_neocamp_projeto_final_workshop/controller/ClubeControllerTest.java
+  s_ddfda15e1ffca2::t_c079f648d8e819 21,60
+  s_ddfda15e1ffca2::t_fd06d588f774b2 1-20,22-59,61-156
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/clube/ClubePostRequest.java
+  s_ddfda15e1ffca2::t_44fb403a4bc3e3 17
+src/test/java/com/example/it_neocamp_projeto_final_workshop/TestFixtures.java
+  s_ddfda15e1ffca2::t_92ed78cacc60d0 1-161
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "0a5b248f41a0c97f929f2faedd67f10b799725fd",
+  "prompts": {},
+  "humans": {
+    "h_d680948365c6ad": {
+      "author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  },
+  "sessions": {
+    "s_ddfda15e1ffca2": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ead58-0902-7930-8f08-a4537604900e",
+        "model": "gpt-5.5"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
