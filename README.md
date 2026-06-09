@@ -501,3 +501,4 @@ src
 ## Autor
 
 Projeto desenvolvido para fins de estudo e prática com Java, Spring Boot e desenvolvimento de APIs REST.
+
