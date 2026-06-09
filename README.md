@@ -193,7 +193,7 @@ Com a aplicação em execução, acesse:
 | User Name | `sa` |
 | Password | vazio |
 
-Também existe uma collection Postman no arquivo [clubes.postman_collection.json](clubes.postman_collection.json).
+Também existe uma collection Postman no arquivo [clubes.postman_collection.json](partidas_futebol.postman_collection.json).
 
 ---
 
