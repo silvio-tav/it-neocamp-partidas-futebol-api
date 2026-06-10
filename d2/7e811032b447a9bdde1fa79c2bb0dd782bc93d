@@ -1,0 +1,25 @@
+src/main/resources/application.yaml
+  s_86b8b19cb52f35::t_7a7365dc65507a 26-29,39-65
+docker-compose.yml
+  s_86b8b19cb52f35::t_7a7365dc65507a 1-27
+src/main/resources/db/migration/V1__create_tables.sql
+  s_86b8b19cb52f35::t_7a7365dc65507a 2,7,15-18
+pom.xml
+  s_86b8b19cb52f35::t_d391bcb682ae9f 64-68,73-77
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "d27e811032b447a9bdde1fa79c2bb0dd782bc93d",
+  "prompts": {},
+  "sessions": {
+    "s_86b8b19cb52f35": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019eb27d-784a-7e41-a132-396af410bf38",
+        "model": "gpt-5.5"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
