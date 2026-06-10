@@ -2,10 +2,12 @@ package com.example.it_neocamp_projeto_final_workshop.service.estadio;
 
 import com.example.it_neocamp_projeto_final_workshop.TestFixtures;
 import com.example.it_neocamp_projeto_final_workshop.dto.estadio.EstadioRequest;
+import com.example.it_neocamp_projeto_final_workshop.exception.EstadioComPartidaException;
 import com.example.it_neocamp_projeto_final_workshop.exception.EstadioJaExisteException;
 import com.example.it_neocamp_projeto_final_workshop.exception.EstadioNaoEncontradoException;
 import com.example.it_neocamp_projeto_final_workshop.model.Estadio;
 import com.example.it_neocamp_projeto_final_workshop.repository.EstadioRepository;
+import com.example.it_neocamp_projeto_final_workshop.repository.PartidaRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,6 +35,9 @@ import static org.mockito.Mockito.when;
 class EstadioServiceImplTest {
     @Mock
     private EstadioRepository estadioRepository;
+
+    @Mock
+    private PartidaRepository partidaRepository;
 
     @InjectMocks
     private EstadioServiceImpl estadioService;
@@ -111,6 +116,7 @@ class EstadioServiceImplTest {
     @Test
     void deletarEstadio_quandoExiste_removePorId() {
         when(estadioRepository.existsById(ESTADIO_ID)).thenReturn(true);
+        when(partidaRepository.existsByEstadioEstadioId(ESTADIO_ID)).thenReturn(false);
 
         estadioService.deletarEstadio(ESTADIO_ID);
 
@@ -123,6 +129,18 @@ class EstadioServiceImplTest {
 
         assertThatThrownBy(() -> estadioService.deletarEstadio(ESTADIO_ID))
                 .isInstanceOf(EstadioNaoEncontradoException.class);
+
+        verify(estadioRepository, never()).deleteById(ESTADIO_ID);
+    }
+
+    @Test
+    void deletarEstadio_quandoPossuiPartidas_lancaExcecao() {
+        when(estadioRepository.existsById(ESTADIO_ID)).thenReturn(true);
+        when(partidaRepository.existsByEstadioEstadioId(ESTADIO_ID)).thenReturn(true);
+
+        assertThatThrownBy(() -> estadioService.deletarEstadio(ESTADIO_ID))
+                .isInstanceOf(EstadioComPartidaException.class)
+                .hasMessageContaining(ESTADIO_ID.toString());
 
         verify(estadioRepository, never()).deleteById(ESTADIO_ID);
     }
