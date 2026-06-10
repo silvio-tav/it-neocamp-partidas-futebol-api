@@ -1,0 +1,212 @@
+package com.example.it_neocamp_projeto_final_workshop.controller;
+
+import org.springframework.http.ProblemDetail;
+import com.example.it_neocamp_projeto_final_workshop.dto.clube.*;
+import com.example.it_neocamp_projeto_final_workshop.dto.ranking.RankingClubes;
+import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.AdversarioPartidasRetrospecto;
+import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.AdversarioRetrospecto;
+import com.example.it_neocamp_projeto_final_workshop.dto.restrospecto.RetrospectoResponse;
+import com.example.it_neocamp_projeto_final_workshop.enums.Atuacao;
+import com.example.it_neocamp_projeto_final_workshop.enums.EstadoBrasileiro;
+import com.example.it_neocamp_projeto_final_workshop.enums.RankingTipo;
+import com.example.it_neocamp_projeto_final_workshop.mapper.ClubeMapper;
+import com.example.it_neocamp_projeto_final_workshop.model.Clube;
+import com.example.it_neocamp_projeto_final_workshop.service.clube.ClubeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/clubes")
+@Tag(name = "Clubes", description = "Endpoints para gerenciamento de clubes de futebol brasileiros")
+public class ClubeController {
+    private final ClubeService clubeService;
+
+    public ClubeController(ClubeService clubeService) {
+        this.clubeService = clubeService;
+    }
+
+    @PostMapping
+    @Operation(
+            summary = "Cadastrar clube",
+            description = "Cadastra um novo clube de futebol. Retorna 409 se já existir um clube com o mesmo nome no mesmo estado."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Clube cadastrado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos (validação de campos)",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "409", description = "Já existe um clube com o mesmo nome no estado informado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
+    })
+    public ResponseEntity<ClubeResponse> cadastrarClube(
+            @RequestBody @Valid ClubePostRequest clubePostRequest
+    ) {
+        Clube clube = clubeService.cadastrarClube(clubePostRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ClubeMapper.toResponse(clube));
+    }
+
+    @PutMapping("/{clubeId}")
+    @Operation(
+            summary = "Atualizar clube",
+            description = "Atualiza parcialmente os dados de um clube existente. Apenas os campos enviados no body serão atualizados."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Clube atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos (validação de campos)",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "404", description = "Clube não encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
+    })
+    public ResponseEntity<ClubeResponse> atualizarClube(
+            @Parameter(description = "ID do clube a ser atualizado", example = "550e8400-e29b-41d4-a716-446655440000")
+            @PathVariable UUID clubeId,
+            @RequestBody ClubePutRequest clubePutRequest
+            ){
+        Clube clube = clubeService.atualizarClube(clubePutRequest, clubeId);
+        return ResponseEntity.status(HttpStatus.OK).body(ClubeMapper.toResponse(clube));
+    }
+
+    @DeleteMapping("/{clubeId}")
+    @Operation(
+            summary = "Inativar clube",
+            description = "Realiza a inativação (soft delete) de um clube pelo seu ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Clube inativado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Clube não encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
+    })
+    public ResponseEntity<Void> inativarClube(
+            @Parameter(description = "ID do clube a ser inativado", example = "550e8400-e29b-41d4-a716-446655440000")
+            @PathVariable UUID clubeId) {
+        clubeService.inativarClube(clubeId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{clubeId}")
+    @Operation(
+            summary = "Buscar clube por ID",
+            description = "Retorna os dados de um clube específico pelo seu ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Clube encontrado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Clube não encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
+    })
+    public ResponseEntity<ClubeResponse> buscarPorId(
+            @Parameter(description = "ID do clube a ser consultado", example = "550e8400-e29b-41d4-a716-446655440000")
+            @PathVariable UUID clubeId
+    ){
+        return ResponseEntity.ok(ClubeMapper.toResponse(clubeService.listarClubePorId(clubeId)));
+    }
+
+    @GetMapping
+    @Operation(
+            summary = "Listar clubes",
+            description = "Lista clubes com filtros opcionais por nome, estado e situação. Os filtros podem ser combinados livremente."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+    })
+    public ResponseEntity<Page<ClubeResponse>> listarClubes(
+            @Parameter(description = "Filtrar por trecho do nome do clube", example = "Fla")
+            @RequestParam(required = false) String nome,
+            @Parameter(description = "Filtrar por estado", example = "RJ")
+            @RequestParam(required = false) EstadoBrasileiro estado,
+            @Parameter(description = "Filtrar por situação: true = ativos, false = inativos", example = "true")
+            @RequestParam(required = false) Boolean ativo,
+            @PageableDefault Pageable pageable
+    ) {
+        Page<ClubeResponse> page = clubeService.listarClubes(nome, estado, ativo, pageable)
+                .map(ClubeMapper::toResponse);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/{clubeId}/retrospecto")
+    @Operation(
+            summary = "Retrospecto geral do clube",
+            description = "Retorna o retrospecto geral de um clube: total de jogos, vitórias, empates, derrotas, gols feitos e gols sofridos em todas as partidas registradas. Caso o clube não possua nenhuma partida, todos os campos são retornados com valor zero."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Retrospecto retornado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Clube não encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
+    })
+    public ResponseEntity<RetrospectoResponse> retrospectoPorClube(
+            @Parameter(description = "ID do clube cujo retrospecto será consultado", example = "b1b2c3d4-0001-0000-0000-000000000001")
+            @PathVariable UUID clubeId,
+            @Parameter(description = "Filtrar por atuação: MANDANTE ou VISITANTE (omitir para ambos)", example = "MANDANTE")
+            @RequestParam(required = false) Atuacao atuacao
+    ){
+        return ResponseEntity.ok(clubeService.retrospectoClube(clubeId, atuacao));
+    }
+
+    @GetMapping("/{clubeId}/retrospecto/adversarios")
+    @Operation(
+            summary = "Retrospecto do clube contra adversários",
+            description = "Retorna o retrospecto do clube separado por adversário: total de jogos, vitórias, empates, derrotas, gols feitos e gols sofridos contra cada time específico. Retorna lista vazia caso o clube não possua nenhuma partida registrada."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Retrospecto por adversário retornado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Clube não encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
+    })
+    public ResponseEntity<List<AdversarioRetrospecto>> retrospectoAdversarios(
+            @Parameter(description = "ID do clube cujo retrospecto contra adversários será consultado", example = "b1b2c3d4-0001-0000-0000-000000000001")
+            @PathVariable UUID clubeId,
+            @Parameter(description = "Filtrar por atuação: MANDANTE ou VISITANTE (omitir para ambos)", example = "MANDANTE")
+            @RequestParam(required = false) Atuacao atuacao
+    ){
+        return ResponseEntity.ok(clubeService.retrospectoAdversarios(clubeId, atuacao));
+    }
+
+    @GetMapping("/{clubeId}/retrospecto/adversarios/{adversarioId}")
+    @Operation(
+            summary = "Confrontos diretos entre dois clubes",
+            description = "Retorna todas as partidas disputadas entre dois clubes e o retrospecto do clube informado neste confronto: total de vitórias, empates, derrotas, gols feitos e gols sofridos. Caso não existam confrontos, retorna lista de partidas vazia com retrospecto zerado."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Confrontos retornados com sucesso (pode ter lista de partidas vazia)"),
+            @ApiResponse(responseCode = "404", description = "Um dos clubes não encontrado",
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
+    })
+    public ResponseEntity<AdversarioPartidasRetrospecto> adversarioPartidasRetrospecto(
+            @Parameter(description = "ID do clube principal", example = "b1b2c3d4-0001-0000-0000-000000000001")
+            @PathVariable UUID clubeId,
+            @Parameter(description = "ID do clube adversário", example = "b1b2c3d4-0002-0000-0000-000000000002")
+            @PathVariable UUID adversarioId,
+            @Parameter(description = "Filtrar por atuação: MANDANTE ou VISITANTE (omitir para ambos)", example = "MANDANTE")
+            @RequestParam(required = false) Atuacao atuacao
+    ){
+        return ResponseEntity.ok(clubeService.retrospectoPartidasAdversario(clubeId, adversarioId, atuacao));
+    }
+
+    @GetMapping("/ranking")
+    @Operation(
+            summary = "Ranking de clubes",
+            description = "Retorna a lista de clubes ordenada pelo critério informado: PONTOS (vitória=3, empate=1), GOLS (total de gols feitos), VITORIAS ou JOGOS. Clubes sem pontuação no critério escolhido são excluídos do resultado."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Ranking retornado com sucesso (pode ser vazio)")
+    })
+    public ResponseEntity<List<RankingClubes>> rankingClubes(
+            @Parameter(description = "Critério de ordenação do ranking", example = "PONTOS")
+            @RequestParam RankingTipo tipo
+    ){
+        return ResponseEntity.ok(clubeService.ranking(tipo));
+    }
+}

@@ -1,0 +1,688 @@
+{
+  "info": {
+    "name": "API de Partidas de Futebol",
+    "description": "Collection para os endpoints de gerenciamento de clubes, estádios e partidas de futebol brasileiro.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Clubes",
+      "item": [
+        {
+          "name": "Cadastrar clube",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/clubes",
+              "host": ["{{baseUrl}}"],
+              "path": ["clubes"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Flamengo\",\n  \"estado\": \"RJ\",\n  \"dataCriacao\": \"1895-11-15\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Cadastra um novo clube de futebol. Retorna 409 se já existir um clube com o mesmo nome no mesmo estado.\n\n**Respostas esperadas:**\n- `201 Created` — clube cadastrado com sucesso\n- `400 Bad Request` — dados de entrada inválidos\n- `409 Conflict` — já existe um clube com o mesmo nome no estado informado"
+          },
+          "response": [
+            {
+              "name": "201 - Clube cadastrado com sucesso",
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"clubeId\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"nome\": \"Flamengo\",\n  \"siglaEstado\": \"RJ\",\n  \"dataCriacao\": \"1895-11-15\",\n  \"ativo\": true\n}"
+            },
+            {
+              "name": "409 - Clube já existe no estado",
+              "status": "Conflict",
+              "code": 409,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 409,\n  \"detail\": \"Já existe um clube com o nome 'Flamengo' no estado RJ\"\n}"
+            },
+            {
+              "name": "400 - Dados inválidos",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 400,\n  \"detail\": \"Dados de entrada inválidos\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar clube",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001",
+              "host": ["{{baseUrl}}"],
+              "path": ["clubes", "b1b2c3d4-0001-0000-0000-000000000001"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Clube de Regatas do Flamengo\",\n  \"estado\": \"RJ\",\n  \"dataCriacao\": \"1895-11-15\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Atualiza parcialmente os dados de um clube existente. Apenas os campos enviados no body serão atualizados.\n\n**Respostas esperadas:**\n- `200 OK` — clube atualizado com sucesso\n- `400 Bad Request` — dados de entrada inválidos\n- `404 Not Found` — clube não encontrado"
+          },
+          "response": [
+            {
+              "name": "200 - Clube atualizado com sucesso",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"clubeId\": \"b1b2c3d4-0001-0000-0000-000000000001\",\n  \"nome\": \"Clube de Regatas do Flamengo\",\n  \"siglaEstado\": \"RJ\",\n  \"dataCriacao\": \"1895-11-15\",\n  \"ativo\": true\n}"
+            },
+            {
+              "name": "404 - Clube não encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 404,\n  \"detail\": \"Clube com o id b1b2c3d4-0001-0000-0000-000000000001 não encontrado\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Buscar clube por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001",
+              "host": ["{{baseUrl}}"],
+              "path": ["clubes", "b1b2c3d4-0001-0000-0000-000000000001"]
+            },
+            "description": "Retorna os dados de um clube específico pelo seu ID.\n\n**Respostas esperadas:**\n- `200 OK` — clube encontrado com sucesso\n- `404 Not Found` — clube não encontrado"
+          },
+          "response": [
+            {
+              "name": "200 - Clube encontrado",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"clubeId\": \"b1b2c3d4-0001-0000-0000-000000000001\",\n  \"nome\": \"Flamengo\",\n  \"siglaEstado\": \"RJ\",\n  \"dataCriacao\": \"1895-11-15\",\n  \"ativo\": true\n}"
+            },
+            {
+              "name": "404 - Clube não encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 404,\n  \"detail\": \"Clube com o id b1b2c3d4-0001-0000-0000-000000000001 não encontrado\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Listar clubes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clubes?nome=&estado=&ativo=&page=0&size=10&sort=nome,asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["clubes"],
+              "query": [
+                { "key": "nome", "value": "", "description": "Filtrar por trecho do nome do clube (ex: Fla)", "disabled": true },
+                { "key": "estado", "value": "", "description": "Filtrar por sigla do estado (ex: RJ, SP, MG)", "disabled": true },
+                { "key": "ativo", "value": "", "description": "Filtrar por situação: true = ativos, false = inativos", "disabled": true },
+                { "key": "page", "value": "0", "description": "Número da página (começa em 0)" },
+                { "key": "size", "value": "10", "description": "Quantidade de registros por página" },
+                { "key": "sort", "value": "nome,asc", "description": "Ordenação: campo,direção (ex: nome,asc)" }
+              ]
+            },
+            "description": "Lista clubes com filtros opcionais por nome, estado e situação. Os filtros podem ser combinados livremente.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)"
+          },
+          "response": [
+            {
+              "name": "200 - Lista com resultados",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"content\": [\n    {\n      \"clubeId\": \"b1b2c3d4-0001-0000-0000-000000000001\",\n      \"nome\": \"Flamengo\",\n      \"siglaEstado\": \"RJ\",\n      \"dataCriacao\": \"1895-11-15\",\n      \"ativo\": true\n    },\n    {\n      \"clubeId\": \"b1b2c3d4-0002-0000-0000-000000000002\",\n      \"nome\": \"Fluminense\",\n      \"siglaEstado\": \"RJ\",\n      \"dataCriacao\": \"1902-07-21\",\n      \"ativo\": true\n    }\n  ],\n  \"pageable\": { \"pageNumber\": 0, \"pageSize\": 10 },\n  \"totalElements\": 2,\n  \"totalPages\": 1,\n  \"last\": true,\n  \"first\": true,\n  \"empty\": false\n}"
+            },
+            {
+              "name": "200 - Lista vazia",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"content\": [],\n  \"totalElements\": 0,\n  \"totalPages\": 0,\n  \"empty\": true\n}"
+            }
+          ]
+        },
+        {
+          "name": "Inativar clube",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001",
+              "host": ["{{baseUrl}}"],
+              "path": ["clubes", "b1b2c3d4-0001-0000-0000-000000000001"]
+            },
+            "description": "Realiza a inativação (soft delete) de um clube pelo seu ID.\n\n**Respostas esperadas:**\n- `204 No Content` — clube inativado com sucesso\n- `404 Not Found` — clube não encontrado"
+          },
+          "response": [
+            { "name": "204 - Clube inativado com sucesso", "status": "No Content", "code": 204, "body": "" },
+            {
+              "name": "404 - Clube não encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 404,\n  \"detail\": \"Clube com o id b1b2c3d4-0001-0000-0000-000000000001 não encontrado\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Retrospecto geral do clube",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto?atuacao=",
+              "host": ["{{baseUrl}}"],
+              "path": ["clubes", "b1b2c3d4-0001-0000-0000-000000000001", "retrospecto"],
+              "query": [
+                { "key": "atuacao", "value": "MANDANTE", "description": "Filtrar por atuação: MANDANTE | VISITANTE (omitir para ambos)", "disabled": true }
+              ]
+            },
+            "description": "Retorna o retrospecto geral de um clube. Use `atuacao=MANDANTE` para jogos em casa, `atuacao=VISITANTE` para jogos fora, ou omita para todos.\n\n**Respostas esperadas:**\n- `200 OK` — retrospecto retornado (todos os campos zerados se não houver partidas)\n- `404 Not Found` — clube não encontrado"
+          },
+          "response": [
+            {
+              "name": "200 - Retrospecto com partidas",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"totalJogos\": 3,\n  \"vitorias\": 2,\n  \"empates\": 0,\n  \"derrotas\": 1,\n  \"golsFeitos\": 7,\n  \"golsSofridos\": 4\n}"
+            },
+            {
+              "name": "200 - Retrospecto zerado (sem partidas)",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"totalJogos\": 0,\n  \"vitorias\": 0,\n  \"empates\": 0,\n  \"derrotas\": 0,\n  \"golsFeitos\": 0,\n  \"golsSofridos\": 0\n}"
+            },
+            {
+              "name": "404 - Clube não encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 404,\n  \"detail\": \"Clube com o id b1b2c3d4-0001-0000-0000-000000000001 não encontrado\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Retrospecto do clube contra adversários",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto/adversarios?atuacao=",
+              "host": ["{{baseUrl}}"],
+              "path": ["clubes", "b1b2c3d4-0001-0000-0000-000000000001", "retrospecto", "adversarios"],
+              "query": [
+                { "key": "atuacao", "value": "MANDANTE", "description": "Filtrar por atuação: MANDANTE | VISITANTE (omitir para ambos)", "disabled": true }
+              ]
+            },
+            "description": "Retorna o retrospecto do clube separado por adversário. Use `atuacao=MANDANTE` para jogos em casa, `atuacao=VISITANTE` para jogos fora, ou omita para todos.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)\n- `404 Not Found` — clube não encontrado"
+          },
+          "response": [
+            {
+              "name": "200 - Retrospecto por adversário",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  {\n    \"adversario\": {\n      \"clubeId\": \"b1b2c3d4-0002-0000-0000-000000000002\",\n      \"nome\": \"Fluminense\",\n      \"siglaEstado\": \"RJ\",\n      \"dataCriacao\": \"1902-07-21\",\n      \"ativo\": true\n    },\n    \"totalJogos\": 1,\n    \"vitorias\": 1,\n    \"empates\": 0,\n    \"derrotas\": 0,\n    \"golsFeitos\": 2,\n    \"golsSofridos\": 1\n  }\n]"
+            },
+            {
+              "name": "200 - Lista vazia (sem partidas)",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[]"
+            },
+            {
+              "name": "404 - Clube não encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 404,\n  \"detail\": \"Clube com o id b1b2c3d4-0001-0000-0000-000000000001 não encontrado\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Confrontos diretos entre dois clubes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto/adversarios/b1b2c3d4-0002-0000-0000-000000000002?atuacao=",
+              "host": ["{{baseUrl}}"],
+              "path": ["clubes", "b1b2c3d4-0001-0000-0000-000000000001", "retrospecto", "adversarios", "b1b2c3d4-0002-0000-0000-000000000002"],
+              "query": [
+                { "key": "atuacao", "value": "MANDANTE", "description": "Filtrar por atuação: MANDANTE | VISITANTE (omitir para ambos)", "disabled": true }
+              ]
+            },
+            "description": "Retorna todas as partidas entre dois clubes e o retrospecto do clube principal. Use `atuacao=MANDANTE` para ver apenas os confrontos em que o clube principal jogou em casa, `atuacao=VISITANTE` para jogos fora, ou omita para todos.\n\n**Respostas esperadas:**\n- `200 OK` — confrontos retornados com sucesso (lista pode ser vazia)\n- `404 Not Found` — um dos clubes não encontrado"
+          },
+          "response": [
+            {
+              "name": "200 - Confrontos encontrados",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"partidas\": [\n    {\n      \"partidaId\": \"c1b2c3d4-0001-0000-0000-000000000001\",\n      \"clubeCasa\": {\n        \"clubeId\": \"b1b2c3d4-0001-0000-0000-000000000001\",\n        \"nome\": \"Flamengo\",\n        \"siglaEstado\": \"RJ\",\n        \"dataCriacao\": \"1895-11-15\",\n        \"ativo\": true\n      },\n      \"clubeVisitante\": {\n        \"clubeId\": \"b1b2c3d4-0002-0000-0000-000000000002\",\n        \"nome\": \"Fluminense\",\n        \"siglaEstado\": \"RJ\",\n        \"dataCriacao\": \"1902-07-21\",\n        \"ativo\": true\n      },\n      \"estadio\": {\n        \"estadioId\": \"a1b2c3d4-0001-0000-0000-000000000001\",\n        \"nome\": \"Maracanã\"\n      },\n      \"dataHoraPartida\": \"2024-04-10T16:00:00\",\n      \"golsCasa\": 2,\n      \"golsVisitante\": 1\n    }\n  ],\n  \"totalJogos\": 1,\n  \"vitorias\": 1,\n  \"empates\": 0,\n  \"derrotas\": 0,\n  \"golsFeitos\": 2,\n  \"golsSofridos\": 1\n}"
+            },
+            {
+              "name": "200 - Sem confrontos (lista vazia, retrospecto zerado)",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"partidas\": [],\n  \"totalJogos\": 0,\n  \"vitorias\": 0,\n  \"empates\": 0,\n  \"derrotas\": 0,\n  \"golsFeitos\": 0,\n  \"golsSofridos\": 0\n}"
+            },
+            {
+              "name": "404 - Clube não encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 404,\n  \"detail\": \"Clube com o id b1b2c3d4-0001-0000-0000-000000000001 não encontrado\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Ranking de clubes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clubes/ranking?tipo=PONTOS",
+              "host": ["{{baseUrl}}"],
+              "path": ["clubes", "ranking"],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "PONTOS",
+                  "description": "Critério de ranking: PONTOS | GOLS | VITORIAS | JOGOS"
+                }
+              ]
+            },
+            "description": "Retorna a lista de clubes ordenada pelo critério informado. Clubes sem pontuação no critério escolhido são excluídos.\n\n**Valores possíveis para `tipo`:**\n- `PONTOS` — vitória = 3pts, empate = 1pt (padrão)\n- `GOLS` — total de gols feitos\n- `VITORIAS` — total de vitórias\n- `JOGOS` — total de jogos disputados\n\n**Respostas esperadas:**\n- `200 OK` — ranking retornado com sucesso (pode ser vazio)"
+          },
+          "response": [
+            {
+              "name": "200 - Ranking por pontos",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  {\n    \"clubeId\": \"b1b2c3d4-0001-0000-0000-000000000001\",\n    \"nome\": \"Flamengo\",\n    \"pontos\": 6,\n    \"vitorias\": 2,\n    \"empates\": 0,\n    \"derrotas\": 1,\n    \"gols\": 5,\n    \"jogos\": 3\n  },\n  {\n    \"clubeId\": \"b1b2c3d4-0003-0000-0000-000000000003\",\n    \"nome\": \"Palmeiras\",\n    \"pontos\": 1,\n    \"vitorias\": 0,\n    \"empates\": 1,\n    \"derrotas\": 1,\n    \"gols\": 1,\n    \"jogos\": 2\n  }\n]"
+            },
+            {
+              "name": "200 - Ranking vazio (nenhum clube com pontuação)",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Estádios",
+      "item": [
+        {
+          "name": "Cadastrar estádio",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/estadios",
+              "host": ["{{baseUrl}}"],
+              "path": ["estadios"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Maracanã\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Cadastra um novo estádio.\n\n**Respostas esperadas:**\n- `201 Created` — estádio cadastrado com sucesso\n- `400 Bad Request` — dados de entrada inválidos\n- `409 Conflict` — já existe um estádio com este nome"
+          },
+          "response": [
+            {
+              "name": "201 - Estádio cadastrado com sucesso",
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"estadioId\": \"a1b2c3d4-0001-0000-0000-000000000001\",\n  \"nome\": \"Maracanã\"\n}"
+            },
+            {
+              "name": "409 - Estádio já existe",
+              "status": "Conflict",
+              "code": 409,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 409,\n  \"detail\": \"Já existe um estádio com o nome 'Maracanã'\"\n}"
+            },
+            {
+              "name": "400 - Dados inválidos",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 400,\n  \"detail\": \"Dados de entrada inválidos\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar estádio",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/estadios/a1b2c3d4-0001-0000-0000-000000000001",
+              "host": ["{{baseUrl}}"],
+              "path": ["estadios", "a1b2c3d4-0001-0000-0000-000000000001"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Estádio do Maracanã\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Atualiza o nome de um estádio existente.\n\n**Respostas esperadas:**\n- `200 OK` — estádio atualizado com sucesso\n- `404 Not Found` — estádio não encontrado\n- `409 Conflict` — já existe um estádio com este nome"
+          },
+          "response": [
+            {
+              "name": "200 - Estádio atualizado com sucesso",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"estadioId\": \"a1b2c3d4-0001-0000-0000-000000000001\",\n  \"nome\": \"Estádio do Maracanã\"\n}"
+            },
+            {
+              "name": "404 - Estádio não encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 404,\n  \"detail\": \"Estádio com o id a1b2c3d4-0001-0000-0000-000000000001 não encontrado\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Buscar estádio por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estadios/a1b2c3d4-0001-0000-0000-000000000001",
+              "host": ["{{baseUrl}}"],
+              "path": ["estadios", "a1b2c3d4-0001-0000-0000-000000000001"]
+            },
+            "description": "Retorna os dados de um estádio pelo seu ID.\n\n**Respostas esperadas:**\n- `200 OK` — estádio encontrado\n- `404 Not Found` — estádio não encontrado"
+          },
+          "response": [
+            {
+              "name": "200 - Estádio encontrado",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"estadioId\": \"a1b2c3d4-0001-0000-0000-000000000001\",\n  \"nome\": \"Maracanã\"\n}"
+            },
+            {
+              "name": "404 - Estádio não encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 404,\n  \"detail\": \"Estádio com o id a1b2c3d4-0001-0000-0000-000000000001 não encontrado\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Listar estádios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estadios?nomeEstadio=&page=0&size=10&sort=nome,asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["estadios"],
+              "query": [
+                { "key": "nomeEstadio", "value": "", "description": "Filtrar por trecho do nome (ex: Maracanã)", "disabled": true },
+                { "key": "page", "value": "0", "description": "Número da página (começa em 0)" },
+                { "key": "size", "value": "10", "description": "Quantidade de registros por página" },
+                { "key": "sort", "value": "nome,asc", "description": "Ordenação: campo,direção" }
+              ]
+            },
+            "description": "Lista estádios com filtro opcional por nome.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)"
+          },
+          "response": [
+            {
+              "name": "200 - Lista com resultados",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"content\": [\n    { \"estadioId\": \"a1b2c3d4-0001-0000-0000-000000000001\", \"nome\": \"Maracanã\" },\n    { \"estadioId\": \"a1b2c3d4-0002-0000-0000-000000000002\", \"nome\": \"Allianz Parque\" }\n  ],\n  \"totalElements\": 2,\n  \"totalPages\": 1,\n  \"empty\": false\n}"
+            }
+          ]
+        },
+        {
+          "name": "Deletar estádio",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estadios/a1b2c3d4-0001-0000-0000-000000000001",
+              "host": ["{{baseUrl}}"],
+              "path": ["estadios", "a1b2c3d4-0001-0000-0000-000000000001"]
+            },
+            "description": "Remove um estádio pelo seu ID.\n\n**Respostas esperadas:**\n- `204 No Content` — estádio removido com sucesso\n- `404 Not Found` — estádio não encontrado"
+          },
+          "response": [
+            { "name": "204 - Estádio removido com sucesso", "status": "No Content", "code": 204, "body": "" },
+            {
+              "name": "404 - Estádio não encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 404,\n  \"detail\": \"Estádio com o id a1b2c3d4-0001-0000-0000-000000000001 não encontrado\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Partidas",
+      "item": [
+        {
+          "name": "Cadastrar partida",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/partidas",
+              "host": ["{{baseUrl}}"],
+              "path": ["partidas"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clubeCasaId\": \"b1b2c3d4-0001-0000-0000-000000000001\",\n  \"clubeVisitanteId\": \"b1b2c3d4-0002-0000-0000-000000000002\",\n  \"estadioId\": \"a1b2c3d4-0001-0000-0000-000000000001\",\n  \"dataHoraPartida\": \"2024-06-01T16:00:00\",\n  \"golsCasa\": 2,\n  \"golsVisitante\": 1\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Cadastra uma nova partida. Valida clubes, estádio, conflito de horário (janela de 48h) e disponibilidade do estádio no dia.\n\n**Respostas esperadas:**\n- `201 Created` — partida cadastrada com sucesso\n- `400 Bad Request` — dados inválidos ou clubes iguais\n- `404 Not Found` — clube ou estádio não encontrado\n- `409 Conflict` — conflito de horário ou estádio já ocupado no dia"
+          },
+          "response": [
+            {
+              "name": "201 - Partida cadastrada com sucesso",
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"partidaId\": \"c1b2c3d4-0001-0000-0000-000000000001\",\n  \"clubeCasa\": {\n    \"clubeId\": \"b1b2c3d4-0001-0000-0000-000000000001\",\n    \"nome\": \"Flamengo\",\n    \"siglaEstado\": \"RJ\",\n    \"dataCriacao\": \"1895-11-15\",\n    \"ativo\": true\n  },\n  \"clubeVisitante\": {\n    \"clubeId\": \"b1b2c3d4-0002-0000-0000-000000000002\",\n    \"nome\": \"Fluminense\",\n    \"siglaEstado\": \"RJ\",\n    \"dataCriacao\": \"1902-07-21\",\n    \"ativo\": true\n  },\n  \"estadio\": {\n    \"estadioId\": \"a1b2c3d4-0001-0000-0000-000000000001\",\n    \"nome\": \"Maracanã\"\n  },\n  \"dataHoraPartida\": \"2024-06-01T16:00:00\",\n  \"golsCasa\": 2,\n  \"golsVisitante\": 1\n}"
+            },
+            {
+              "name": "400 - Clubes iguais",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 400,\n  \"detail\": \"Clubes casa e visitante não podem ser iguais\"\n}"
+            },
+            {
+              "name": "404 - Clube não encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 404,\n  \"detail\": \"Clube com o id b1b2c3d4-0001-0000-0000-000000000001 não encontrado\"\n}"
+            },
+            {
+              "name": "409 - Conflito de horário",
+              "status": "Conflict",
+              "code": 409,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 409,\n  \"detail\": \"Clube casa já possui partida em menos de 48 horas deste horário\"\n}"
+            },
+            {
+              "name": "409 - Estádio ocupado no dia",
+              "status": "Conflict",
+              "code": 409,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 409,\n  \"detail\": \"Estádio com o id a1b2c3d4-0001-0000-0000-000000000001 já possui partida agendada neste dia\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar partida",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/partidas/c1b2c3d4-0001-0000-0000-000000000001",
+              "host": ["{{baseUrl}}"],
+              "path": ["partidas", "c1b2c3d4-0001-0000-0000-000000000001"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"golsCasa\": 3,\n  \"golsVisitante\": 2\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Atualiza parcialmente os dados de uma partida. Apenas os campos enviados serão atualizados.\n\n**Respostas esperadas:**\n- `200 OK` — partida atualizada com sucesso\n- `400 Bad Request` — dados inválidos ou clubes iguais\n- `404 Not Found` — partida, clube ou estádio não encontrado\n- `409 Conflict` — conflito de horário ou estádio já ocupado no dia"
+          },
+          "response": [
+            {
+              "name": "200 - Partida atualizada com sucesso",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"partidaId\": \"c1b2c3d4-0001-0000-0000-000000000001\",\n  \"clubeCasa\": {\n    \"clubeId\": \"b1b2c3d4-0001-0000-0000-000000000001\",\n    \"nome\": \"Flamengo\",\n    \"siglaEstado\": \"RJ\",\n    \"dataCriacao\": \"1895-11-15\",\n    \"ativo\": true\n  },\n  \"clubeVisitante\": {\n    \"clubeId\": \"b1b2c3d4-0002-0000-0000-000000000002\",\n    \"nome\": \"Fluminense\",\n    \"siglaEstado\": \"RJ\",\n    \"dataCriacao\": \"1902-07-21\",\n    \"ativo\": true\n  },\n  \"estadio\": {\n    \"estadioId\": \"a1b2c3d4-0001-0000-0000-000000000001\",\n    \"nome\": \"Maracanã\"\n  },\n  \"dataHoraPartida\": \"2024-06-01T16:00:00\",\n  \"golsCasa\": 3,\n  \"golsVisitante\": 2\n}"
+            },
+            {
+              "name": "404 - Partida não encontrada",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 404,\n  \"detail\": \"Partida com o id c1b2c3d4-0001-0000-0000-000000000001 não encontrada\"\n}"
+            },
+            {
+              "name": "409 - Conflito de horário",
+              "status": "Conflict",
+              "code": 409,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 409,\n  \"detail\": \"Clube casa já possui partida em menos de 48 horas deste horário\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Buscar partida por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/partidas/c1b2c3d4-0001-0000-0000-000000000001",
+              "host": ["{{baseUrl}}"],
+              "path": ["partidas", "c1b2c3d4-0001-0000-0000-000000000001"]
+            },
+            "description": "Retorna os dados de uma partida específica pelo seu ID.\n\n**Respostas esperadas:**\n- `200 OK` — partida encontrada com sucesso\n- `404 Not Found` — partida não encontrada"
+          },
+          "response": [
+            {
+              "name": "200 - Partida encontrada",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"partidaId\": \"c1b2c3d4-0001-0000-0000-000000000001\",\n  \"clubeCasa\": {\n    \"clubeId\": \"b1b2c3d4-0001-0000-0000-000000000001\",\n    \"nome\": \"Flamengo\",\n    \"siglaEstado\": \"RJ\",\n    \"dataCriacao\": \"1895-11-15\",\n    \"ativo\": true\n  },\n  \"clubeVisitante\": {\n    \"clubeId\": \"b1b2c3d4-0002-0000-0000-000000000002\",\n    \"nome\": \"Fluminense\",\n    \"siglaEstado\": \"RJ\",\n    \"dataCriacao\": \"1902-07-21\",\n    \"ativo\": true\n  },\n  \"estadio\": {\n    \"estadioId\": \"a1b2c3d4-0001-0000-0000-000000000001\",\n    \"nome\": \"Maracanã\"\n  },\n  \"dataHoraPartida\": \"2024-04-10T16:00:00\",\n  \"golsCasa\": 2,\n  \"golsVisitante\": 1\n}"
+            },
+            {
+              "name": "404 - Partida não encontrada",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 404,\n  \"detail\": \"Partida com o id c1b2c3d4-0001-0000-0000-000000000001 não encontrada\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Listar partidas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/partidas?nomeClube=&nomeEstadio=&goleada=&page=0&size=10&sort=dataHoraPartida,asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["partidas"],
+              "query": [
+                { "key": "nomeClube", "value": "", "description": "Filtrar por trecho do nome do clube (casa ou visitante)", "disabled": true },
+                { "key": "nomeEstadio", "value": "", "description": "Filtrar por trecho do nome do estádio", "disabled": true },
+                { "key": "goleada", "value": "true", "description": "Filtrar apenas goleadas (diferença >= 3 gols): true | false", "disabled": true },
+                { "key": "page", "value": "0", "description": "Número da página (começa em 0)" },
+                { "key": "size", "value": "10", "description": "Quantidade de registros por página" },
+                { "key": "sort", "value": "dataHoraPartida,asc", "description": "Ordenação: campo,direção" }
+              ]
+            },
+            "description": "Lista partidas com filtros opcionais por nome do clube, nome do estádio e goleadas.\n\nUse `goleada=true` para retornar apenas partidas com diferença de gols igual ou superior a 3.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)"
+          },
+          "response": [
+            {
+              "name": "200 - Lista com resultados",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"content\": [\n    {\n      \"partidaId\": \"c1b2c3d4-0001-0000-0000-000000000001\",\n      \"clubeCasa\": {\n        \"clubeId\": \"b1b2c3d4-0001-0000-0000-000000000001\",\n        \"nome\": \"Flamengo\",\n        \"siglaEstado\": \"RJ\",\n        \"dataCriacao\": \"1895-11-15\",\n        \"ativo\": true\n      },\n      \"clubeVisitante\": {\n        \"clubeId\": \"b1b2c3d4-0002-0000-0000-000000000002\",\n        \"nome\": \"Fluminense\",\n        \"siglaEstado\": \"RJ\",\n        \"dataCriacao\": \"1902-07-21\",\n        \"ativo\": true\n      },\n      \"estadio\": {\n        \"estadioId\": \"a1b2c3d4-0001-0000-0000-000000000001\",\n        \"nome\": \"Maracanã\"\n      },\n      \"dataHoraPartida\": \"2024-04-10T16:00:00\",\n      \"golsCasa\": 2,\n      \"golsVisitante\": 1\n    }\n  ],\n  \"totalElements\": 1,\n  \"totalPages\": 1,\n  \"empty\": false\n}"
+            },
+            {
+              "name": "200 - Lista vazia",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"content\": [],\n  \"totalElements\": 0,\n  \"totalPages\": 0,\n  \"empty\": true\n}"
+            }
+          ]
+        },
+        {
+          "name": "Deletar partida",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/partidas/c1b2c3d4-0001-0000-0000-000000000001",
+              "host": ["{{baseUrl}}"],
+              "path": ["partidas", "c1b2c3d4-0001-0000-0000-000000000001"]
+            },
+            "description": "Remove uma partida pelo seu ID.\n\n**Respostas esperadas:**\n- `204 No Content` — partida removida com sucesso\n- `404 Not Found` — partida não encontrada"
+          },
+          "response": [
+            { "name": "204 - Partida removida com sucesso", "status": "No Content", "code": 204, "body": "" },
+            {
+              "name": "404 - Partida não encontrada",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 404,\n  \"detail\": \"Partida com o id c1b2c3d4-0001-0000-0000-000000000001 não encontrada\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
