@@ -17,6 +17,8 @@ import java.util.UUID;
 @Repository
 public interface PartidaRepository extends JpaRepository<Partida, UUID>, JpaSpecificationExecutor<Partida> {
 
+    boolean existsByEstadioEstadioId(UUID estadioId);
+
     @Query("""
             SELECT COUNT(p) > 0 FROM Partida p
             WHERE (p.clubeCasa.clubeId = :clubeId OR p.clubeVisitante.clubeId = :clubeId)
