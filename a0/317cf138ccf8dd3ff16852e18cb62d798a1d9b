@@ -1,0 +1,21 @@
+README.md
+  s_86b8b19cb52f35::t_5ed58988309ba2 8-9,70-71,149,152,173-174,177-195,215,234,244-253
+  s_86b8b19cb52f35::t_c377ac7231692d 88,175-176,196-214,465-470,547
+  s_86b8b19cb52f35::t_8582470c350f6b 502,555-560,562
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "a0317cf138ccf8dd3ff16852e18cb62d798a1d9b",
+  "prompts": {},
+  "sessions": {
+    "s_86b8b19cb52f35": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019eb27d-784a-7e41-a132-396af410bf38",
+        "model": "gpt-5.5"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
