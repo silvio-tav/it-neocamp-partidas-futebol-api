@@ -1,0 +1,27 @@
+src/main/java/com/example/it_neocamp_projeto_final_workshop/exception/EstadioComPartidaException.java
+  s_04a602d9fc6f83::t_70d43df9f7de29 1-9
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/estadio/EstadioServiceImpl.java
+  s_04a602d9fc6f83::t_f02506bd33d1a9 67-69
+  s_04a602d9fc6f83::t_d7e3f317596168 4,10
+  s_04a602d9fc6f83::t_2ea4365aa9c03a 22,24,26
+src/main/java/com/example/it_neocamp_projeto_final_workshop/handler/GlobalExceptionHandler.java
+  s_04a602d9fc6f83::t_8c27bfd93681a0 57-61
+src/main/java/com/example/it_neocamp_projeto_final_workshop/repository/PartidaRepository.java
+  s_04a602d9fc6f83::t_97cb03d009b4b2 20-21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "362305c52f811f8c894154d56b60b63157ed3f31",
+  "prompts": {},
+  "sessions": {
+    "s_04a602d9fc6f83": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "430cc48e-0f6e-4ef8-9d80-eb73530e639c",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
