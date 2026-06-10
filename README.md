@@ -5,6 +5,8 @@
 ![Spring Data JPA](https://img.shields.io/badge/Spring%20Data%20JPA-59666C?style=for-the-badge&logo=hibernate&logoColor=white)
 ![Flyway](https://img.shields.io/badge/Flyway-CC0200?style=for-the-badge&logo=flyway&logoColor=white)
 ![H2](https://img.shields.io/badge/H2-Database-1021FF?style=for-the-badge)
+![MySQL](https://img.shields.io/badge/MySQL-8.4-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
 
 Projeto de estudos desenvolvido com Java e Spring Boot para praticar a criação de uma API REST completa, com CRUD, validações, filtros dinâmicos, paginação, migrations de banco, consultas agregadas, ranking e retrospecto de clubes de futebol.
@@ -65,6 +67,8 @@ Este projeto foi criado para estudos, por isso o README também serve como guia 
 | Hibernate | Implementação JPA |
 | Bean Validation | Validações com annotations |
 | H2 Database | Banco em memória para desenvolvimento e estudos |
+| MySQL | Banco relacional para execução persistente via Docker |
+| Docker Compose | Subida do banco MySQL local |
 | Flyway | Versionamento do schema e carga de dados |
 | Springdoc OpenAPI | Swagger UI e contrato da API |
 | Lombok | Redução de boilerplate em DTOs e entidades |
@@ -81,7 +85,7 @@ flowchart LR
     Client[Cliente HTTP] --> Controller[Controllers REST]
     Controller --> Service[Services]
     Service --> Repository[Repositories]
-    Repository --> Database[(H2 Database)]
+    Repository --> Database[(H2 ou MySQL)]
 
     Service --> Specification[Specifications]
     Database --> Flyway[Flyway Migrations]
@@ -142,9 +146,10 @@ erDiagram
 
 - Java 17 ou superior
 - Maven instalado
+- Docker e Docker Compose, caso queira executar com MySQL
 - Git, caso queira clonar o repositório
 
-### Passo a passo
+### Execução padrão com H2
 
 1. Clone o repositório:
 
@@ -165,6 +170,49 @@ mvn spring-boot:run
 http://localhost:8080
 ```
 
+### Execução com MySQL no Docker
+
+O arquivo [docker-compose.yml](docker-compose.yml) sobe um container MySQL 8.4 com volume persistente para manter os dados entre reinicializações.
+
+1. Suba o banco MySQL:
+
+```bash
+docker compose up -d mysql
+```
+
+2. Execute a aplicação usando o profile `mysql`:
+
+```bash
+mvn spring-boot:run -Dspring-boot.run.profiles=mysql
+```
+
+3. Acesse a API em:
+
+```text
+http://localhost:8080
+```
+
+O Flyway cria as tabelas, índices e dados iniciais automaticamente quando a aplicação inicia.
+
+### Comandos úteis do Docker
+
+| Ação | Comando |
+| --- | --- |
+| Verificar se o Docker Compose está disponível | `docker compose version` |
+| Subir o MySQL em segundo plano | `docker compose up -d mysql` |
+| Ver containers rodando | `docker ps` |
+| Ver todos os containers | `docker ps -a` |
+| Ver logs do MySQL | `docker compose logs mysql` |
+| Acompanhar logs em tempo real | `docker compose logs -f mysql` |
+| Parar o MySQL | `docker compose stop mysql` |
+| Iniciar novamente o MySQL parado | `docker compose start mysql` |
+| Reiniciar o MySQL | `docker compose restart mysql` |
+| Remover container e rede, mantendo os dados | `docker compose down` |
+| Remover container, rede e apagar os dados | `docker compose down -v` |
+| Acessar o banco pelo terminal | `docker exec -it futebol-mysql mysql -ufutebol -pfutebol futeboldb` |
+
+Se o seu ambiente usar o Compose antigo, troque `docker compose` por `docker-compose`.
+
 ### Observação sobre o Maven Wrapper
 
 O projeto possui arquivos `mvnw` e `mvnw.cmd`, mas para usar o wrapper é necessário que a pasta `.mvn/wrapper` esteja completa. Se o wrapper estiver configurado no seu ambiente, também será possível executar:
@@ -183,7 +231,7 @@ Com a aplicação em execução, acesse:
 | --- | --- |
 | Swagger UI | `http://localhost:8080/swagger-ui.html` |
 | OpenAPI JSON | `http://localhost:8080/v3/api-docs` |
-| H2 Console | `http://localhost:8080/h2-console` |
+| H2 Console, apenas no profile padrão | `http://localhost:8080/h2-console` |
 
 ### Credenciais do H2
 
@@ -192,6 +240,17 @@ Com a aplicação em execução, acesse:
 | JDBC URL | `jdbc:h2:mem:futeboldb` |
 | User Name | `sa` |
 | Password | vazio |
+
+### Credenciais do MySQL local
+
+| Campo | Valor |
+| --- | --- |
+| Host | `localhost` |
+| Porta | `3306` |
+| Database | `futeboldb` |
+| User | `futebol` |
+| Password | `futebol` |
+| Root password | `root` |
 
 Também existe uma collection Postman no arquivo [clubes.postman_collection.json](partidas_futebol.postman_collection.json).
 
@@ -403,7 +462,12 @@ GET /clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto?atuacao=MANDANTE
 
 ## Banco de dados e migrations
 
-O projeto usa H2 em memória e Flyway para criar e popular o banco a cada execução.
+O projeto usa Flyway para criar e popular o banco automaticamente. Por padrão, a aplicação roda com H2 em memória. Para usar MySQL, suba o container com Docker Compose e inicie a aplicação com o profile `mysql`.
+
+| Profile | Banco | Uso |
+| --- | --- | --- |
+| padrão | H2 em memória | Execução rápida sem dependência externa |
+| `mysql` | MySQL 8.4 via Docker | Execução persistente para migração e testes locais |
 
 | Migration | Descrição |
 | --- | --- |
@@ -435,7 +499,7 @@ Para executar os testes:
 mvn test
 ```
 
-O teste atual sobe o contexto da aplicação e valida que as migrations do Flyway são aplicadas corretamente no banco H2 em memória.
+A suíte atual possui testes unitários para services, testes de controllers com `MockMvc`, testes do handler global de exceções e teste de contexto da aplicação. O teste de contexto também valida que as migrations do Flyway são aplicadas corretamente no banco H2 em memória.
 
 ---
 
@@ -480,6 +544,7 @@ src
 - Relacionamentos `ManyToOne`
 - Migrations com Flyway
 - Banco H2 em memória
+- Banco MySQL com Docker Compose
 - Documentação com Swagger/OpenAPI
 - Otimização básica de consultas com índices
 
@@ -487,18 +552,17 @@ src
 
 ## Possíveis evoluções
 
-- Adicionar testes unitários para services
-- Adicionar testes de integração dos controllers
-- Criar perfil com PostgreSQL ou MySQL
-- Adicionar Docker Compose para banco externo
-- Implementar autenticação e autorização
+- Adicionar testes de integração com MySQL usando Testcontainers
+- Separar dados de exemplo/teste em um profile próprio para evitar carga automática em ambientes persistentes
+- Criar um Dockerfile para a aplicação e um Compose completo com API + MySQL
+- Criar pipeline de CI para rodar testes e validar migrations
+- Implementar autenticação e autorização, caso a API seja exposta fora do ambiente local
+- Adicionar observabilidade com Actuator, health checks e logs estruturados
 - Melhorar buscas textuais com recursos específicos do banco escolhido
-- Adicionar logs estruturados
-- Criar pipeline de CI
+- Criar profile para outros bancos, como PostgreSQL, se houver necessidade de portabilidade
 
 ---
 
 ## Autor
 
 Projeto desenvolvido para fins de estudo e prática com Java, Spring Boot e desenvolvimento de APIs REST.
-

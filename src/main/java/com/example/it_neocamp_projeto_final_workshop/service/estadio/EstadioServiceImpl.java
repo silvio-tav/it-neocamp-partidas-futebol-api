@@ -1,11 +1,13 @@
 package com.example.it_neocamp_projeto_final_workshop.service.estadio;
 
 import com.example.it_neocamp_projeto_final_workshop.dto.estadio.EstadioRequest;
+import com.example.it_neocamp_projeto_final_workshop.exception.EstadioComPartidaException;
 import com.example.it_neocamp_projeto_final_workshop.exception.EstadioJaExisteException;
 import com.example.it_neocamp_projeto_final_workshop.exception.EstadioNaoEncontradoException;
 import com.example.it_neocamp_projeto_final_workshop.mapper.EstadioMapper;
 import com.example.it_neocamp_projeto_final_workshop.model.Estadio;
 import com.example.it_neocamp_projeto_final_workshop.repository.EstadioRepository;
+import com.example.it_neocamp_projeto_final_workshop.repository.PartidaRepository;
 import com.example.it_neocamp_projeto_final_workshop.specification.EstadioSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +19,11 @@ import java.util.UUID;
 @Service
 public class EstadioServiceImpl implements EstadioService{
     private final EstadioRepository estadioRepository;
+    private final PartidaRepository partidaRepository;
 
-    public EstadioServiceImpl(EstadioRepository estadioRepository) {
+    public EstadioServiceImpl(EstadioRepository estadioRepository, PartidaRepository partidaRepository) {
         this.estadioRepository = estadioRepository;
+        this.partidaRepository = partidaRepository;
     }
 
     @Override
@@ -59,6 +63,9 @@ public class EstadioServiceImpl implements EstadioService{
     public void deletarEstadio(UUID estadioId) {
         if (!estadioRepository.existsById(estadioId)) {
             throw new EstadioNaoEncontradoException(estadioId);
+        }
+        if (partidaRepository.existsByEstadioEstadioId(estadioId)) {
+            throw new EstadioComPartidaException(estadioId);
         }
         estadioRepository.deleteById(estadioId);
     }

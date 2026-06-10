@@ -23,6 +23,10 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: none
+    properties:
+      hibernate:
+        type:
+          preferred_uuid_jdbc_type: CHAR
     show-sql: true
 
 springdoc:
@@ -32,3 +36,30 @@ springdoc:
     operations-sorter: alpha       # ordena operações em ordem alfabética
   api-docs:
     path: /v3/api-docs             # URL do JSON gerado pelo OpenAPI
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: mysql
+
+  datasource:
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/futeboldb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${MYSQL_USER:futebol}
+    password: ${MYSQL_PASSWORD:futebol}
+
+  h2:
+    console:
+      enabled: false
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        type:
+          preferred_uuid_jdbc_type: CHAR
+    show-sql: true
