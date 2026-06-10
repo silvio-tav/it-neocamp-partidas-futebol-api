@@ -1,0 +1,21 @@
+src/test/java/com/example/it_neocamp_projeto_final_workshop/service/estadio/EstadioServiceImplTest.java
+  s_04a602d9fc6f83::t_9a518eaf0a1179 119,136-143
+  s_04a602d9fc6f83::t_40f3f138f8eaf8 5,10
+  s_04a602d9fc6f83::t_011bec55ebd7ba 39-41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "06e2cc206a6d9d89e379954faab98051ed424243",
+  "prompts": {},
+  "sessions": {
+    "s_04a602d9fc6f83": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "430cc48e-0f6e-4ef8-9d80-eb73530e639c",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
