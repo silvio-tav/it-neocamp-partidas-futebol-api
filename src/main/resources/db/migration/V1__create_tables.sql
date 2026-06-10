@@ -1,10 +1,10 @@
 CREATE TABLE estadio (
-    estadio_id UUID PRIMARY KEY,
+    estadio_id CHAR(36) PRIMARY KEY,
     nome       VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE clube (
-    clube_id     UUID PRIMARY KEY,
+    clube_id     CHAR(36) PRIMARY KEY,
     nome         VARCHAR(255) NOT NULL,
     sigla_estado VARCHAR(2)   NOT NULL,
     data_criacao DATE         NOT NULL,
@@ -12,10 +12,10 @@ CREATE TABLE clube (
 );
 
 CREATE TABLE partida (
-    partida_id         UUID PRIMARY KEY,
-    clube_casa_id      UUID             NOT NULL,
-    clube_visitante_id UUID             NOT NULL,
-    estadio_id         UUID             NOT NULL,
+    partida_id         CHAR(36) PRIMARY KEY,
+    clube_casa_id      CHAR(36)         NOT NULL,
+    clube_visitante_id CHAR(36)         NOT NULL,
+    estadio_id         CHAR(36)         NOT NULL,
     data_hora_partida  TIMESTAMP        NOT NULL,
     gols_casa          INTEGER,
     gols_visitante     INTEGER,
