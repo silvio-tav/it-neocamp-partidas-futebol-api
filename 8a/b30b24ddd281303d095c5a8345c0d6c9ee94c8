@@ -1,0 +1,19 @@
+README.md
+  s_613e01c5d684f9::t_de031d34fa7a77 255
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "8ab30b24ddd281303d095c5a8345c0d6c9ee94c8",
+  "prompts": {},
+  "sessions": {
+    "s_613e01c5d684f9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7f20e2bc-06a4-44a9-9fe3-fc1a2605ccd3",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
