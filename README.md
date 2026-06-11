@@ -252,7 +252,7 @@ Com a aplicação em execução, acesse:
 | Password | `futebol` |
 | Root password | `root` |
 
-Também existe uma collection Postman no arquivo [clubes.postman_collection.json](partidas_futebol.postman_collection.json).
+Também existe uma collection Postman no arquivo [partidas_futebol.postman_collection.json](partidas_futebol.postman_collection.json).
 
 ---
 
