@@ -14,6 +14,11 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
     }
 
+    @ExceptionHandler(UsuarioJaExisteException.class)
+    public ProblemDetail handleUsuarioJaExiste(UsuarioJaExisteException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
     @ExceptionHandler(ClubeNaoEncontradoException.class)
     public ProblemDetail handleClubeNaoEncontrado(ClubeNaoEncontradoException ex){
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
