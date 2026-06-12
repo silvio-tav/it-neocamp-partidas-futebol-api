@@ -9,9 +9,110 @@
       "key": "baseUrl",
       "value": "http://localhost:8080",
       "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "JWT preenchido automaticamente após executar POST /auth/login"
     }
   ],
   "item": [
+    {
+      "name": "Autenticação",
+      "item": [
+        {
+          "name": "Registrar usuário",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"senha123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Cria um novo usuário e retorna o token JWT.\n\n**Respostas esperadas:**\n- `201 Created` — usuário criado com sucesso\n- `400 Bad Request` — dados inválidos (ex: senha com menos de 6 caracteres)\n- `409 Conflict` — username já cadastrado"
+          },
+          "response": [
+            {
+              "name": "201 - Usuário criado com sucesso",
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"token\": \"eyJhbGciOiJIUzI1NiJ9...\"\n}"
+            },
+            {
+              "name": "409 - Username já cadastrado",
+              "status": "Conflict",
+              "code": 409,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 409,\n  \"detail\": \"Username já cadastrado\"\n}"
+            },
+            {
+              "name": "400 - Dados inválidos",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 400,\n  \"detail\": \"Dados de entrada inválidos\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) {",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "    console.log('Token salvo na variável {{token}}');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"senha123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Autentica o usuário e retorna o token JWT.\n\nO token é salvo automaticamente na variável `{{token}}` da collection, dispensando cópia manual.\n\n**Respostas esperadas:**\n- `200 OK` — login realizado com sucesso\n- `401 Unauthorized` — credenciais inválidas"
+          },
+          "response": [
+            {
+              "name": "200 - Login realizado com sucesso",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"token\": \"eyJhbGciOiJIUzI1NiJ9...\"\n}"
+            },
+            {
+              "name": "401 - Credenciais inválidas",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 401,\n  \"detail\": \"Credenciais inválidas\"\n}"
+            }
+          ]
+        }
+      ]
+    },
     {
       "name": "Clubes",
       "item": [
@@ -19,7 +120,10 @@
           "name": "Cadastrar clube",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
             "url": {
               "raw": "{{baseUrl}}/clubes",
               "host": ["{{baseUrl}}"],
@@ -30,7 +134,7 @@
               "raw": "{\n  \"nome\": \"Flamengo\",\n  \"estado\": \"RJ\",\n  \"dataCriacao\": \"1895-11-15\"\n}",
               "options": { "raw": { "language": "json" } }
             },
-            "description": "Cadastra um novo clube de futebol. Retorna 409 se já existir um clube com o mesmo nome no mesmo estado.\n\n**Respostas esperadas:**\n- `201 Created` — clube cadastrado com sucesso\n- `400 Bad Request` — dados de entrada inválidos\n- `409 Conflict` — já existe um clube com o mesmo nome no estado informado"
+            "description": "Cadastra um novo clube de futebol. Retorna 409 se já existir um clube com o mesmo nome no mesmo estado.\n\n**Respostas esperadas:**\n- `201 Created` — clube cadastrado com sucesso\n- `400 Bad Request` — dados de entrada inválidos\n- `401 Unauthorized` — token ausente ou inválido\n- `409 Conflict` — já existe um clube com o mesmo nome no estado informado"
           },
           "response": [
             {
@@ -60,7 +164,10 @@
           "name": "Atualizar clube",
           "request": {
             "method": "PUT",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
             "url": {
               "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001",
               "host": ["{{baseUrl}}"],
@@ -71,7 +178,7 @@
               "raw": "{\n  \"nome\": \"Clube de Regatas do Flamengo\",\n  \"estado\": \"RJ\",\n  \"dataCriacao\": \"1895-11-15\"\n}",
               "options": { "raw": { "language": "json" } }
             },
-            "description": "Atualiza parcialmente os dados de um clube existente. Apenas os campos enviados no body serão atualizados.\n\n**Respostas esperadas:**\n- `200 OK` — clube atualizado com sucesso\n- `400 Bad Request` — dados de entrada inválidos\n- `404 Not Found` — clube não encontrado"
+            "description": "Atualiza parcialmente os dados de um clube existente. Apenas os campos enviados no body serão atualizados.\n\n**Respostas esperadas:**\n- `200 OK` — clube atualizado com sucesso\n- `400 Bad Request` — dados de entrada inválidos\n- `401 Unauthorized` — token ausente ou inválido\n- `404 Not Found` — clube não encontrado"
           },
           "response": [
             {
@@ -94,13 +201,13 @@
           "name": "Buscar clube por ID",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": {
               "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001",
               "host": ["{{baseUrl}}"],
               "path": ["clubes", "b1b2c3d4-0001-0000-0000-000000000001"]
             },
-            "description": "Retorna os dados de um clube específico pelo seu ID.\n\n**Respostas esperadas:**\n- `200 OK` — clube encontrado com sucesso\n- `404 Not Found` — clube não encontrado"
+            "description": "Retorna os dados de um clube específico pelo seu ID.\n\n**Respostas esperadas:**\n- `200 OK` — clube encontrado com sucesso\n- `401 Unauthorized` — token ausente ou inválido\n- `404 Not Found` — clube não encontrado"
           },
           "response": [
             {
@@ -123,7 +230,7 @@
           "name": "Listar clubes",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": {
               "raw": "{{baseUrl}}/clubes?nome=&estado=&ativo=&page=0&size=10&sort=nome,asc",
               "host": ["{{baseUrl}}"],
@@ -137,7 +244,7 @@
                 { "key": "sort", "value": "nome,asc", "description": "Ordenação: campo,direção (ex: nome,asc)" }
               ]
             },
-            "description": "Lista clubes com filtros opcionais por nome, estado e situação. Os filtros podem ser combinados livremente.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)"
+            "description": "Lista clubes com filtros opcionais por nome, estado e situação. Os filtros podem ser combinados livremente.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)\n- `401 Unauthorized` — token ausente ou inválido"
           },
           "response": [
             {
@@ -160,13 +267,13 @@
           "name": "Inativar clube",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": {
               "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001",
               "host": ["{{baseUrl}}"],
               "path": ["clubes", "b1b2c3d4-0001-0000-0000-000000000001"]
             },
-            "description": "Realiza a inativação (soft delete) de um clube pelo seu ID.\n\n**Respostas esperadas:**\n- `204 No Content` — clube inativado com sucesso\n- `404 Not Found` — clube não encontrado"
+            "description": "Realiza a inativação (soft delete) de um clube pelo seu ID.\n\n**Respostas esperadas:**\n- `204 No Content` — clube inativado com sucesso\n- `401 Unauthorized` — token ausente ou inválido\n- `404 Not Found` — clube não encontrado"
           },
           "response": [
             { "name": "204 - Clube inativado com sucesso", "status": "No Content", "code": 204, "body": "" },
@@ -183,7 +290,7 @@
           "name": "Retrospecto geral do clube",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": {
               "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto?atuacao=",
               "host": ["{{baseUrl}}"],
@@ -192,7 +299,7 @@
                 { "key": "atuacao", "value": "MANDANTE", "description": "Filtrar por atuação: MANDANTE | VISITANTE (omitir para ambos)", "disabled": true }
               ]
             },
-            "description": "Retorna o retrospecto geral de um clube. Use `atuacao=MANDANTE` para jogos em casa, `atuacao=VISITANTE` para jogos fora, ou omita para todos.\n\n**Respostas esperadas:**\n- `200 OK` — retrospecto retornado (todos os campos zerados se não houver partidas)\n- `404 Not Found` — clube não encontrado"
+            "description": "Retorna o retrospecto geral de um clube. Use `atuacao=MANDANTE` para jogos em casa, `atuacao=VISITANTE` para jogos fora, ou omita para todos.\n\n**Respostas esperadas:**\n- `200 OK` — retrospecto retornado (todos os campos zerados se não houver partidas)\n- `401 Unauthorized` — token ausente ou inválido\n- `404 Not Found` — clube não encontrado"
           },
           "response": [
             {
@@ -222,7 +329,7 @@
           "name": "Retrospecto do clube contra adversários",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": {
               "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto/adversarios?atuacao=",
               "host": ["{{baseUrl}}"],
@@ -231,7 +338,7 @@
                 { "key": "atuacao", "value": "MANDANTE", "description": "Filtrar por atuação: MANDANTE | VISITANTE (omitir para ambos)", "disabled": true }
               ]
             },
-            "description": "Retorna o retrospecto do clube separado por adversário. Use `atuacao=MANDANTE` para jogos em casa, `atuacao=VISITANTE` para jogos fora, ou omita para todos.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)\n- `404 Not Found` — clube não encontrado"
+            "description": "Retorna o retrospecto do clube separado por adversário. Use `atuacao=MANDANTE` para jogos em casa, `atuacao=VISITANTE` para jogos fora, ou omita para todos.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)\n- `401 Unauthorized` — token ausente ou inválido\n- `404 Not Found` — clube não encontrado"
           },
           "response": [
             {
@@ -261,7 +368,7 @@
           "name": "Confrontos diretos entre dois clubes",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": {
               "raw": "{{baseUrl}}/clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto/adversarios/b1b2c3d4-0002-0000-0000-000000000002?atuacao=",
               "host": ["{{baseUrl}}"],
@@ -270,7 +377,7 @@
                 { "key": "atuacao", "value": "MANDANTE", "description": "Filtrar por atuação: MANDANTE | VISITANTE (omitir para ambos)", "disabled": true }
               ]
             },
-            "description": "Retorna todas as partidas entre dois clubes e o retrospecto do clube principal. Use `atuacao=MANDANTE` para ver apenas os confrontos em que o clube principal jogou em casa, `atuacao=VISITANTE` para jogos fora, ou omita para todos.\n\n**Respostas esperadas:**\n- `200 OK` — confrontos retornados com sucesso (lista pode ser vazia)\n- `404 Not Found` — um dos clubes não encontrado"
+            "description": "Retorna todas as partidas entre dois clubes e o retrospecto do clube principal. Use `atuacao=MANDANTE` para ver apenas os confrontos em que o clube principal jogou em casa, `atuacao=VISITANTE` para jogos fora, ou omita para todos.\n\n**Respostas esperadas:**\n- `200 OK` — confrontos retornados com sucesso (lista pode ser vazia)\n- `401 Unauthorized` — token ausente ou inválido\n- `404 Not Found` — um dos clubes não encontrado"
           },
           "response": [
             {
@@ -300,7 +407,7 @@
           "name": "Ranking de clubes",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": {
               "raw": "{{baseUrl}}/clubes/ranking?tipo=PONTOS",
               "host": ["{{baseUrl}}"],
@@ -313,7 +420,7 @@
                 }
               ]
             },
-            "description": "Retorna a lista de clubes ordenada pelo critério informado. Clubes sem pontuação no critério escolhido são excluídos.\n\n**Valores possíveis para `tipo`:**\n- `PONTOS` — vitória = 3pts, empate = 1pt (padrão)\n- `GOLS` — total de gols feitos\n- `VITORIAS` — total de vitórias\n- `JOGOS` — total de jogos disputados\n\n**Respostas esperadas:**\n- `200 OK` — ranking retornado com sucesso (pode ser vazio)"
+            "description": "Retorna a lista de clubes ordenada pelo critério informado. Clubes sem pontuação no critério escolhido são excluídos.\n\n**Valores possíveis para `tipo`:**\n- `PONTOS` — vitória = 3pts, empate = 1pt (padrão)\n- `GOLS` — total de gols feitos\n- `VITORIAS` — total de vitórias\n- `JOGOS` — total de jogos disputados\n\n**Respostas esperadas:**\n- `200 OK` — ranking retornado com sucesso (pode ser vazio)\n- `401 Unauthorized` — token ausente ou inválido"
           },
           "response": [
             {
@@ -341,7 +448,10 @@
           "name": "Cadastrar estádio",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
             "url": {
               "raw": "{{baseUrl}}/estadios",
               "host": ["{{baseUrl}}"],
@@ -352,7 +462,7 @@
               "raw": "{\n  \"nome\": \"Maracanã\"\n}",
               "options": { "raw": { "language": "json" } }
             },
-            "description": "Cadastra um novo estádio.\n\n**Respostas esperadas:**\n- `201 Created` — estádio cadastrado com sucesso\n- `400 Bad Request` — dados de entrada inválidos\n- `409 Conflict` — já existe um estádio com este nome"
+            "description": "Cadastra um novo estádio.\n\n**Respostas esperadas:**\n- `201 Created` — estádio cadastrado com sucesso\n- `400 Bad Request` — dados de entrada inválidos\n- `401 Unauthorized` — token ausente ou inválido\n- `409 Conflict` — já existe um estádio com este nome"
           },
           "response": [
             {
@@ -382,7 +492,10 @@
           "name": "Atualizar estádio",
           "request": {
             "method": "PUT",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
             "url": {
               "raw": "{{baseUrl}}/estadios/a1b2c3d4-0001-0000-0000-000000000001",
               "host": ["{{baseUrl}}"],
@@ -393,7 +506,7 @@
               "raw": "{\n  \"nome\": \"Estádio do Maracanã\"\n}",
               "options": { "raw": { "language": "json" } }
             },
-            "description": "Atualiza o nome de um estádio existente.\n\n**Respostas esperadas:**\n- `200 OK` — estádio atualizado com sucesso\n- `404 Not Found` — estádio não encontrado\n- `409 Conflict` — já existe um estádio com este nome"
+            "description": "Atualiza o nome de um estádio existente.\n\n**Respostas esperadas:**\n- `200 OK` — estádio atualizado com sucesso\n- `401 Unauthorized` — token ausente ou inválido\n- `404 Not Found` — estádio não encontrado\n- `409 Conflict` — já existe um estádio com este nome"
           },
           "response": [
             {
@@ -416,13 +529,13 @@
           "name": "Buscar estádio por ID",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": {
               "raw": "{{baseUrl}}/estadios/a1b2c3d4-0001-0000-0000-000000000001",
               "host": ["{{baseUrl}}"],
               "path": ["estadios", "a1b2c3d4-0001-0000-0000-000000000001"]
             },
-            "description": "Retorna os dados de um estádio pelo seu ID.\n\n**Respostas esperadas:**\n- `200 OK` — estádio encontrado\n- `404 Not Found` — estádio não encontrado"
+            "description": "Retorna os dados de um estádio pelo seu ID.\n\n**Respostas esperadas:**\n- `200 OK` — estádio encontrado\n- `401 Unauthorized` — token ausente ou inválido\n- `404 Not Found` — estádio não encontrado"
           },
           "response": [
             {
@@ -445,7 +558,7 @@
           "name": "Listar estádios",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": {
               "raw": "{{baseUrl}}/estadios?nomeEstadio=&page=0&size=10&sort=nome,asc",
               "host": ["{{baseUrl}}"],
@@ -457,7 +570,7 @@
                 { "key": "sort", "value": "nome,asc", "description": "Ordenação: campo,direção" }
               ]
             },
-            "description": "Lista estádios com filtro opcional por nome.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)"
+            "description": "Lista estádios com filtro opcional por nome.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)\n- `401 Unauthorized` — token ausente ou inválido"
           },
           "response": [
             {
@@ -473,13 +586,13 @@
           "name": "Deletar estádio",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": {
               "raw": "{{baseUrl}}/estadios/a1b2c3d4-0001-0000-0000-000000000001",
               "host": ["{{baseUrl}}"],
               "path": ["estadios", "a1b2c3d4-0001-0000-0000-000000000001"]
             },
-            "description": "Remove um estádio pelo seu ID.\n\n**Respostas esperadas:**\n- `204 No Content` — estádio removido com sucesso\n- `404 Not Found` — estádio não encontrado"
+            "description": "Remove um estádio pelo seu ID.\n\n**Respostas esperadas:**\n- `204 No Content` — estádio removido com sucesso\n- `401 Unauthorized` — token ausente ou inválido\n- `404 Not Found` — estádio não encontrado"
           },
           "response": [
             { "name": "204 - Estádio removido com sucesso", "status": "No Content", "code": 204, "body": "" },
@@ -501,7 +614,10 @@
           "name": "Cadastrar partida",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
             "url": {
               "raw": "{{baseUrl}}/partidas",
               "host": ["{{baseUrl}}"],
@@ -512,7 +628,7 @@
               "raw": "{\n  \"clubeCasaId\": \"b1b2c3d4-0001-0000-0000-000000000001\",\n  \"clubeVisitanteId\": \"b1b2c3d4-0002-0000-0000-000000000002\",\n  \"estadioId\": \"a1b2c3d4-0001-0000-0000-000000000001\",\n  \"dataHoraPartida\": \"2024-06-01T16:00:00\",\n  \"golsCasa\": 2,\n  \"golsVisitante\": 1\n}",
               "options": { "raw": { "language": "json" } }
             },
-            "description": "Cadastra uma nova partida. Valida clubes, estádio, conflito de horário (janela de 48h) e disponibilidade do estádio no dia.\n\n**Respostas esperadas:**\n- `201 Created` — partida cadastrada com sucesso\n- `400 Bad Request` — dados inválidos ou clubes iguais\n- `404 Not Found` — clube ou estádio não encontrado\n- `409 Conflict` — conflito de horário ou estádio já ocupado no dia"
+            "description": "Cadastra uma nova partida. Valida clubes, estádio, conflito de horário (janela de 48h) e disponibilidade do estádio no dia.\n\n**Respostas esperadas:**\n- `201 Created` — partida cadastrada com sucesso\n- `400 Bad Request` — dados inválidos ou clubes iguais\n- `401 Unauthorized` — token ausente ou inválido\n- `404 Not Found` — clube ou estádio não encontrado\n- `409 Conflict` — conflito de horário ou estádio já ocupado no dia"
           },
           "response": [
             {
@@ -556,7 +672,10 @@
           "name": "Atualizar partida",
           "request": {
             "method": "PUT",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
             "url": {
               "raw": "{{baseUrl}}/partidas/c1b2c3d4-0001-0000-0000-000000000001",
               "host": ["{{baseUrl}}"],
@@ -567,7 +686,7 @@
               "raw": "{\n  \"golsCasa\": 3,\n  \"golsVisitante\": 2\n}",
               "options": { "raw": { "language": "json" } }
             },
-            "description": "Atualiza parcialmente os dados de uma partida. Apenas os campos enviados serão atualizados.\n\n**Respostas esperadas:**\n- `200 OK` — partida atualizada com sucesso\n- `400 Bad Request` — dados inválidos ou clubes iguais\n- `404 Not Found` — partida, clube ou estádio não encontrado\n- `409 Conflict` — conflito de horário ou estádio já ocupado no dia"
+            "description": "Atualiza parcialmente os dados de uma partida. Apenas os campos enviados serão atualizados.\n\n**Respostas esperadas:**\n- `200 OK` — partida atualizada com sucesso\n- `400 Bad Request` — dados inválidos ou clubes iguais\n- `401 Unauthorized` — token ausente ou inválido\n- `404 Not Found` — partida, clube ou estádio não encontrado\n- `409 Conflict` — conflito de horário ou estádio já ocupado no dia"
           },
           "response": [
             {
@@ -597,13 +716,13 @@
           "name": "Buscar partida por ID",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": {
               "raw": "{{baseUrl}}/partidas/c1b2c3d4-0001-0000-0000-000000000001",
               "host": ["{{baseUrl}}"],
               "path": ["partidas", "c1b2c3d4-0001-0000-0000-000000000001"]
             },
-            "description": "Retorna os dados de uma partida específica pelo seu ID.\n\n**Respostas esperadas:**\n- `200 OK` — partida encontrada com sucesso\n- `404 Not Found` — partida não encontrada"
+            "description": "Retorna os dados de uma partida específica pelo seu ID.\n\n**Respostas esperadas:**\n- `200 OK` — partida encontrada com sucesso\n- `401 Unauthorized` — token ausente ou inválido\n- `404 Not Found` — partida não encontrada"
           },
           "response": [
             {
@@ -626,7 +745,7 @@
           "name": "Listar partidas",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": {
               "raw": "{{baseUrl}}/partidas?nomeClube=&nomeEstadio=&goleada=&page=0&size=10&sort=dataHoraPartida,asc",
               "host": ["{{baseUrl}}"],
@@ -640,7 +759,7 @@
                 { "key": "sort", "value": "dataHoraPartida,asc", "description": "Ordenação: campo,direção" }
               ]
             },
-            "description": "Lista partidas com filtros opcionais por nome do clube, nome do estádio e goleadas.\n\nUse `goleada=true` para retornar apenas partidas com diferença de gols igual ou superior a 3.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)"
+            "description": "Lista partidas com filtros opcionais por nome do clube, nome do estádio e goleadas.\n\nUse `goleada=true` para retornar apenas partidas com diferença de gols igual ou superior a 3.\n\n**Respostas esperadas:**\n- `200 OK` — lista retornada com sucesso (pode ser vazia)\n- `401 Unauthorized` — token ausente ou inválido"
           },
           "response": [
             {
@@ -663,13 +782,13 @@
           "name": "Deletar partida",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": {
               "raw": "{{baseUrl}}/partidas/c1b2c3d4-0001-0000-0000-000000000001",
               "host": ["{{baseUrl}}"],
               "path": ["partidas", "c1b2c3d4-0001-0000-0000-000000000001"]
             },
-            "description": "Remove uma partida pelo seu ID.\n\n**Respostas esperadas:**\n- `204 No Content` — partida removida com sucesso\n- `404 Not Found` — partida não encontrada"
+            "description": "Remove uma partida pelo seu ID.\n\n**Respostas esperadas:**\n- `204 No Content` — partida removida com sucesso\n- `401 Unauthorized` — token ausente ou inválido\n- `404 Not Found` — partida não encontrada"
           },
           "response": [
             { "name": "204 - Partida removida com sucesso", "status": "No Content", "code": 204, "body": "" },
