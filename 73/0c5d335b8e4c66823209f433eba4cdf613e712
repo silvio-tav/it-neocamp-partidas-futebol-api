@@ -1,0 +1,48 @@
+src/main/java/com/example/it_neocamp_projeto_final_workshop/security/JwtAuthenticationFilter.java
+  s_c7a0ed88289c0b::t_4e114f59c28a39 1-56
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/auth/LoginRequest.java
+  s_c7a0ed88289c0b::t_00f490a10d6070 1-8
+pom.xml
+  s_c7a0ed88289c0b::t_700236ffe9f9fc 79-98
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/auth/AuthResponse.java
+  s_c7a0ed88289c0b::t_f780da4d78eef1 1-3
+src/main/java/com/example/it_neocamp_projeto_final_workshop/model/Role.java
+  s_c7a0ed88289c0b::t_634b1dda616d2f 1-6
+src/main/java/com/example/it_neocamp_projeto_final_workshop/model/Usuario.java
+  s_c7a0ed88289c0b::t_0f5840f9be8924 1-49
+src/main/java/com/example/it_neocamp_projeto_final_workshop/controller/AuthController.java
+  s_c7a0ed88289c0b::t_fbcaa9b20682e6 1-60
+src/main/java/com/example/it_neocamp_projeto_final_workshop/security/UsuarioDetailsService.java
+  s_c7a0ed88289c0b::t_628a7ad3308300 1-21
+src/main/java/com/example/it_neocamp_projeto_final_workshop/config/SecurityConfig.java
+  s_c7a0ed88289c0b::t_bf8c9e1fb85290 1-3,5-25,27-50,52-65
+  s_c7a0ed88289c0b::t_590e17e13f0177 4,26,51
+src/main/java/com/example/it_neocamp_projeto_final_workshop/repository/UsuarioRepository.java
+  s_c7a0ed88289c0b::t_0b8e456c63dc3f 1-12
+src/main/resources/application.yaml
+  s_c7a0ed88289c0b::t_6a90e5d72d5ba2 32-36
+src/main/resources/db/migration/V5__create_users.sql
+  s_c7a0ed88289c0b::t_378946263f7e4a 1-6
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/auth/RegisterRequest.java
+  s_c7a0ed88289c0b::t_757fed09d5a3c2 1-9
+partidas_futebol.postman_collection.json
+  s_c7a0ed88289c0b::t_e4d5aaa51ee95f 12-17,21-115,123-126,137,167-170,181,204,210,233,247,270,276,293,302,332,341,371,380,410,423,451-454,465,495-498,509,532,538,561,573,589,595,617-620,631,675-678,689,719,725,748,762,785,791
+src/main/java/com/example/it_neocamp_projeto_final_workshop/security/JwtService.java
+  s_c7a0ed88289c0b::t_dcf0d7f25207c1 1-57
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "730c5d335b8e4c66823209f433eba4cdf613e712",
+  "prompts": {},
+  "sessions": {
+    "s_c7a0ed88289c0b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f89a91d5-fd14-40b6-b2d6-9772fd95e988",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
