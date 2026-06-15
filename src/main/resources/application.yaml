@@ -29,6 +29,11 @@ spring:
           preferred_uuid_jdbc_type: CHAR
     show-sql: true
 
+jwt:
+  # chave Base64 de 256 bits — troque em produção
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  expiration-ms: 86400000  # 24 horas
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html        # URL da interface visual

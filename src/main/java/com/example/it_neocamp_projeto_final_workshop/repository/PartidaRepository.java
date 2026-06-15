@@ -23,19 +23,23 @@ public interface PartidaRepository extends JpaRepository<Partida, UUID>, JpaSpec
             SELECT COUNT(p) > 0 FROM Partida p
             WHERE (p.clubeCasa.clubeId = :clubeId OR p.clubeVisitante.clubeId = :clubeId)
             AND p.dataHoraPartida BETWEEN :inicio AND :fim
+            AND (:excludeId IS NULL OR p.partidaId <> :excludeId)
             """)
     boolean existeConflitoDeHorario(@Param("clubeId") UUID clubeId,
                                     @Param("inicio") LocalDateTime inicio,
-                                    @Param("fim") LocalDateTime fim);
+                                    @Param("fim") LocalDateTime fim,
+                                    @Param("excludeId") UUID excludeId);
 
     @Query("""
             SELECT COUNT(p) > 0 FROM Partida p
             WHERE p.estadio.estadioId = :estadioId
             AND p.dataHoraPartida BETWEEN :inicioDia AND :fimDia
+            AND (:excludeId IS NULL OR p.partidaId <> :excludeId)
             """)
     boolean existePartidaNoEstadioNoDia(@Param("estadioId") UUID estadioId,
                                         @Param("inicioDia") LocalDateTime inicioDia,
-                                        @Param("fimDia") LocalDateTime fimDia);
+                                        @Param("fimDia") LocalDateTime fimDia,
+                                        @Param("excludeId") UUID excludeId);
 
     @Query("""
   SELECT

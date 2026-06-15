@@ -168,7 +168,8 @@ class PartidaServiceImplTest {
         when(partidaRepository.existeConflitoDeHorario(
                 eq(CLUBE_CASA_ID),
                 eq(DATA_HORA_PARTIDA.minusHours(48)),
-                eq(DATA_HORA_PARTIDA.plusHours(48))
+                eq(DATA_HORA_PARTIDA.plusHours(48)),
+                eq((java.util.UUID) null)
         )).thenReturn(true);
 
         assertThatThrownBy(() -> partidaService.cadastrarPartida(postRequest()))
@@ -181,8 +182,8 @@ class PartidaServiceImplTest {
     @Test
     void cadastrarPartida_quandoClubeVisitanteTemConflito_lancaExcecao() {
         preparaClubesEEstadioValidos();
-        when(partidaRepository.existeConflitoDeHorario(eq(CLUBE_CASA_ID), any(), any())).thenReturn(false);
-        when(partidaRepository.existeConflitoDeHorario(eq(CLUBE_VISITANTE_ID), any(), any())).thenReturn(true);
+        when(partidaRepository.existeConflitoDeHorario(eq(CLUBE_CASA_ID), any(), any(), any())).thenReturn(false);
+        when(partidaRepository.existeConflitoDeHorario(eq(CLUBE_VISITANTE_ID), any(), any(), any())).thenReturn(true);
 
         assertThatThrownBy(() -> partidaService.cadastrarPartida(postRequest()))
                 .isInstanceOf(ConflitoDeHorarioException.class)
@@ -194,11 +195,12 @@ class PartidaServiceImplTest {
     @Test
     void cadastrarPartida_quandoEstadioOcupadoNoDia_lancaExcecao() {
         preparaClubesEEstadioValidos();
-        when(partidaRepository.existeConflitoDeHorario(any(), any(), any())).thenReturn(false);
+        when(partidaRepository.existeConflitoDeHorario(any(), any(), any(), any())).thenReturn(false);
         when(partidaRepository.existePartidaNoEstadioNoDia(
                 eq(ESTADIO_ID),
                 eq(DATA_HORA_PARTIDA.toLocalDate().atStartOfDay()),
-                eq(DATA_HORA_PARTIDA.toLocalDate().atStartOfDay().plusDays(1).minusNanos(1))
+                eq(DATA_HORA_PARTIDA.toLocalDate().atStartOfDay().plusDays(1).minusNanos(1)),
+                eq((java.util.UUID) null)
         )).thenReturn(true);
 
         assertThatThrownBy(() -> partidaService.cadastrarPartida(postRequest()))

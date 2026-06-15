@@ -2,6 +2,8 @@
 
 ![Java](https://img.shields.io/badge/Java-17-007396?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.6-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
 ![Spring Data JPA](https://img.shields.io/badge/Spring%20Data%20JPA-59666C?style=for-the-badge&logo=hibernate&logoColor=white)
 ![Flyway](https://img.shields.io/badge/Flyway-CC0200?style=for-the-badge&logo=flyway&logoColor=white)
 ![H2](https://img.shields.io/badge/H2-Database-1021FF?style=for-the-badge)
@@ -9,9 +11,9 @@
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
 
-Projeto de estudos desenvolvido com Java e Spring Boot para praticar a criação de uma API REST completa, com CRUD, validações, filtros dinâmicos, paginação, migrations de banco, consultas agregadas, ranking e retrospecto de clubes de futebol.
+Projeto de estudos desenvolvido com Java e Spring Boot para praticar a criação de uma API REST completa, com autenticação JWT, CRUD, validações, filtros dinâmicos, paginação, migrations de banco, consultas agregadas, ranking e retrospecto de clubes de futebol.
 
-> Objetivo principal: consolidar conceitos de backend com Spring Boot em um domínio simples, mas com regras de negócio reais o bastante para exercitar arquitetura em camadas.
+> Objetivo principal: consolidar conceitos de backend com Spring Boot em um domínio simples, mas com regras de negócio reais o bastante para exercitar arquitetura em camadas, incluindo segurança com Spring Security e tokens JWT.
 
 ---
 
@@ -23,6 +25,7 @@ Projeto de estudos desenvolvido com Java e Spring Boot para praticar a criação
 - [Arquitetura](#arquitetura)
 - [Modelo de dados](#modelo-de-dados)
 - [Como executar](#como-executar)
+- [Autenticação](#autenticação)
 - [Documentação da API](#documentação-da-api)
 - [Endpoints](#endpoints)
 - [Exemplos de requisição](#exemplos-de-requisição)
@@ -36,7 +39,7 @@ Projeto de estudos desenvolvido com Java e Spring Boot para praticar a criação
 
 ## Sobre o projeto
 
-A aplicação permite gerenciar clubes, estádios e partidas de futebol. Além do CRUD básico, a API também oferece consultas de retrospecto, confrontos diretos entre clubes e rankings por diferentes critérios.
+A aplicação permite gerenciar clubes, estádios e partidas de futebol. Além do CRUD básico, a API oferece consultas de retrospecto, confrontos diretos entre clubes e rankings por diferentes critérios. Todos os endpoints (exceto os de autenticação) são protegidos por JWT.
 
 Este projeto foi criado para estudos, por isso o README também serve como guia de consulta para entender a estrutura do código, os fluxos principais e os recursos do Spring utilizados.
 
@@ -46,6 +49,7 @@ Este projeto foi criado para estudos, por isso o README também serve como guia 
 
 | Área | Recursos |
 | --- | --- |
+| Autenticação | Registro de usuário, login com JWT, proteção de rotas com Bearer token |
 | Clubes | Cadastro, atualização parcial, busca por ID, listagem paginada, filtros por nome, estado e status, inativação lógica |
 | Estádios | Cadastro, atualização, busca por ID, listagem paginada, filtro por nome, exclusão |
 | Partidas | Cadastro, atualização parcial, busca por ID, listagem paginada, filtros por clube, estádio e goleada, exclusão |
@@ -63,6 +67,8 @@ Este projeto foi criado para estudos, por isso o README também serve como guia 
 | Java 17 | Linguagem principal |
 | Spring Boot 4.0.6 | Base da aplicação |
 | Spring Web MVC | Criação dos endpoints REST |
+| Spring Security | Controle de autenticação e autorização |
+| JJWT 0.12.6 | Geração e validação de tokens JWT |
 | Spring Data JPA | Persistência e repositories |
 | Hibernate | Implementação JPA |
 | Bean Validation | Validações com annotations |
@@ -82,7 +88,8 @@ O projeto segue uma arquitetura em camadas simples, comum em APIs Spring Boot:
 
 ```mermaid
 flowchart LR
-    Client[Cliente HTTP] --> Controller[Controllers REST]
+    Client[Cliente HTTP] --> Filter[JWT Filter]
+    Filter --> Controller[Controllers REST]
     Controller --> Service[Services]
     Service --> Repository[Repositories]
     Repository --> Database[(H2 ou MySQL)]
@@ -95,6 +102,7 @@ flowchart LR
 
 | Camada | Responsabilidade |
 | --- | --- |
+| `security` | Filtra requisições, valida JWT e autentica o usuário no contexto do Spring |
 | `controller` | Recebe requisições HTTP, valida entrada e retorna respostas |
 | `service` | Centraliza regras de negócio |
 | `repository` | Acessa o banco usando Spring Data JPA |
@@ -110,6 +118,13 @@ flowchart LR
 
 ```mermaid
 erDiagram
+    USUARIO {
+        UUID usuario_id PK
+        string username
+        string password
+        string role
+    }
+
     CLUBE ||--o{ PARTIDA : clube_casa
     CLUBE ||--o{ PARTIDA : clube_visitante
     ESTADIO ||--o{ PARTIDA : sedia
@@ -223,6 +238,122 @@ O projeto possui arquivos `mvnw` e `mvnw.cmd`, mas para usar o wrapper é necess
 
 ---
 
+## Autenticação
+
+A API utiliza autenticação stateless com **JWT (JSON Web Token)**. Todos os endpoints, exceto `/auth/**`, `/swagger-ui/**` e `/v3/api-docs/**`, exigem um token válido no header da requisição.
+
+### Fluxo de autenticação
+
+```mermaid
+sequenceDiagram
+    participant C as Cliente
+    participant A as POST /auth/register ou /auth/login
+    participant S as Spring Security
+    participant DB as Banco de dados
+
+    C->>A: { username, password }
+    A->>DB: busca ou salva usuário
+    DB-->>A: usuário encontrado
+    A->>S: gera JWT assinado (24h)
+    S-->>C: { "token": "eyJ..." }
+
+    C->>S: GET /clubes (Authorization: Bearer eyJ...)
+    S->>S: valida assinatura e expiração
+    S-->>C: 200 OK com dados
+```
+
+### Endpoints de autenticação
+
+| Método | Endpoint | Descrição | Auth |
+| --- | --- | --- | --- |
+| `POST` | `/auth/register` | Cria um novo usuário e retorna o token JWT | Não |
+| `POST` | `/auth/login` | Autentica e retorna o token JWT | Não |
+
+#### Registrar usuário
+
+```http
+POST /auth/register
+Content-Type: application/json
+```
+
+```json
+{
+  "username": "admin",
+  "password": "senha123"
+}
+```
+
+**Resposta `201 Created`:**
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+
+#### Login
+
+```http
+POST /auth/login
+Content-Type: application/json
+```
+
+```json
+{
+  "username": "admin",
+  "password": "senha123"
+}
+```
+
+**Resposta `200 OK`:**
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+
+### Usando o token nas requisições
+
+Inclua o token no header `Authorization` de todas as chamadas protegidas:
+
+```http
+GET /clubes
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
+```
+
+### Rotas públicas (sem token)
+
+| Rota | Motivo |
+| --- | --- |
+| `POST /auth/register` | Criação de conta |
+| `POST /auth/login` | Autenticação |
+| `GET /swagger-ui/**` | Documentação |
+| `GET /v3/api-docs/**` | Contrato OpenAPI |
+| `GET /h2-console/**` | Console H2 (apenas no profile padrão) |
+
+### Configuração JWT
+
+As propriedades do token ficam no `application.yaml`:
+
+```yaml
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  expiration-ms: 86400000  # 24 horas
+```
+
+> **Importante:** troque o `jwt.secret` por uma chave Base64 de 256 bits gerada de forma segura antes de usar em produção.
+
+### Postman
+
+A collection [partidas_futebol.postman_collection.json](partidas_futebol.postman_collection.json) já está configurada para autenticação:
+
+1. Execute `POST /auth/register` ou `POST /auth/login`
+2. O token é salvo automaticamente na variável `{{token}}` da collection via script
+3. Todos os outros requests já enviam o header `Authorization: Bearer {{token}}` automaticamente
+
+---
+
 ## Documentação da API
 
 Com a aplicação em execução, acesse:
@@ -252,11 +383,18 @@ Com a aplicação em execução, acesse:
 | Password | `futebol` |
 | Root password | `root` |
 
-Também existe uma collection Postman no arquivo [clubes.postman_collection.json](partidas_futebol.postman_collection.json).
-
 ---
 
 ## Endpoints
+
+> Todos os endpoints abaixo exigem o header `Authorization: Bearer <token>`.
+
+### Autenticação
+
+| Método | Endpoint | Descrição | Auth |
+| --- | --- | --- | --- |
+| `POST` | `/auth/register` | Registra um novo usuário | Não |
+| `POST` | `/auth/login` | Realiza login e retorna o token | Não |
 
 ### Clubes
 
@@ -359,11 +497,38 @@ GET /partidas?nomeClube=Fla&nomeEstadio=Maracana&goleada=true&page=0&size=10
 
 ## Exemplos de requisição
 
+### Registrar e autenticar
+
+```http
+POST /auth/register
+Content-Type: application/json
+```
+
+```json
+{
+  "username": "admin",
+  "password": "senha123"
+}
+```
+
+```http
+POST /auth/login
+Content-Type: application/json
+```
+
+```json
+{
+  "username": "admin",
+  "password": "senha123"
+}
+```
+
 ### Cadastrar clube
 
 ```http
 POST /clubes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
 ```
 
 ```json
@@ -379,6 +544,7 @@ Content-Type: application/json
 ```http
 POST /estadios
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
 ```
 
 ```json
@@ -392,6 +558,7 @@ Content-Type: application/json
 ```http
 POST /partidas
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
 ```
 
 ```json
@@ -409,23 +576,29 @@ Content-Type: application/json
 
 ```http
 GET /clubes/ranking?tipo=PONTOS
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
 ```
 
 ### Consultar retrospecto de um clube
 
 ```http
 GET /clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto
-```
-
-### Consultar retrospecto por atuação
-
-```http
-GET /clubes/b1b2c3d4-0001-0000-0000-000000000001/retrospecto?atuacao=MANDANTE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
 ```
 
 ---
 
 ## Regras de negócio
+
+### Autenticação
+
+| Regra | Comportamento |
+| --- | --- |
+| Username único | Não permite cadastrar username já existente — retorna `409 Conflict` |
+| Senha mínima | A senha deve ter ao menos 6 caracteres |
+| Senha criptografada | A senha é armazenada com BCrypt, nunca em texto plano |
+| Token de 24h | O JWT expira em 24 horas |
+| Rotas protegidas | Qualquer rota fora de `/auth/**` exige `Authorization: Bearer <token>` |
 
 ### Clubes
 
@@ -475,6 +648,7 @@ O projeto usa Flyway para criar e popular o banco automaticamente. Por padrão, 
 | `V2__insert_initial_data.sql` | Insere clubes, estádios e partidas iniciais |
 | `V3__insert_test_data.sql` | Insere dados adicionais para testes de ranking, goleadas e retrospecto |
 | `V4__create_indexes.sql` | Cria índices para otimizar consultas frequentes |
+| `V5__create_users.sql` | Cria a tabela `usuario` para autenticação JWT |
 
 ### Índices criados
 
@@ -510,20 +684,21 @@ src
 ├── main
 │   ├── java
 │   │   └── com/example/it_neocamp_projeto_final_workshop
-│   │       ├── config
-│   │       ├── controller
-│   │       ├── dto
-│   │       ├── enums
-│   │       ├── exception
-│   │       ├── handler
-│   │       ├── mapper
-│   │       ├── model
-│   │       ├── repository
-│   │       ├── service
-│   │       └── specification
+│   │       ├── config         # SecurityConfig, OpenApiConfig
+│   │       ├── controller     # AuthController, ClubeController, EstadioController, PartidaController
+│   │       ├── dto            # DTOs de entrada e saída (auth, clube, estádio, partida, retrospecto)
+│   │       ├── enums          # Atuacao, EstadoBrasileiro, RankingTipo, Role
+│   │       ├── exception      # Exceções de domínio
+│   │       ├── handler        # GlobalExceptionHandler
+│   │       ├── mapper         # Conversores entidade <-> DTO
+│   │       ├── model          # Usuario, Clube, Estadio, Partida
+│   │       ├── repository     # UsuarioRepository, ClubeRepository, EstadioRepository, PartidaRepository
+│   │       ├── security       # JwtService, JwtAuthenticationFilter, UsuarioDetailsService
+│   │       ├── service        # Implementações dos serviços de negócio
+│   │       └── specification  # Filtros dinâmicos com Specification
 │   └── resources
 │       ├── application.yaml
-│       └── db/migration
+│       └── db/migration       # V1 a V5
 └── test
     └── java
 ```
@@ -534,6 +709,10 @@ src
 
 - Criação de APIs REST com Spring Boot
 - Separação de responsabilidades em camadas
+- Autenticação e autorização com Spring Security
+- Geração e validação de tokens JWT com JJWT
+- Proteção de rotas com filtros stateless
+- Hash de senhas com BCrypt
 - Uso de DTOs para entrada e saída de dados
 - Validação com Bean Validation
 - Tratamento centralizado de exceções
@@ -556,7 +735,8 @@ src
 - Separar dados de exemplo/teste em um profile próprio para evitar carga automática em ambientes persistentes
 - Criar um Dockerfile para a aplicação e um Compose completo com API + MySQL
 - Criar pipeline de CI para rodar testes e validar migrations
-- Implementar autenticação e autorização, caso a API seja exposta fora do ambiente local
+- Adicionar refresh token para renovar o JWT sem novo login
+- Implementar roles de acesso (ex: apenas `ADMIN` pode deletar clubes)
 - Adicionar observabilidade com Actuator, health checks e logs estruturados
 - Melhorar buscas textuais com recursos específicos do banco escolhido
 - Criar profile para outros bancos, como PostgreSQL, se houver necessidade de portabilidade

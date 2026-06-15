@@ -38,8 +38,8 @@ public class PartidaServiceImpl implements PartidaService{
         Estadio estadio = validarEstadio(partidaPostRequest.getEstadioId());
         
         validarConflitoDeHorario(clubes.clubeCasa().getClubeId(), clubes.clubeVisitante().getClubeId(),
-                partidaPostRequest.getDataHoraPartida());
-        validarEstadioNoDia(estadio.getEstadioId(), partidaPostRequest.getDataHoraPartida());
+                partidaPostRequest.getDataHoraPartida(), null);
+        validarEstadioNoDia(estadio.getEstadioId(), partidaPostRequest.getDataHoraPartida(), null);
 
         Partida partida = new Partida();
         partida.setClubeCasa(clubes.clubeCasa());
@@ -72,8 +72,8 @@ public class PartidaServiceImpl implements PartidaService{
 
         ClubesValidados clubes = validarClubes(clubeCasaId, clubeVisitanteId);
         Estadio estadio = validarEstadio(estadioId);
-        validarConflitoDeHorario(clubes.clubeCasa().getClubeId(), clubes.clubeVisitante().getClubeId(), dataHora);
-        validarEstadioNoDia(estadio.getEstadioId(), dataHora);
+        validarConflitoDeHorario(clubes.clubeCasa().getClubeId(), clubes.clubeVisitante().getClubeId(), dataHora, partidaId);
+        validarEstadioNoDia(estadio.getEstadioId(), dataHora, partidaId);
 
         partida.setClubeCasa(clubes.clubeCasa());
         partida.setClubeVisitante(clubes.clubeVisitante());
@@ -144,21 +144,21 @@ public class PartidaServiceImpl implements PartidaService{
         return new ClubesValidados(clubeCasa.get(), clubeVisitante.get());
     }
 
-    private void validarConflitoDeHorario(UUID clubeCasaId, UUID clubeVisitanteId, LocalDateTime dataHora) {
+    private void validarConflitoDeHorario(UUID clubeCasaId, UUID clubeVisitanteId, LocalDateTime dataHora, UUID excludeId) {
         LocalDateTime inicio = dataHora.minusHours(48);
         LocalDateTime fim = dataHora.plusHours(48);
-        if (partidaRepository.existeConflitoDeHorario(clubeCasaId, inicio, fim)) {
+        if (partidaRepository.existeConflitoDeHorario(clubeCasaId, inicio, fim, excludeId)) {
             throw new ConflitoDeHorarioException("Clube casa já possui partida em menos de 48 horas deste horário");
         }
-        if (partidaRepository.existeConflitoDeHorario(clubeVisitanteId, inicio, fim)) {
+        if (partidaRepository.existeConflitoDeHorario(clubeVisitanteId, inicio, fim, excludeId)) {
             throw new ConflitoDeHorarioException("Clube visitante já possui partida em menos de 48 horas deste horário");
         }
     }
 
-    private void validarEstadioNoDia(UUID estadioId, LocalDateTime dataHora) {
+    private void validarEstadioNoDia(UUID estadioId, LocalDateTime dataHora, UUID excludeId) {
         LocalDateTime inicioDia = dataHora.toLocalDate().atStartOfDay();
         LocalDateTime fimDia = inicioDia.plusDays(1).minusNanos(1);
-        if (partidaRepository.existePartidaNoEstadioNoDia(estadioId, inicioDia, fimDia)) {
+        if (partidaRepository.existePartidaNoEstadioNoDia(estadioId, inicioDia, fimDia, excludeId)) {
             throw new EstadioOcupadoException(estadioId);
         }
     }

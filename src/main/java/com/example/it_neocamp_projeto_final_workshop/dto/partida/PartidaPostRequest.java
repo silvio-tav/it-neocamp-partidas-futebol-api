@@ -35,7 +35,7 @@ public class PartidaPostRequest {
 
     @NotNull
     @PastOrPresent(message = "deve ser uma data no passado ou no presente")
-    @Schema(description = "Data e hora da partida (hoje ou data passada)", example = "2024-06-01T16:00:00")
+    @Schema(description = "Data e hora da partida (hoje ou data futura)", example = "2026-06-15T16:00:00")
     private LocalDateTime dataHoraPartida;
 
     @Min(0)
