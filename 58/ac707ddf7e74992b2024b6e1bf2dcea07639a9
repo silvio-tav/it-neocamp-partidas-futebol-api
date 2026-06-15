@@ -1,0 +1,27 @@
+src/main/java/com/example/it_neocamp_projeto_final_workshop/config/OpenApiConfig.java
+  s_3a1f0828d1dde7::t_de8b8947ff5f89 45
+src/main/java/com/example/it_neocamp_projeto_final_workshop/controller/AuthController.java
+  s_3a1f0828d1dde7::t_f52f1f54a0c72f 9-13,25,33-44,52-63
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/auth/RegisterRequest.java
+  s_3a1f0828d1dde7::t_06e9e1c8df577f 3,7,9-16
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/auth/LoginRequest.java
+  s_3a1f0828d1dde7::t_a5f3ba5ba9b674 3,6,8-14
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/auth/AuthResponse.java
+  s_3a1f0828d1dde7::t_75189c4d503523 3-10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "58ac707ddf7e74992b2024b6e1bf2dcea07639a9",
+  "prompts": {},
+  "sessions": {
+    "s_3a1f0828d1dde7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c19a3f4b-8d4d-4b68-bb60-8ec797a1f282",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
