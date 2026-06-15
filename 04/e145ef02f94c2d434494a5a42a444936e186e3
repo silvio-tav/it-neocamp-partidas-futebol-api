@@ -1,0 +1,47 @@
+src/main/java/com/example/it_neocamp_projeto_final_workshop/handler/GlobalExceptionHandler.java
+  s_3a1f0828d1dde7::t_fcde2a2009d42f 15-22
+  s_3a1f0828d1dde7::t_80464f337c4af5 6,10
+src/main/java/com/example/it_neocamp_projeto_final_workshop/repository/PartidaRepository.java
+  s_3a1f0828d1dde7::t_77e0cac0e3bd4e 26,30-31,37,41-42
+src/main/java/com/example/it_neocamp_projeto_final_workshop/service/partida/PartidaServiceImpl.java
+  s_3a1f0828d1dde7::t_89da2ac985a97d 41-42
+  s_3a1f0828d1dde7::t_d241cfb07e4145 75-76
+  s_3a1f0828d1dde7::t_e43a4dadba736f 147,150,153,158,161
+src/main/java/com/example/it_neocamp_projeto_final_workshop/dto/partida/PartidaPostRequest.java
+  s_3a1f0828d1dde7::t_79de532d03e71a 38
+src/main/java/com/example/it_neocamp_projeto_final_workshop/config/SecurityConfig.java
+  s_640a449446225e::t_9cedbf2c4bc214 8,22-26,50,79-94
+  s_3a1f0828d1dde7::t_d9622d80220ce8 44
+  s_3a1f0828d1dde7::t_b7e0e1207cbc0d 21
+  s_640a449446225e::t_77761e5781bdaa 39
+  s_3a1f0828d1dde7::t_9161ee97022c7e 54-57
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "04e145ef02f94c2d434494a5a42a444936e186e3",
+  "prompts": {},
+  "humans": {
+    "h_d680948365c6ad": {
+      "author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  },
+  "sessions": {
+    "s_3a1f0828d1dde7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c19a3f4b-8d4d-4b68-bb60-8ec797a1f282",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    },
+    "s_640a449446225e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ecbad-9757-7583-917c-aeceb27a3e52",
+        "model": "gpt-5.5"
+      },
+      "human_author": "sitavares_meli <silvio.tavares@mercadolivre.com>"
+    }
+  }
+}
