@@ -42,6 +42,7 @@ public class OpenApiConfig {
                         new Server().url("http://localhost:8080").description("Ambiente local")
                 ))
                 .tags(List.of(
+                        new Tag().name("Autenticação").description("Registro e login de usuários — retorna token JWT"),
                         new Tag().name("Clubes").description("Gerenciamento de clubes de futebol e seus retrospecto"),
                         new Tag().name("Estádios").description("Gerenciamento de estádios de futebol"),
                         new Tag().name("Partidas").description("Gerenciamento de partidas de futebol")
